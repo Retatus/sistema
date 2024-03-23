@@ -1,19 +1,15 @@
 <?php
 
 /**
- * Language system language strings.
+ * This file is part of CodeIgniter 4 framework.
  *
- * @package    CodeIgniter
- * @author     CodeIgniter Dev Team
- * @copyright  2019-2020 CodeIgniter Foundation
- * @license    https://opensource.org/licenses/MIT	MIT License
- * @link       https://codeigniter.com
- * @since      Version 4.0.0
- * @filesource
+ * (c) CodeIgniter Foundation <admin@codeigniter.com>
  *
- * @codeCoverageIgnore
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
 
+// "Language" language settings
 return [
-   'languageGetLineInvalidArgumentException' => 'Get line must be a string or array of strings.',
+    'invalidMessageFormat' => 'Invalid message format: "{0}", args: "{1}"',
 ];
