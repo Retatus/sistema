@@ -237,7 +237,7 @@
 
 <section>
 
-    <h1>About this page</h1>
+    <h1>About this page by tato</h1>
 
     <p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 

@@ -38,7 +38,13 @@ class Logger extends BaseConfig
      *
      * @var array|int
      */
-    public $threshold = (ENVIRONMENT === 'production') ? 4 : 9;
+
+    public $logger = [
+        'threshold' => 9,
+        'path'     => WRITEPATH . 'logs/',
+    ];
+     
+    public $threshold = (ENVIRONMENT === 'development') ? 4 : 9;
 
     /**
      * --------------------------------------------------------------------------
