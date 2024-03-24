@@ -25,7 +25,7 @@ class Reservadetallebus extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$reservadetallebus = $this->reservadetallebus->getReservadetallebuss(1, '', 10, 1);
+		$reservadetallebus = $this->reservadetallebus->getReservadetallebuss(1, '', 20, 1);
 		$total = $this->reservadetallebus->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

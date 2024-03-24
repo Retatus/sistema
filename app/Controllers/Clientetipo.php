@@ -19,7 +19,7 @@ class Clientetipo extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$clientetipo = $this->clientetipo->getClientetipos(1, '', 10, 1);
+		$clientetipo = $this->clientetipo->getClientetipos(1, '', 20, 1);
 		$total = $this->clientetipo->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

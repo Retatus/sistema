@@ -19,7 +19,7 @@ class Ticketmapi extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$ticketmapi = $this->ticketmapi->getTicketmapis(1, '', 10, 1);
+		$ticketmapi = $this->ticketmapi->getTicketmapis(1, '', 20, 1);
 		$total = $this->ticketmapi->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

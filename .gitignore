@@ -125,3 +125,7 @@ nb-configuration.xml
 /results/
 /phpunit*.xml
 /.phpunit.*.cache
+
+# Ejemplo de archivo .gitignore
+app/Config/App.php 
+app/Config/Database.php

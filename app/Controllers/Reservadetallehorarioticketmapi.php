@@ -25,7 +25,7 @@ class Reservadetallehorarioticketmapi extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$reservadetallehorarioticketmapi = $this->reservadetallehorarioticketmapi->getReservadetallehorarioticketmapis(1, '', 10, 1);
+		$reservadetallehorarioticketmapi = $this->reservadetallehorarioticketmapi->getReservadetallehorarioticketmapis(1, '', 20, 1);
 		$total = $this->reservadetallehorarioticketmapi->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

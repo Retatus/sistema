@@ -19,7 +19,7 @@ class Horatren extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$horatren = $this->horatren->getHoratrens(1, '', 10, 1);
+		$horatren = $this->horatren->getHoratrens(1, '', 20, 1);
 		$total = $this->horatren->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

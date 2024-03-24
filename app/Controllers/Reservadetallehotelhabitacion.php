@@ -25,7 +25,7 @@ class Reservadetallehotelhabitacion extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$reservadetallehotelhabitacion = $this->reservadetallehotelhabitacion->getReservadetallehotelhabitacions(1, '', 10, 1);
+		$reservadetallehotelhabitacion = $this->reservadetallehotelhabitacion->getReservadetallehotelhabitacions(1, '', 20, 1);
 		$total = $this->reservadetallehotelhabitacion->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

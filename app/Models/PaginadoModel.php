@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 class PaginadoModel extends Model
 {          
     public function pagina($page, $tpages, $adjacents) {
-        $tpages = ceil($tpages/10);
+        $tpages = ceil($tpages/20);
         $prevlabel = "&lsaquo; Anterior";
         $nextlabel = "Siguiente &rsaquo;";
         $out = '<ul class="pagination pagination-sm m-0 float-right">';        

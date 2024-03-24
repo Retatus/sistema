@@ -19,7 +19,7 @@ class Banco extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$banco = $this->banco->getBancos(1, '', 10, 1);
+		$banco = $this->banco->getBancos(1, '', 20, 1);
 		$total = $this->banco->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

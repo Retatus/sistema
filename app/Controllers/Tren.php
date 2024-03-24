@@ -19,7 +19,7 @@ class Tren extends BaseController
 
 	public function index($bestado = 1)
 	{
-		$tren = $this->tren->getTrens(1, '', 10, 1);
+		$tren = $this->tren->getTrens(1, '', 20, 1);
 		$total = $this->tren->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);

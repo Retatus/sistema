@@ -83,12 +83,6 @@ class ReservaModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getNewReserva($id){
-		$stored_proc = "CALL get_reserva(?)";
-		$resultado = $this->db->query($stored_proc, $id);
-		return $resultado->getResultArray();
-	}
-
 	public function getCount($todos = 1, $text = ''){
 		$builder = $this->conexion('treserva t0');
 		$builder->select('nidreserva');
