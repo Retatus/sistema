@@ -129,3 +129,5 @@ nb-configuration.xml
 # Ejemplo de archivo .gitignore
 app/Config/App.php 
 app/Config/Database.php
+
+public/error_log
