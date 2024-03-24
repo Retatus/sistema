@@ -31,9 +31,9 @@
       <?php if (session()->has('error')): ?>
         <p><?= session('error') ?></p>
       <?php endif; ?>
-      <form action="<?php echo base_url();?>/login/login" method="post">
+      <form action="<?php echo base_url();?>login/login" method="post">
         <div class="input-group mb-3">
-          <input type="username" class="form-control" value = "usuario@example.com" placeholder="username">
+          <input type="username" class="form-control" name="username" value = "usuario@example.com" placeholder="username">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fa fa-user"></span>
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" value = "contraseña" placeholder="password">
+          <input type="password" class="form-control" name="password" value = "contraseña" placeholder="password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
