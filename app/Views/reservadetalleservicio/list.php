@@ -8,13 +8,13 @@
 					<div class='card-header'>
 						<div class='row'>
 							<div class='col-sm-8'>
-								<button type='button' class='btn btn-info btn-sm' id='btnAgregarReservadetallehorariotren'>
-									<span class='fa fa-plus'></span> Agregar Reservadetallehorariotren
+								<button type='button' class='btn btn-info btn-sm' id='btnAgregarReservadetalleservicio'>
+									<span class='fa fa-plus'></span> Agregar Reservadetalleservicio
 								</button>
-								<a href='<?php echo base_url();?>reservadetallehorariotren/excel' class='btn btn-success btn-sm'>
+								<a href='<?php echo base_url();?>reservadetalleservicio/excel' class='btn btn-success btn-sm'>
 									<span class='fa fa-file-excel'></span> Exportar
 								</a>
-								<a href='<?php echo base_url();?>reservadetallehorariotren/pdf' target='_blank' class='btn btn-danger btn-sm'>
+								<a href='<?php echo base_url();?>reservadetalleservicio/pdf' target='_blank' class='btn btn-danger btn-sm'>
 									<span class='fa fa-file-pdf-o'></span> Exportar
 								</a>
 							</div>
@@ -31,7 +31,7 @@
 												<option value='1' selected>ACTIVOS</option>
 											</select>
 											<span class='input-group-btn'>
-												<button type='button' class='btn btn-info btn-sm' id='btnFiltroReservadetallehorariotren'>
+												<button type='button' class='btn btn-info btn-sm' id='btnFiltroReservadetalleservicio'>
 													<span class='fa fa-filter'></span> Buscar
 												</button>
 											</span>
@@ -43,15 +43,11 @@
 					</div>
 					<div class='card-body'>
 						<div class='demo-content scroll'>
-							<table id='TablaReservadetallehorariotren' class='table table-sm table-bordered table-striped'>
+							<table id='TablaReservadetalleservicio' class='table table-sm table-bordered table-striped'>
 								<thead>
 									<tr>
-										<th>Reserva</th>
 										<th >Idreserva</th>
-										<th hidden>Id</th>
-										<th>horatren</th>
-										<th>tren</th>
-										<th >Idhorariotren</th>
+										<th >Id</th>
 										<th >Descripcion</th>
 										<th >Fecha</th>
 										<th >Cantidad</th>
@@ -65,31 +61,27 @@
 								</thead>
 								<tbody>
 									<?php if(!empty($datos)):?>
-										<?php foreach($datos as $reservadetallehorariotren):?>
+										<?php foreach($datos as $reservadetalleservicio):?>
 											<tr>
-												<td><?php echo $reservadetallehorariotren['reservanombre'];?></td>
-												<td ><?php echo $reservadetallehorariotren['idreserva'];?></td>
-												<td hidden><?php echo $reservadetallehorariotren['idreservadetallehorariotren'];?></td>
-												<td><?php echo $reservadetallehorariotren['horatren'];?></td>
-												<td><?php echo $reservadetallehorariotren['tren'];?></td>
-												<td ><?php echo $reservadetallehorariotren['idhorariotren'];?></td>
-												<td ><?php echo $reservadetallehorariotren['descripcion'];?></td>
-												<td ><?php echo $reservadetallehorariotren['fecha'];?></td>
-												<td ><?php echo $reservadetallehorariotren['cantidad'];?></td>
-												<td ><?php echo $reservadetallehorariotren['precio'];?></td>
-												<td ><?php echo $reservadetallehorariotren['total'];?></td>
-												<td class = 'hidden-xs'><?php echo $est = ($reservadetallehorariotren['confirmado']== 1) ? 'CONFIRMADO' : 'PENDIENTE';?></td>
-												<td class = 'hidden-xs'><?php echo $est = ($reservadetallehorariotren['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
+												<td ><?php echo $reservadetalleservicio['idreserva'];?></td>
+												<td ><?php echo $reservadetalleservicio['idreservadetalleservicio'];?></td>
+												<td ><?php echo $reservadetalleservicio['descripcion'];?></td>
+												<td ><?php echo $reservadetalleservicio['fecha'];?></td>
+												<td ><?php echo $reservadetalleservicio['cantidad'];?></td>
+												<td ><?php echo $reservadetalleservicio['precio'];?></td>
+												<td ><?php echo $reservadetalleservicio['total'];?></td>
+												<td class = 'hidden-xs'><?php echo $est = ($reservadetalleservicio['confirmado']== 1) ? 'CONFIRMADO' : 'PENDIENTE';?></td>
+												<td class = 'hidden-xs'><?php echo $est = ($reservadetalleservicio['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
 
 												<td>
 													<div class='row'>
 														<div style='margin: auto;'>
-															<button type='button' onclick="btnEditarReservadetallehorariotren('<?php echo $reservadetallehorariotren['idreservadetallehorariotren'].'\',\''. $reservadetallehorariotren['idhorariotren'].'\',\''. $reservadetallehorariotren['idreserva'];?>')" class='btn btn-info btn-xs'>
+															<button type='button' onclick="btnEditarReservadetalleservicio('<?php echo $reservadetalleservicio['idreservadetalleservicio'];?>')" class='btn btn-info btn-xs'>
 																<span class='fa fa-search fa-xs'></span>
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $reservadetallehorariotren['idreservadetallehorariotren'].'\',\''. $reservadetallehorariotren['idhorariotren'].'\',\''. $reservadetallehorariotren['idreserva'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $reservadetalleservicio['idreservadetalleservicio'];?>'><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>
@@ -99,7 +91,7 @@
 								</tbody>
 							</table>
 						</div>
-						<div id='PaginadoReservadetallehorariotren'>
+						<div id='PaginadoReservadetalleservicio'>
 							<?php echo $pag;?>
 						</div>
 					</div>
@@ -108,11 +100,11 @@
 		</div>
 	</section>
 </div>
-<div class='modal fade' id='modalAgregarReservadetallehorariotren' tabindex='-1'>
+<div class='modal fade' id='modalAgregarReservadetalleservicio' tabindex='-1'>
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
 		<div class='modal-header'>
-			<h4 class='modal-title' id='modaldeltalletour'>Detalle Reservadetallehorariotren</h4>
+			<h4 class='modal-title' id='modaldeltalletour'>Detalle Reservadetalleservicio</h4>
 			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
 				<span aria-hidden='true'>×</span>
 			</button>
@@ -120,35 +112,15 @@
 		<div class='modal-body'>
 			<div class='form-group row'>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4'>Horariotren:</label>
+					<label class='col-sm-4' for='id'>idreserva:</label>
 					<div class = 'col-sm-8'>
-						<select class='form-control form-control-sm select2' id='idhorariotren'>
-							<option value='0'>-- SELECCIONAR1 --</option>
-							<?php if (!empty($horariotrens)):?>
-								<?php foreach($horariotrens as $horariotren):?>
-									<option value= '<?php echo $horariotren['idhorariotren'];?>'><?php echo $horariotren['concatenado'];?></option>
-								<?php endforeach;?>
-							<?php endif;?>
-						</select>
+						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idreserva' name='idreserva' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4'>Reserva:</label>
-					<div class = 'col-sm-8'>
-						<select class='form-control form-control-sm select2' id='idreserva'>
-							<option value='0'>-- SELECCIONAR1 --</option>
-							<?php if (!empty($reservas)):?>
-								<?php foreach($reservas as $reserva):?>
-									<option value= '<?php echo $reserva['idreserva'];?>'><?php echo $reserva['concatenado'];?></option>
-								<?php endforeach;?>
-							<?php endif;?>
-						</select>
-					</div>
-				</div>
-				<div class='col-6 form-group row'hidden>
 					<label class='col-sm-4' for='id'>id:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idreservadetallehorariotren' name='idreservadetallehorariotren' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idreservadetalleservicio' name='idreservadetalleservicio' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-12 form-group row'>
@@ -210,65 +182,17 @@
 			</div>
 		</div>
 		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='btnModalAgregarReservadetallehorariotren'>Agregar</button>
-			<button type='button' class='btn btn-warning btn-sm' id='btnModalEditarReservadetallehorariotren'>Modificar</button>
-			<button type='button' class='btn btn-danger btn-sm' id='btnModalEliminarReservadetallehorariotren'>Eliminar</button>
-			<button type='button' class='btn btn-primary btn-sm' id='btnModalCerrarReservadetallehorariotren' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-<div class='modal fade show' id='modal_agregar_thorariotren' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Horariotren</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Horariotren:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaHorariotren'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaHorariotren'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-<div class='modal fade show' id='modal_agregar_treserva' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Reserva</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Reserva:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaReserva'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaReserva'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
+			<button type='button' class='btn btn-success btn-sm' id='btnModalAgregarReservadetalleservicio'>Agregar</button>
+			<button type='button' class='btn btn-warning btn-sm' id='btnModalEditarReservadetalleservicio'>Modificar</button>
+			<button type='button' class='btn btn-danger btn-sm' id='btnModalEliminarReservadetalleservicio'>Eliminar</button>
+			<button type='button' class='btn btn-primary btn-sm' id='btnModalCerrarReservadetalleservicio' data-dismiss='modal'>Cerrar</button>
 		</div>
 		</div>
 	</div>
 </div>
 
 <script>
-	var NuevoReservadetallehorariotren;
+	var NuevoReservadetalleservicio;
 	var base_url= '<?php echo base_url();?>';
 
 
@@ -279,8 +203,8 @@
 
 
 	function load(pag){
-		RecolectarDatosReservadetallehorariotren();
-		EnviarInformacionReservadetallehorariotren('leer', NuevoReservadetallehorariotren, false, pag);
+		RecolectarDatosReservadetalleservicio();
+		EnviarInformacionReservadetalleservicio('leer', NuevoReservadetalleservicio, false, pag);
 	}
 
 
@@ -296,31 +220,30 @@
 
 
 
-	$('#btnAgregarReservadetallehorariotren').click(function(){
-		LimpiarModalDatosReservadetallehorariotren();
+	$('#btnAgregarReservadetalleservicio').click(function(){
+		LimpiarModalDatosReservadetalleservicio();
 		$('#categoria').val(1);
 		$('#id').prop('readonly', false);  
 		$('#IdModalGrupoCodigoHotel').prop('hidden', false);
-		$('#btnModalAgregarReservadetallehorariotren').toggle(true);
-		$('#btnModalEditarReservadetallehorariotren').toggle(false);
-		$('#btnModalEliminarReservadetallehorariotren').toggle(false);
-		$('#modalAgregarReservadetallehorariotren').modal();
+		$('#btnModalAgregarReservadetalleservicio').toggle(true);
+		$('#btnModalEditarReservadetalleservicio').toggle(false);
+		$('#btnModalEliminarReservadetalleservicio').toggle(false);
+		$('#modalAgregarReservadetalleservicio').modal();
 	});
 
 
-	function btnEditarReservadetallehorariotren(Val0, Val1, Val2){
+	function btnEditarReservadetalleservicio(Val0){
 		$.ajax({
 			type: 'POST',
-			url: base_url + '/reservadetallehorariotren/edit',
-			data: { idreservadetallehorariotren: Val0, idhorariotren: Val1, idreserva: Val2},
+			url: base_url + '/reservadetalleservicio/edit',
+			data: { idreservadetalleservicio: Val0},
 			success: function(msg){
 		debugger
 				var temp = JSON.parse(msg);
 				console.log(temp);
-				LimpiarModalDatosReservadetallehorariotren();
-				$('#idreserva').select2().val(temp.idreserva).select2('destroy').select2();
-				$('#idreservadetallehorariotren').val(temp.idreservadetallehorariotren);
-				$('#idhorariotren').select2().val(temp.idhorariotren).select2('destroy').select2();
+				LimpiarModalDatosReservadetalleservicio();
+				$('#idreserva').val(temp.idreserva);
+				$('#idreservadetalleservicio').val(temp.idreservadetalleservicio);
 				$('#descripcion').val(temp.descripcion);
 				$('#fecha').val(temp.fecha);
 				$('#cantidad').val(temp.cantidad);
@@ -373,10 +296,10 @@
 				$('#minmax').val(nrohabitaciones);
 
 
-				$('#btnModalAgregarReservadetallehorariotren').toggle(false);
-				$('#btnModalEditarReservadetallehorariotren').toggle(true);
-				$('#btnModalEliminarReservadetallehorariotren').toggle(true);
-				$('#modalAgregarReservadetallehorariotren').modal('toggle');
+				$('#btnModalAgregarReservadetalleservicio').toggle(false);
+				$('#btnModalEditarReservadetalleservicio').toggle(true);
+				$('#btnModalEliminarReservadetalleservicio').toggle(true);
+				$('#modalAgregarReservadetalleservicio').modal('toggle');
 			},
 			error: function(){
 				alert('Hay un error...');
@@ -385,61 +308,60 @@
 	}
 
 
-	$('#btnModalAgregarReservadetallehorariotren').click(function(){
+	$('#btnModalAgregarReservadetalleservicio').click(function(){
 debugger
 
-		if (ValidarCamposVaciosReservadetallehorariotren() != 0) {
+		if (ValidarCamposVaciosReservadetalleservicio() != 0) {
 			alert('Completar campos obligatorios');
 		}else{
 			$('#IdModalGrupoCodigoHotel').prop('hidden', false); 
-			RecolectarDatosReservadetallehorariotren();
-			EnviarInformacionReservadetallehorariotren('agregar', NuevoReservadetallehorariotren, true);
+			RecolectarDatosReservadetalleservicio();
+			EnviarInformacionReservadetalleservicio('agregar', NuevoReservadetalleservicio, true);
 		}
 	});
 
 
-	$('#btnModalEditarReservadetallehorariotren').click(function(){
-		if (ValidarCamposVaciosReservadetallehorariotren() != 0) {
+	$('#btnModalEditarReservadetalleservicio').click(function(){
+		if (ValidarCamposVaciosReservadetalleservicio() != 0) {
 			alert('Completar campos obligatorios');
 		}else{
-			RecolectarDatosReservadetallehorariotren();
-			EnviarInformacionReservadetallehorariotren('modificar', NuevoReservadetallehorariotren, true);
+			RecolectarDatosReservadetalleservicio();
+			EnviarInformacionReservadetalleservicio('modificar', NuevoReservadetalleservicio, true);
 		}
 	});
 
 
-	$('#btnModalEliminarReservadetallehorariotren').click(function(){
+	$('#btnModalEliminarReservadetalleservicio').click(function(){
 		var bool=confirm('ESTA SEGURO DE ELIMINAR EL DATO?');
 		if(bool){
-			RecolectarDatosReservadetallehorariotren();
-			EnviarInformacionReservadetallehorariotren('eliminar', NuevoReservadetallehorariotren, true);
+			RecolectarDatosReservadetalleservicio();
+			EnviarInformacionReservadetalleservicio('eliminar', NuevoReservadetalleservicio, true);
 		}
 	});
 
 
 	$('#btnModalCerrarHotel').click(function(){
 		$('#IdModalGrupoCodigoHotel').prop('hidden', false); 
-		LimpiarModalDatosReservadetallehorariotren();
+		LimpiarModalDatosReservadetalleservicio();
 	});
 
 
-	$('#btnFiltroReservadetallehorariotren').click(function(){
-		RecolectarDatosReservadetallehorariotren();
-		EnviarInformacionReservadetallehorariotren('leer', NuevoReservadetallehorariotren, false);
+	$('#btnFiltroReservadetalleservicio').click(function(){
+		RecolectarDatosReservadetalleservicio();
+		EnviarInformacionReservadetalleservicio('leer', NuevoReservadetalleservicio, false);
 	});
 
 
 	function Paginado(pag) {
-		RecolectarDatosReservadetallehorariotren();
-		EnviarInformacionReservadetallehorariotren('leer', NuevoReservadetallehorariotren, false, pag);
+		RecolectarDatosReservadetalleservicio();
+		EnviarInformacionReservadetalleservicio('leer', NuevoReservadetalleservicio, false, pag);
 	}
 
 
-	function RecolectarDatosReservadetallehorariotren(){
-		NuevoReservadetallehorariotren = {
+	function RecolectarDatosReservadetalleservicio(){
+		NuevoReservadetalleservicio = {
 			idreserva: $('#idreserva').val().toUpperCase(),
-			idreservadetallehorariotren: $('#idreservadetallehorariotren').val().toUpperCase(),
-			idhorariotren: $('#idhorariotren').val().toUpperCase(),
+			idreservadetalleservicio: $('#idreservadetalleservicio').val().toUpperCase(),
 			descripcion: $('#descripcion').val().toUpperCase(),
 			fecha: $('#fecha').val().toUpperCase(),
 			cantidad: $('#cantidad').val().toUpperCase(),
@@ -454,18 +376,18 @@ debugger
 	}
 
 
-	function EnviarInformacionReservadetallehorariotren(accion, objEvento, modal, pag=1) { 
+	function EnviarInformacionReservadetalleservicio(accion, objEvento, modal, pag=1) { 
 		$.ajax({
 			type: 'POST',
-			url: base_url+'/reservadetallehorariotren/opciones?accion='+accion+'&pag='+pag,
+			url: base_url+'/reservadetalleservicio/opciones?accion='+accion+'&pag='+pag,
 			data: objEvento,
 			success: function(msg){
 				var resp = JSON.parse(msg);
-				$('#PaginadoReservadetallehorariotren').empty();
-				$('#PaginadoReservadetallehorariotren').append(resp.pag);
+				$('#PaginadoReservadetalleservicio').empty();
+				$('#PaginadoReservadetalleservicio').append(resp.pag);
 				if (modal) {
-					$('#modalAgregarReservadetallehorariotren').modal('toggle');
-					LimpiarModalDatosReservadetallehorariotren();
+					$('#modalAgregarReservadetalleservicio').modal('toggle');
+					LimpiarModalDatosReservadetalleservicio();
 					if (resp.id == 1) {
 						Swal.fire({
 							title: resp.mensaje,
@@ -473,7 +395,7 @@ debugger
 							}).then((result) => {
 							if (result.value) {
 								//window.location.href = base_url + 'mantenimiento/servicios/';
-								CargartablaReservadetallehorariotren(resp.datos)
+								CargartablaReservadetalleservicio(resp.datos)
 							}
 						})
 					} else {
@@ -483,7 +405,7 @@ debugger
 						})
 					}
 				}else{
-					CargartablaReservadetallehorariotren(resp.datos)
+					CargartablaReservadetalleservicio(resp.datos)
 				}
 			},
 			error: function(){
@@ -497,10 +419,9 @@ debugger
 	}
 
 
-	function LimpiarModalDatosReservadetallehorariotren(){
-		$('#idreserva').select2().val(0).select2('destroy').select2();
-		$('#idreservadetallehorariotren').val('0');
-		$('#idhorariotren').select2().val(0).select2('destroy').select2();
+	function LimpiarModalDatosReservadetalleservicio(){
+		$('#idreserva').val('');
+		$('#idreservadetalleservicio').val('0');
 		$('#descripcion').val('');
 		$('#fecha').val('');
 		$('#cantidad').val('');
@@ -510,18 +431,14 @@ debugger
 	}
 
 
-	function ValidarCamposVaciosReservadetallehorariotren(){
+	function ValidarCamposVaciosReservadetalleservicio(){
 		var error = 0;
 		if ($('#idreserva').val() == ''){
 			Resaltado('idreserva');
 			error++;
 		}
-		if ($('#idreservadetallehorariotren').val() == ''){
-			Resaltado('idreservadetallehorariotren');
-			error++;
-		}
-		if ($('#idhorariotren').val() == ''){
-			Resaltado('idhorariotren');
+		if ($('#idreservadetalleservicio').val() == ''){
+			Resaltado('idreservadetalleservicio');
 			error++;
 		}
 		if ($('#descripcion').val() == ''){
@@ -563,16 +480,12 @@ debugger
 	}
 
 
-	function CargartablaReservadetallehorariotren(objeto){   
-		$('#TablaReservadetallehorariotren tr').not($('#TablaReservadetallehorariotren tr:first')).remove();
+	function CargartablaReservadetalleservicio(objeto){   
+		$('#TablaReservadetalleservicio tr').not($('#TablaReservadetalleservicio tr:first')).remove();
 		$.each(objeto, function(i, value) {
 		var fila = '<tr>'+
-			'<td>'+value.reservanombre+'</td>'+
 			'<td >'+value.idreserva+'</td>'+
-			'<td hidden>'+value.idreservadetallehorariotren+'</td>'+
-			'<td>'+value.horatren+'</td>'+
-			'<td>'+value.tren+'</td>'+
-			'<td >'+value.idhorariotren+'</td>'+
+			'<td >'+value.idreservadetalleservicio+'</td>'+
 			'<td >'+value.descripcion+'</td>'+
 			'<td >'+value.fecha+'</td>'+
 			'<td >'+value.cantidad+'</td>'+
@@ -584,7 +497,7 @@ debugger
 			'<td>'+
 				'<div class="row">'+
 					'<div style="margin: auto;">'+
-						'<button type="button" onclick="btnEditarReservadetallehorariotren(\''+value.idreservadetallehorariotren+'\', \''+value.idhorariotren+'\', \''+value.idreserva+'\')" class="btn btn-info btn-xs">'+
+						'<button type="button" onclick="btnEditarReservadetalleservicio(\''+value.idreservadetalleservicio+'\')" class="btn btn-info btn-xs">'+
 							'<span class="fa fa-search fa-sm"></span>'+
 						'</button>'+
 					'</div>'+
@@ -594,7 +507,7 @@ debugger
 				'</div>'+
 			'</td>'+
 		'</tr>';
-		$('#TablaReservadetallehorariotren tbody').append(fila);
+		$('#TablaReservadetalleservicio tbody').append(fila);
 		});
 	}
 

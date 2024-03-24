@@ -66,20 +66,6 @@ class Reservadetallehorarioticketmapi extends BaseController
 		$bconfirmado = strtoupper(trim($this->request->getPost('confirmado')));
 		$bestado = strtoupper(trim($this->request->getPost('estado')));
 
-		$data12  = array(
-			'nidreserva' => intval($nidreserva),
-			'nidreservadetallehorarioticketmapi' => intval($nidreservadetallehorarioticketmapi),
-			'nidhorarioticketmapi' => $nidhorarioticketmapi,
-			'sdescripcion' => $sdescripcion,
-			'tfecha' => $tfecha,
-			'ncantidad' => intval($ncantidad),
-			'dprecio' => doubleval($dprecio),
-			'dtotal' => doubleval($dtotal),
-			'bconfirmado' => intval($bconfirmado),
-			'bestado' => intval($bestado),
-
-		);
-
 
 		$respt = array();
 		$id = 0; $mensaje = '';
@@ -118,7 +104,7 @@ class Reservadetallehorarioticketmapi extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->reservadetallehorarioticketmapi->UpdateReservadetallehorarioticketmapi($nidreserva, $data);
+				$this->reservadetallehorarioticketmapi->UpdateReservadetallehorarioticketmapi($nidreservadetallehorarioticketmapi,$nidhorarioticketmapi,$nidreserva, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -134,7 +120,7 @@ class Reservadetallehorarioticketmapi extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->reservadetallehorarioticketmapi->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $data12];// $this->reservadetallehorarioticketmapi->getreservadetallehorarioticketmapis($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reservadetallehorarioticketmapi->getreservadetallehorarioticketmapis($todos, $texto, 10, $pag)];
 		echo json_encode($respt);
 	}
 
@@ -143,7 +129,7 @@ class Reservadetallehorarioticketmapi extends BaseController
 		$nidreservadetallehorarioticketmapi = strtoupper(trim($this->request->getPost('idreservadetallehorarioticketmapi')));
 		$nidhorarioticketmapi = strtoupper(trim($this->request->getPost('idhorarioticketmapi')));
 
-		$data = $this->reservadetallehorarioticketmapi->getReservadetallehorarioticketmapi($nidreserva,$nidreservadetallehorarioticketmapi,$nidhorarioticketmapi);
+		$data = $this->reservadetallehorarioticketmapi->getReservadetallehorarioticketmapi($nidreservadetallehorarioticketmapi,$nidhorarioticketmapi,$nidreserva);
 		echo json_encode($data);
 	}
 

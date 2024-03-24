@@ -104,7 +104,7 @@ class Reservadetallebus extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->reservadetallebus->UpdateReservadetallebus($nidreserva, $data);
+				$this->reservadetallebus->UpdateReservadetallebus($nidreservadetalleticketbus,$nidreserva,$nidticketbus, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -129,7 +129,7 @@ class Reservadetallebus extends BaseController
 		$nidreservadetalleticketbus = strtoupper(trim($this->request->getPost('idreservadetalleticketbus')));
 		$nidticketbus = strtoupper(trim($this->request->getPost('idticketbus')));
 
-		$data = $this->reservadetallebus->getReservadetallebus($nidreserva,$nidreservadetalleticketbus,$nidticketbus);
+		$data = $this->reservadetallebus->getReservadetallebus($nidreservadetalleticketbus,$nidreserva,$nidticketbus);
 		echo json_encode($data);
 	}
 

@@ -74,10 +74,10 @@ class ReservadetallehotelhabitacionModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getReservadetallehotelhabitacion($id){
+	public function getReservadetallehotelhabitacion($nidreservadetallehotelhabitacion,$nidhotelhabitacion,$nidreserva){
 		$builder = $this->conexion('treservadetallehotelhabitacion t0');
 		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.nidhotelhabitacion idhotelhabitacion, t0.sdescripcion descripcion,DATE_FORMAT(CAST(t0.tfechaingreso As Date), '%d/%m/%Y') fechaingreso,DATE_FORMAT(CAST(t0.tfechasalida As Date), '%d/%m/%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetallehotelhabitacion' => $nidreservadetallehotelhabitacion,'nidhotelhabitacion' => $nidhotelhabitacion,'nidreserva' => $nidreserva]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -114,9 +114,9 @@ class ReservadetallehotelhabitacionModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReservadetallehotelhabitacion($id, $datos){
+	public function UpdateReservadetallehotelhabitacion($nidreservadetallehotelhabitacion,$nidhotelhabitacion,$nidreserva, $datos){
 		$builder = $this->conexion('treservadetallehotelhabitacion');
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetallehotelhabitacion' => $nidreservadetallehotelhabitacion,'nidhotelhabitacion' => $nidhotelhabitacion,'nidreserva' => $nidreserva]);
 		$builder->set($datos);
 		$builder->update();
 	}

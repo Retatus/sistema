@@ -92,7 +92,7 @@ class Tour extends BaseController
 					'nidcattour' => $nidcattour,
 
 				);
-				$this->tour->UpdateTour($sidtour, $data);
+				$this->tour->UpdateTour($sidtour,$nidcattour, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':

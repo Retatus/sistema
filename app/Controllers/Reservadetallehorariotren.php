@@ -104,7 +104,7 @@ class Reservadetallehorariotren extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->reservadetallehorariotren->UpdateReservadetallehorariotren($nidreserva, $data);
+				$this->reservadetallehorariotren->UpdateReservadetallehorariotren($nidreservadetallehorariotren,$nidhorariotren,$nidreserva, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -129,7 +129,7 @@ class Reservadetallehorariotren extends BaseController
 		$nidreservadetallehorariotren = strtoupper(trim($this->request->getPost('idreservadetallehorariotren')));
 		$nidhorariotren = strtoupper(trim($this->request->getPost('idhorariotren')));
 
-		$data = $this->reservadetallehorariotren->getReservadetallehorariotren($nidreserva,$nidreservadetallehorariotren,$nidhorariotren);
+		$data = $this->reservadetallehorariotren->getReservadetallehorariotren($nidreservadetallehorariotren,$nidhorariotren,$nidreserva);
 		echo json_encode($data);
 	}
 

@@ -66,10 +66,10 @@ class CathabitacionModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getCathabitacion($id){
+	public function getCathabitacion($nidcathabitacion){
 		$builder = $this->conexion('tcathabitacion t0');
 		$builder->select("t0.nidcathabitacion idcathabitacion, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidcathabitacion', $id);
+		$builder->where(['nidcathabitacion' => $nidcathabitacion]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class CathabitacionModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateCathabitacion($id, $datos){
+	public function UpdateCathabitacion($nidcathabitacion, $datos){
 		$builder = $this->conexion('tcathabitacion');
-		$builder->where('nidcathabitacion', $id);
+		$builder->where(['nidcathabitacion' => $nidcathabitacion]);
 		$builder->set($datos);
 		$builder->update();
 	}

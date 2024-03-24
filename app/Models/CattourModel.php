@@ -66,10 +66,10 @@ class CattourModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getCattour($id){
+	public function getCattour($nidcattour){
 		$builder = $this->conexion('tcattour t0');
 		$builder->select("t0.nidcattour idcattour, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidcattour', $id);
+		$builder->where(['nidcattour' => $nidcattour]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class CattourModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateCattour($id, $datos){
+	public function UpdateCattour($nidcattour, $datos){
 		$builder = $this->conexion('tcattour');
-		$builder->where('nidcattour', $id);
+		$builder->where(['nidcattour' => $nidcattour]);
 		$builder->set($datos);
 		$builder->update();
 	}

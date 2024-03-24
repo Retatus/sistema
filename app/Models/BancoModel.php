@@ -66,10 +66,10 @@ class BancoModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getBanco($id){
+	public function getBanco($nidbanco){
 		$builder = $this->conexion('tbanco t0');
 		$builder->select("t0.nidbanco idbanco, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidbanco', $id);
+		$builder->where(['nidbanco' => $nidbanco]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class BancoModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateBanco($id, $datos){
+	public function UpdateBanco($nidbanco, $datos){
 		$builder = $this->conexion('tbanco');
-		$builder->where('nidbanco', $id);
+		$builder->where(['nidbanco' => $nidbanco]);
 		$builder->set($datos);
 		$builder->update();
 	}

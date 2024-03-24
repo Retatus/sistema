@@ -72,10 +72,10 @@ class HotelModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getHotel($id){
+	public function getHotel($sidhotel,$nidbanco,$nidcathotel){
 		$builder = $this->conexion('thotel t0');
 		$builder->select("t0.sidhotel idhotel, t0.snombre nombre, t0.nidcathotel idcathotel, t0.sdireccion direccion, t0.stelefono telefono, t0.scorreo correo, t0.sruc ruc, t0.srazonsocial razonsocial, t0.snrocuenta nrocuenta, t0.nidbanco idbanco, t0.subigeo ubigeo, t0.dlatitud latitud, t0.dlongitud longitud, t0.bestado estado");
-		$builder->where('sidhotel', $id);
+		$builder->where(['sidhotel' => $sidhotel,'nidbanco' => $nidbanco,'nidcathotel' => $nidcathotel]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -107,9 +107,9 @@ class HotelModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateHotel($id, $datos){
+	public function UpdateHotel($sidhotel,$nidbanco,$nidcathotel, $datos){
 		$builder = $this->conexion('thotel');
-		$builder->where('sidhotel', $id);
+		$builder->where(['sidhotel' => $sidhotel,'nidbanco' => $nidbanco,'nidcathotel' => $nidcathotel]);
 		$builder->set($datos);
 		$builder->update();
 	}

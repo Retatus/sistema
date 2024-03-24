@@ -74,10 +74,10 @@ class ReservadetallehorariotrenModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getReservadetallehorariotren($id){
+	public function getReservadetallehorariotren($nidreservadetallehorariotren,$nidhorariotren,$nidreserva){
 		$builder = $this->conexion('treservadetallehorariotren t0');
 		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehorariotren idreservadetallehorariotren, t0.nidhorariotren idhorariotren, t0.sdescripcion descripcion,DATE_FORMAT(CAST(t0.tfecha As Date), '%d/%m/%Y') fecha, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetallehorariotren' => $nidreservadetallehorariotren,'nidhorariotren' => $nidhorariotren,'nidreserva' => $nidreserva]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -112,9 +112,9 @@ class ReservadetallehorariotrenModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReservadetallehorariotren($id, $datos){
+	public function UpdateReservadetallehorariotren($nidreservadetallehorariotren,$nidhorariotren,$nidreserva, $datos){
 		$builder = $this->conexion('treservadetallehorariotren');
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetallehorariotren' => $nidreservadetallehorariotren,'nidhorariotren' => $nidhorariotren,'nidreserva' => $nidreserva]);
 		$builder->set($datos);
 		$builder->update();
 	}

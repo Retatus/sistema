@@ -66,10 +66,10 @@ class HoratrenModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getHoratren($id){
+	public function getHoratren($nidhorario){
 		$builder = $this->conexion('thoratren t0');
 		$builder->select("t0.nidhorario idhorario, t0.snombre nombre, t0.sdescripcion descripcion, t0.bida ida, t0.bestado estado");
-		$builder->where('nidhorario', $id);
+		$builder->where(['nidhorario' => $nidhorario]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class HoratrenModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateHoratren($id, $datos){
+	public function UpdateHoratren($nidhorario, $datos){
 		$builder = $this->conexion('thoratren');
-		$builder->where('nidhorario', $id);
+		$builder->where(['nidhorario' => $nidhorario]);
 		$builder->set($datos);
 		$builder->update();
 	}

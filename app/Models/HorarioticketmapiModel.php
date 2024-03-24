@@ -78,10 +78,10 @@ class HorarioticketmapiModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getHorarioticketmapi($id){
+	public function getHorarioticketmapi($nidhorarioticketmapi,$nidclientetipo,$nidhoraticketmapi,$nidticketmapi){
 		$builder = $this->conexion('thorarioticketmapi t0');
 		$builder->select("t0.nidhorarioticketmapi idhorarioticketmapi, t0.nidhoraticketmapi idhoraticketmapi, t0.nidticketmapi idticketmapi, t0.nidclientetipo idclientetipo, t0.dprecio precio, t0.bestado estado");
-		$builder->where('nidhorarioticketmapi', $id);
+		$builder->where(['nidhorarioticketmapi' => $nidhorarioticketmapi,'nidclientetipo' => $nidclientetipo,'nidhoraticketmapi' => $nidhoraticketmapi,'nidticketmapi' => $nidticketmapi]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -117,9 +117,9 @@ class HorarioticketmapiModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateHorarioticketmapi($id, $datos){
+	public function UpdateHorarioticketmapi($nidhorarioticketmapi,$nidclientetipo,$nidhoraticketmapi,$nidticketmapi, $datos){
 		$builder = $this->conexion('thorarioticketmapi');
-		$builder->where('nidhorarioticketmapi', $id);
+		$builder->where(['nidhorarioticketmapi' => $nidhorarioticketmapi,'nidclientetipo' => $nidclientetipo,'nidhoraticketmapi' => $nidhoraticketmapi,'nidticketmapi' => $nidticketmapi]);
 		$builder->set($datos);
 		$builder->update();
 	}

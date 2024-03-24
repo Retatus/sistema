@@ -70,10 +70,10 @@ class ReservadetalleotroservicioModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getReservadetalleotroservicio($id){
+	public function getReservadetalleotroservicio($nidreservadetalleotroservicio,$nidotroservicio,$nidreserva){
 		$builder = $this->conexion('treservadetalleotroservicio t0');
 		$builder->select("t0.nidreserva idreserva, t0.nidreservadetalleotroservicio idreservadetalleotroservicio, t0.nidotroservicio idotroservicio, t0.sdescripcion descripcion,DATE_FORMAT(CAST(t0.tfecha As Date), '%d/%m/%Y') fecha, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetalleotroservicio' => $nidreservadetalleotroservicio,'nidotroservicio' => $nidotroservicio,'nidreserva' => $nidreserva]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -104,9 +104,9 @@ class ReservadetalleotroservicioModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReservadetalleotroservicio($id, $datos){
+	public function UpdateReservadetalleotroservicio($nidreservadetalleotroservicio,$nidotroservicio,$nidreserva, $datos){
 		$builder = $this->conexion('treservadetalleotroservicio');
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetalleotroservicio' => $nidreservadetalleotroservicio,'nidotroservicio' => $nidotroservicio,'nidreserva' => $nidreserva]);
 		$builder->set($datos);
 		$builder->update();
 	}

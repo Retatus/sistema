@@ -11,10 +11,10 @@
 								<button type='button' class='btn btn-info btn-sm' id='btnAgregarTicketbus'>
 									<span class='fa fa-plus'></span> Agregar Ticketbus
 								</button>
-								<a href='<?php echo base_url();?>/ticketbus/excel' class='btn btn-success btn-sm'>
+								<a href='<?php echo base_url();?>ticketbus/excel' class='btn btn-success btn-sm'>
 									<span class='fa fa-file-excel'></span> Exportar
 								</a>
-								<a href='<?php echo base_url();?>/ticketbus/pdf' target='_blank' class='btn btn-danger btn-sm'>
+								<a href='<?php echo base_url();?>ticketbus/pdf' target='_blank' class='btn btn-danger btn-sm'>
 									<span class='fa fa-file-pdf-o'></span> Exportar
 								</a>
 							</div>
@@ -73,7 +73,7 @@
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>/reserva/add/<?php echo $ticketbus['idticketbus'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $ticketbus['idticketbus'];?>'><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>

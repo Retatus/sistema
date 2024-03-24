@@ -76,10 +76,10 @@ class HorariotrenModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getHorariotren($id){
+	public function getHorariotren($nidhorariotren,$nidhorario,$nidtren){
 		$builder = $this->conexion('thorariotren t0');
 		$builder->select("t0.nidhorariotren idhorariotren, t0.nidtren idtren, t0.nidhorario idhorario, t0.dprecio precio, t0.bestado estado");
-		$builder->where('nidhorariotren', $id);
+		$builder->where(['nidhorariotren' => $nidhorariotren,'nidhorario' => $nidhorario,'nidtren' => $nidtren]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -113,9 +113,9 @@ class HorariotrenModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateHorariotren($id, $datos){
+	public function UpdateHorariotren($nidhorariotren,$nidhorario,$nidtren, $datos){
 		$builder = $this->conexion('thorariotren');
-		$builder->where('nidhorariotren', $id);
+		$builder->where(['nidhorariotren' => $nidhorariotren,'nidhorario' => $nidhorario,'nidtren' => $nidtren]);
 		$builder->set($datos);
 		$builder->update();
 	}

@@ -96,7 +96,7 @@ class Reservadetallecliente extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->reservadetallecliente->UpdateReservadetallecliente($nidreservadetallecliente, $data);
+				$this->reservadetallecliente->UpdateReservadetallecliente($nidreservadetallecliente,$nidreserva,$sidcliente, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':

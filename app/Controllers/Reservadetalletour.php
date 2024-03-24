@@ -104,7 +104,7 @@ class Reservadetalletour extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->reservadetalletour->UpdateReservadetalletour($nidreserva, $data);
+				$this->reservadetalletour->UpdateReservadetalletour($nidreservatour,$nidreserva,$sidtour, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -129,7 +129,7 @@ class Reservadetalletour extends BaseController
 		$nidreservatour = strtoupper(trim($this->request->getPost('idreservatour')));
 		$sidtour = strtoupper(trim($this->request->getPost('idtour')));
 
-		$data = $this->reservadetalletour->getReservadetalletour($nidreserva,$nidreservatour,$sidtour);
+		$data = $this->reservadetalletour->getReservadetalletour($nidreservatour,$nidreserva,$sidtour);
 		echo json_encode($data);
 	}
 

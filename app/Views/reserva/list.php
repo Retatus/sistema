@@ -8,13 +8,13 @@
 					<div class='card-header'>
 						<div class='row'>
 							<div class='col-sm-8'>
-								<a href='<?php echo base_url();?>/reserva/add' class='btn btn-info btn-sm'>
-									<span class='fa fa-plus'></span> Agregar
-								</a>
-								<a href='<?php echo base_url();?>/reserva/excel' class='btn btn-success btn-sm'>
+								<button type='button' class='btn btn-info btn-sm' id='btnAgregarReserva'>
+									<span class='fa fa-plus'></span> Agregar Reserva
+								</button>
+								<a href='<?php echo base_url();?>reserva/excel' class='btn btn-success btn-sm'>
 									<span class='fa fa-file-excel'></span> Exportar
 								</a>
-								<a href='<?php echo base_url();?>/reserva/pdf' target='_blank' class='btn btn-danger btn-sm'>
+								<a href='<?php echo base_url();?>reserva/pdf' target='_blank' class='btn btn-danger btn-sm'>
 									<span class='fa fa-file-pdf-o'></span> Exportar
 								</a>
 							</div>
@@ -85,7 +85,7 @@
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>/reserva/edit/<?php echo $reserva['idreserva'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $reserva['idreserva'];?>'><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>

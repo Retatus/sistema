@@ -78,10 +78,10 @@ class HotelhabitacionModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getHotelhabitacion($id){
+	public function getHotelhabitacion($nidhotelhabitacion,$nidcathabitacion,$sidhotel){
 		$builder = $this->conexion('thotelhabitacion t0');
 		$builder->select("t0.nidhotelhabitacion idhotelhabitacion, t0.sidhotel idhotel, t0.nidcathabitacion idcathabitacion, t0.dprecio precio,DATE_FORMAT(CAST(t0.tfecha As Date), '%d/%m/%Y') fecha, t0.bestado estado, t0.bconfirmado confirmado");
-		$builder->where('nidhotelhabitacion', $id);
+		$builder->where(['nidhotelhabitacion' => $nidhotelhabitacion,'nidcathabitacion' => $nidcathabitacion,'sidhotel' => $sidhotel]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -118,9 +118,9 @@ class HotelhabitacionModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateHotelhabitacion($id, $datos){
+	public function UpdateHotelhabitacion($nidhotelhabitacion,$nidcathabitacion,$sidhotel, $datos){
 		$builder = $this->conexion('thotelhabitacion');
-		$builder->where('nidhotelhabitacion', $id);
+		$builder->where(['nidhotelhabitacion' => $nidhotelhabitacion,'nidcathabitacion' => $nidcathabitacion,'sidhotel' => $sidhotel]);
 		$builder->set($datos);
 		$builder->update();
 	}

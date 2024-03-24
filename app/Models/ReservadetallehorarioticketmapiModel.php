@@ -76,10 +76,10 @@ class ReservadetallehorarioticketmapiModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getReservadetallehorarioticketmapi($id){
+	public function getReservadetallehorarioticketmapi($nidreservadetallehorarioticketmapi,$nidhorarioticketmapi,$nidreserva){
 		$builder = $this->conexion('treservadetallehorarioticketmapi t0');
 		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehorarioticketmapi idreservadetallehorarioticketmapi, t0.nidhorarioticketmapi idhorarioticketmapi, t0.sdescripcion descripcion,DATE_FORMAT(CAST(t0.tfecha As Date), '%d/%m/%Y') fecha, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetallehorarioticketmapi' => $nidreservadetallehorarioticketmapi,'nidhorarioticketmapi' => $nidhorarioticketmapi,'nidreserva' => $nidreserva]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -116,9 +116,9 @@ class ReservadetallehorarioticketmapiModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReservadetallehorarioticketmapi($id, $datos){
+	public function UpdateReservadetallehorarioticketmapi($nidreservadetallehorarioticketmapi,$nidhorarioticketmapi,$nidreserva, $datos){
 		$builder = $this->conexion('treservadetallehorarioticketmapi');
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetallehorarioticketmapi' => $nidreservadetallehorarioticketmapi,'nidhorarioticketmapi' => $nidhorarioticketmapi,'nidreserva' => $nidreserva]);
 		$builder->set($datos);
 		$builder->update();
 	}

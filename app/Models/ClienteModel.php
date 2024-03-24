@@ -72,10 +72,10 @@ class ClienteModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getCliente($id){
+	public function getCliente($sidcliente,$nidtipodoc){
 		$builder = $this->conexion('tcliente t0');
 		$builder->select("t0.sidcliente idcliente, t0.nidtipodoc idtipodoc, t0.sclientenombre clientenombre, t0.sclienteapellidos clienteapellidos, t0.sclientetelefono clientetelefono, t0.sclientecorreo clientecorreo, t0.sclientedireccion clientedireccion, t0.sclientepais clientepais,DATE_FORMAT(CAST(t0.tclientefechanacimiento As Date), '%d/%m/%Y') clientefechanacimiento, t0.nclienteedad clienteedad, t0.bclientesexo clientesexo, t0.bclienteestado clienteestado");
-		$builder->where('sidcliente', $id);
+		$builder->where(['sidcliente' => $sidcliente,'nidtipodoc' => $nidtipodoc]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -106,9 +106,9 @@ class ClienteModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateCliente($id, $datos){
+	public function UpdateCliente($sidcliente,$nidtipodoc, $datos){
 		$builder = $this->conexion('tcliente');
-		$builder->where('sidcliente', $id);
+		$builder->where(['sidcliente' => $sidcliente,'nidtipodoc' => $nidtipodoc]);
 		$builder->set($datos);
 		$builder->update();
 	}

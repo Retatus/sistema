@@ -68,10 +68,10 @@ class TrenModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getTren($id){
+	public function getTren($nidtren){
 		$builder = $this->conexion('ttren t0');
 		$builder->select("t0.nidtren idtren, t0.snombre nombre, t0.sempresa empresa, t0.bestado estado");
-		$builder->where('nidtren', $id);
+		$builder->where(['nidtren' => $nidtren]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -99,9 +99,9 @@ class TrenModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateTren($id, $datos){
+	public function UpdateTren($nidtren, $datos){
 		$builder = $this->conexion('ttren');
-		$builder->where('nidtren', $id);
+		$builder->where(['nidtren' => $nidtren]);
 		$builder->set($datos);
 		$builder->update();
 	}

@@ -66,10 +66,10 @@ class TipodocModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getTipodoc($id){
+	public function getTipodoc($nidtipodoc){
 		$builder = $this->conexion('ttipodoc t0');
 		$builder->select("t0.nidtipodoc idtipodoc, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidtipodoc', $id);
+		$builder->where(['nidtipodoc' => $nidtipodoc]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class TipodocModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateTipodoc($id, $datos){
+	public function UpdateTipodoc($nidtipodoc, $datos){
 		$builder = $this->conexion('ttipodoc');
-		$builder->where('nidtipodoc', $id);
+		$builder->where(['nidtipodoc' => $nidtipodoc]);
 		$builder->set($datos);
 		$builder->update();
 	}

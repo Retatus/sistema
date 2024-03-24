@@ -72,10 +72,10 @@ class TourModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getTour($id){
+	public function getTour($sidtour,$nidcattour){
 		$builder = $this->conexion('ttour t0');
 		$builder->select("t0.sidtour idtour, t0.stournombre tournombre, t0.stourdescripcion tourdescripcion, t0.dtourprecio tourprecio, t0.scolor color, t0.stourdiashabiles tourdiashabiles, t0.btourestado tourestado, t0.nidcattour idcattour");
-		$builder->where('sidtour', $id);
+		$builder->where(['sidtour' => $sidtour,'nidcattour' => $nidcattour]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -106,9 +106,9 @@ class TourModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateTour($id, $datos){
+	public function UpdateTour($sidtour,$nidcattour, $datos){
 		$builder = $this->conexion('ttour');
-		$builder->where('sidtour', $id);
+		$builder->where(['sidtour' => $sidtour,'nidcattour' => $nidcattour]);
 		$builder->set($datos);
 		$builder->update();
 	}

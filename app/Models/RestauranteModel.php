@@ -66,10 +66,10 @@ class RestauranteModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getRestaurante($id){
+	public function getRestaurante($sidtrestaurante){
 		$builder = $this->conexion('trestaurante t0');
 		$builder->select("t0.sidtrestaurante idtrestaurante, t0.srestaurantenombre restaurantenombre, t0.nidrestaurantecategoria idrestaurantecategoria, t0.srestaurantedireccion restaurantedireccion, t0.srestaurantetelefono restaurantetelefono, t0.srestaurantecorreo restaurantecorreo, t0.srestauranteruc restauranteruc, t0.srestauranterazon restauranterazon, t0.srestaurantenrocuenta restaurantenrocuenta, t0.srestauranteubigeo restauranteubigeo, t0.drestaurantelatitud restaurantelatitud, t0.drestaurantelongitud restaurantelongitud, t0.brestauranteestado restauranteestado");
-		$builder->where('sidtrestaurante', $id);
+		$builder->where(['sidtrestaurante' => $sidtrestaurante]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class RestauranteModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateRestaurante($id, $datos){
+	public function UpdateRestaurante($sidtrestaurante, $datos){
 		$builder = $this->conexion('trestaurante');
-		$builder->where('sidtrestaurante', $id);
+		$builder->where(['sidtrestaurante' => $sidtrestaurante]);
 		$builder->set($datos);
 		$builder->update();
 	}

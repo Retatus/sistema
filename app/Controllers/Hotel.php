@@ -114,7 +114,7 @@ class Hotel extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->hotel->UpdateHotel($sidhotel, $data);
+				$this->hotel->UpdateHotel($sidhotel,$nidbanco,$nidcathotel, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -139,7 +139,7 @@ class Hotel extends BaseController
 		$nidcathotel = strtoupper(trim($this->request->getPost('idcathotel')));
 		$nidbanco = strtoupper(trim($this->request->getPost('idbanco')));
 
-		$data = $this->hotel->getHotel($sidhotel,$nidcathotel,$nidbanco);
+		$data = $this->hotel->getHotel($sidhotel,$nidbanco,$nidcathotel);
 		echo json_encode($data);
 	}
 

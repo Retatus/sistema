@@ -106,7 +106,7 @@ class Cliente extends BaseController
 					'bclienteestado' => intval($bclienteestado),
 
 				);
-				$this->cliente->UpdateCliente($sidcliente, $data);
+				$this->cliente->UpdateCliente($sidcliente,$nidtipodoc, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':

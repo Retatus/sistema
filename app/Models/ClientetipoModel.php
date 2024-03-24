@@ -66,10 +66,10 @@ class ClientetipoModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getClientetipo($id){
+	public function getClientetipo($nidclientetipo){
 		$builder = $this->conexion('tclientetipo t0');
 		$builder->select("t0.nidclientetipo idclientetipo, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidclientetipo', $id);
+		$builder->where(['nidclientetipo' => $nidclientetipo]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class ClientetipoModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateClientetipo($id, $datos){
+	public function UpdateClientetipo($nidclientetipo, $datos){
 		$builder = $this->conexion('tclientetipo');
-		$builder->where('nidclientetipo', $id);
+		$builder->where(['nidclientetipo' => $nidclientetipo]);
 		$builder->set($datos);
 		$builder->update();
 	}

@@ -72,10 +72,10 @@ class ReservadetallebusModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getReservadetallebus($id){
+	public function getReservadetallebus($nidreservadetalleticketbus,$nidreserva,$nidticketbus){
 		$builder = $this->conexion('treservadetallebus t0');
 		$builder->select("t0.nidreserva idreserva, t0.nidreservadetalleticketbus idreservadetalleticketbus, t0.nidticketbus idticketbus, t0.sdescripcion descripcion,DATE_FORMAT(CAST(t0.tfecha As Date), '%d/%m/%Y') fecha, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetalleticketbus' => $nidreservadetalleticketbus,'nidreserva' => $nidreserva,'nidticketbus' => $nidticketbus]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -107,9 +107,9 @@ class ReservadetallebusModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReservadetallebus($id, $datos){
+	public function UpdateReservadetallebus($nidreservadetalleticketbus,$nidreserva,$nidticketbus, $datos){
 		$builder = $this->conexion('treservadetallebus');
-		$builder->where('nidreserva', $id);
+		$builder->where(['nidreservadetalleticketbus' => $nidreservadetalleticketbus,'nidreserva' => $nidreserva,'nidticketbus' => $nidticketbus]);
 		$builder->set($datos);
 		$builder->update();
 	}

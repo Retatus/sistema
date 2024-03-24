@@ -104,7 +104,7 @@ class Reservadetalleotroservicio extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->reservadetalleotroservicio->UpdateReservadetalleotroservicio($nidreserva, $data);
+				$this->reservadetalleotroservicio->UpdateReservadetalleotroservicio($nidreservadetalleotroservicio,$nidotroservicio,$nidreserva, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -129,7 +129,7 @@ class Reservadetalleotroservicio extends BaseController
 		$nidreservadetalleotroservicio = strtoupper(trim($this->request->getPost('idreservadetalleotroservicio')));
 		$nidotroservicio = strtoupper(trim($this->request->getPost('idotroservicio')));
 
-		$data = $this->reservadetalleotroservicio->getReservadetalleotroservicio($nidreserva,$nidreservadetalleotroservicio,$nidotroservicio);
+		$data = $this->reservadetalleotroservicio->getReservadetalleotroservicio($nidreservadetalleotroservicio,$nidotroservicio,$nidreserva);
 		echo json_encode($data);
 	}
 

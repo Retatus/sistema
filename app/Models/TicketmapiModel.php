@@ -66,10 +66,10 @@ class TicketmapiModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getTicketmapi($id){
+	public function getTicketmapi($nidticketmapi){
 		$builder = $this->conexion('tticketmapi t0');
 		$builder->select("t0.nidticketmapi idticketmapi, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidticketmapi', $id);
+		$builder->where(['nidticketmapi' => $nidticketmapi]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class TicketmapiModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateTicketmapi($id, $datos){
+	public function UpdateTicketmapi($nidticketmapi, $datos){
 		$builder = $this->conexion('tticketmapi');
-		$builder->where('nidticketmapi', $id);
+		$builder->where(['nidticketmapi' => $nidticketmapi]);
 		$builder->set($datos);
 		$builder->update();
 	}

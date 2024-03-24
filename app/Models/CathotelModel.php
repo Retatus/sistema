@@ -66,10 +66,10 @@ class CathotelModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getCathotel($id){
+	public function getCathotel($nidcathotel){
 		$builder = $this->conexion('tcathotel t0');
 		$builder->select("t0.nidcathotel idcathotel, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidcathotel', $id);
+		$builder->where(['nidcathotel' => $nidcathotel]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class CathotelModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateCathotel($id, $datos){
+	public function UpdateCathotel($nidcathotel, $datos){
 		$builder = $this->conexion('tcathotel');
-		$builder->where('nidcathotel', $id);
+		$builder->where(['nidcathotel' => $nidcathotel]);
 		$builder->set($datos);
 		$builder->update();
 	}

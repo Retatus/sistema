@@ -68,10 +68,10 @@ class TicketbusModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getTicketbus($id){
+	public function getTicketbus($nidticketbus){
 		$builder = $this->conexion('tticketbus t0');
 		$builder->select("t0.nidticketbus idticketbus, t0.snombre nombre, t0.sdescripcion descripcion, t0.dprecio precio, t0.bestado estado");
-		$builder->where('nidticketbus', $id);
+		$builder->where(['nidticketbus' => $nidticketbus]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -99,9 +99,9 @@ class TicketbusModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateTicketbus($id, $datos){
+	public function UpdateTicketbus($nidticketbus, $datos){
 		$builder = $this->conexion('tticketbus');
-		$builder->where('nidticketbus', $id);
+		$builder->where(['nidticketbus' => $nidticketbus]);
 		$builder->set($datos);
 		$builder->update();
 	}

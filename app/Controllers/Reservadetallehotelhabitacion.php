@@ -115,7 +115,7 @@ class Reservadetallehotelhabitacion extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->reservadetallehotelhabitacion->UpdateReservadetallehotelhabitacion($nidreserva, $data);
+				$this->reservadetallehotelhabitacion->UpdateReservadetallehotelhabitacion($nidreservadetallehotelhabitacion,$nidhotelhabitacion,$nidreserva, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -140,7 +140,7 @@ class Reservadetallehotelhabitacion extends BaseController
 		$nidreservadetallehotelhabitacion = strtoupper(trim($this->request->getPost('idreservadetallehotelhabitacion')));
 		$nidhotelhabitacion = strtoupper(trim($this->request->getPost('idhotelhabitacion')));
 
-		$data = $this->reservadetallehotelhabitacion->getReservadetallehotelhabitacion($nidreserva,$nidreservadetallehotelhabitacion,$nidhotelhabitacion);
+		$data = $this->reservadetallehotelhabitacion->getReservadetallehotelhabitacion($nidreservadetallehotelhabitacion,$nidhotelhabitacion,$nidreserva);
 		echo json_encode($data);
 	}
 

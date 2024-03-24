@@ -78,10 +78,10 @@ class ReservadetalleclienteModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getReservadetallecliente($id){
+	public function getReservadetallecliente($nidreservadetallecliente,$nidreserva,$sidcliente){
 		$builder = $this->conexion('treservadetallecliente t0');
 		$builder->select("t0.nidreservadetallecliente idreservadetallecliente, t0.nidreserva idreserva, t0.sidcliente idcliente, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
-		$builder->where('nidreservadetallecliente', $id);
+		$builder->where(['nidreservadetallecliente' => $nidreservadetallecliente,'nidreserva' => $nidreserva,'sidcliente' => $sidcliente]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -117,9 +117,9 @@ class ReservadetalleclienteModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReservadetallecliente($id, $datos){
+	public function UpdateReservadetallecliente($nidreservadetallecliente,$nidreserva,$sidcliente, $datos){
 		$builder = $this->conexion('treservadetallecliente');
-		$builder->where('nidreservadetallecliente', $id);
+		$builder->where(['nidreservadetallecliente' => $nidreservadetallecliente,'nidreserva' => $nidreserva,'sidcliente' => $sidcliente]);
 		$builder->set($datos);
 		$builder->update();
 	}

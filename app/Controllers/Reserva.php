@@ -365,7 +365,7 @@ class Reserva extends BaseController
 		$respt = ['id' => $id, 'mensaje' => $mensaje, 'entro' => $servicios];				
 		echo json_encode($respt);
 	}
-	
+
 	public function agregar(){
 	
 		$total = $this->reserva->getNewReserva(59);

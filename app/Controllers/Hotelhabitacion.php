@@ -95,7 +95,7 @@ class Hotelhabitacion extends BaseController
 					'bconfirmado' => intval($bconfirmado),
 
 				);
-				$this->hotelhabitacion->UpdateHotelhabitacion($nidhotelhabitacion, $data);
+				$this->hotelhabitacion->UpdateHotelhabitacion($nidhotelhabitacion,$nidcathabitacion,$sidhotel, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -120,7 +120,7 @@ class Hotelhabitacion extends BaseController
 		$sidhotel = strtoupper(trim($this->request->getPost('idhotel')));
 		$nidcathabitacion = strtoupper(trim($this->request->getPost('idcathabitacion')));
 
-		$data = $this->hotelhabitacion->getHotelhabitacion($nidhotelhabitacion,$sidhotel,$nidcathabitacion);
+		$data = $this->hotelhabitacion->getHotelhabitacion($nidhotelhabitacion,$nidcathabitacion,$sidhotel);
 		echo json_encode($data);
 	}
 

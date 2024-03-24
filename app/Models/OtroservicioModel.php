@@ -68,10 +68,10 @@ class OtroservicioModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getOtroservicio($id){
+	public function getOtroservicio($nidotroservicio){
 		$builder = $this->conexion('totroservicio t0');
 		$builder->select("t0.nidotroservicio idotroservicio, t0.sotroservicionombre otroservicionombre, t0.dotroservicioprecio otroservicioprecio, t0.botroservicioestado otroservicioestado");
-		$builder->where('nidotroservicio', $id);
+		$builder->where(['nidotroservicio' => $nidotroservicio]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -99,9 +99,9 @@ class OtroservicioModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateOtroservicio($id, $datos){
+	public function UpdateOtroservicio($nidotroservicio, $datos){
 		$builder = $this->conexion('totroservicio');
-		$builder->where('nidotroservicio', $id);
+		$builder->where(['nidotroservicio' => $nidotroservicio]);
 		$builder->set($datos);
 		$builder->update();
 	}

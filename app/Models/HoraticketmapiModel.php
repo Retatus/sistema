@@ -66,10 +66,10 @@ class HoraticketmapiModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getHoraticketmapi($id){
+	public function getHoraticketmapi($nidhoraticketmapi){
 		$builder = $this->conexion('thoraticketmapi t0');
 		$builder->select("t0.nidhoraticketmapi idhoraticketmapi, t0.snombre nombre, t0.bestado estado");
-		$builder->where('nidhoraticketmapi', $id);
+		$builder->where(['nidhoraticketmapi' => $nidhoraticketmapi]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -96,9 +96,9 @@ class HoraticketmapiModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateHoraticketmapi($id, $datos){
+	public function UpdateHoraticketmapi($nidhoraticketmapi, $datos){
 		$builder = $this->conexion('thoraticketmapi');
-		$builder->where('nidhoraticketmapi', $id);
+		$builder->where(['nidhoraticketmapi' => $nidhoraticketmapi]);
 		$builder->set($datos);
 		$builder->update();
 	}

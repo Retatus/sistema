@@ -87,7 +87,7 @@ class Horariotren extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->horariotren->UpdateHorariotren($nidhorariotren, $data);
+				$this->horariotren->UpdateHorariotren($nidhorariotren,$nidhorario,$nidtren, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -112,7 +112,7 @@ class Horariotren extends BaseController
 		$nidtren = strtoupper(trim($this->request->getPost('idtren')));
 		$nidhorario = strtoupper(trim($this->request->getPost('idhorario')));
 
-		$data = $this->horariotren->getHorariotren($nidhorariotren,$nidtren,$nidhorario);
+		$data = $this->horariotren->getHorariotren($nidhorariotren,$nidhorario,$nidtren);
 		echo json_encode($data);
 	}
 

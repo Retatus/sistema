@@ -94,7 +94,7 @@ class Horarioticketmapi extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->horarioticketmapi->UpdateHorarioticketmapi($nidhorarioticketmapi, $data);
+				$this->horarioticketmapi->UpdateHorarioticketmapi($nidhorarioticketmapi,$nidclientetipo,$nidhoraticketmapi,$nidticketmapi, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -120,7 +120,7 @@ class Horarioticketmapi extends BaseController
 		$nidticketmapi = strtoupper(trim($this->request->getPost('idticketmapi')));
 		$nidclientetipo = strtoupper(trim($this->request->getPost('idclientetipo')));
 
-		$data = $this->horarioticketmapi->getHorarioticketmapi($nidhorarioticketmapi,$nidhoraticketmapi,$nidticketmapi,$nidclientetipo);
+		$data = $this->horarioticketmapi->getHorarioticketmapi($nidhorarioticketmapi,$nidclientetipo,$nidhoraticketmapi,$nidticketmapi);
 		echo json_encode($data);
 	}
 
