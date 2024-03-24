@@ -66,10 +66,10 @@ class ReservaModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getReserva($nidreserva){
+	public function getReserva($id){
 		$builder = $this->conexion('treserva t0');
 		$builder->select("t0.nidreserva idreserva, t0.sreservanombre reservanombre,DATE_FORMAT(CAST(t0.tfechainicio As Date), '%d/%m/%Y') fechainicio,DATE_FORMAT(CAST(t0.tfechafin As Date), '%d/%m/%Y') fechafin, t0.ntipodoc tipodoc, t0.sidpersona idpersona, t0.sreservatelefono reservatelefono, t0.sreservacorreo reservacorreo, t0.dmontototal montototal, t0.bpagado pagado, t0.bestado estado");
-		$builder->where(['nidreserva' => $nidreserva]);
+		$builder->where('nidreserva', $id);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
@@ -81,6 +81,12 @@ class ReservaModel extends Model
 		$builder->where('t0.nidreserva', $id);
 		$query = $builder->get();
 		return $query->getResultArray();
+	}
+
+	public function getNewReserva($id){
+		$stored_proc = "CALL get_reserva(?)";
+		$resultado = $this->db->query($stored_proc, $id);
+		return $resultado->getResultArray();
 	}
 
 	public function getCount($todos = 1, $text = ''){
@@ -96,9 +102,9 @@ class ReservaModel extends Model
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReserva($nidreserva, $datos){
+	public function UpdateReserva($id, $datos){
 		$builder = $this->conexion('treserva');
-		$builder->where(['nidreserva' => $nidreserva]);
+		$builder->where('nidreserva', $id);
 		$builder->set($datos);
 		$builder->update();
 	}
