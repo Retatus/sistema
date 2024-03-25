@@ -47,11 +47,11 @@
 								<thead>
 									<tr>
 										<th>Reserva</th>
-										<th >Idreserva</th>
+										<th hidden>Idreserva</th>
 										<th hidden>Id</th>
 										<th>horatren</th>
 										<th>tren</th>
-										<th >Idhorariotren</th>
+										<th hidden>Idhorariotren</th>
 										<th >Descripcion</th>
 										<th >Fecha</th>
 										<th >Cantidad</th>
@@ -68,11 +68,11 @@
 										<?php foreach($datos as $reservadetallehorariotren):?>
 											<tr>
 												<td><?php echo $reservadetallehorariotren['reservanombre'];?></td>
-												<td ><?php echo $reservadetallehorariotren['idreserva'];?></td>
+												<td hidden><?php echo $reservadetallehorariotren['idreserva'];?></td>
 												<td hidden><?php echo $reservadetallehorariotren['idreservadetallehorariotren'];?></td>
 												<td><?php echo $reservadetallehorariotren['horatren'];?></td>
 												<td><?php echo $reservadetallehorariotren['tren'];?></td>
-												<td ><?php echo $reservadetallehorariotren['idhorariotren'];?></td>
+												<td hidden><?php echo $reservadetallehorariotren['idhorariotren'];?></td>
 												<td ><?php echo $reservadetallehorariotren['descripcion'];?></td>
 												<td ><?php echo $reservadetallehorariotren['fecha'];?></td>
 												<td ><?php echo $reservadetallehorariotren['cantidad'];?></td>
@@ -568,11 +568,11 @@ debugger
 		$.each(objeto, function(i, value) {
 		var fila = '<tr>'+
 			'<td>'+value.reservanombre+'</td>'+
-			'<td >'+value.idreserva+'</td>'+
+			'<td hidden>'+value.idreserva+'</td>'+
 			'<td hidden>'+value.idreservadetallehorariotren+'</td>'+
 			'<td>'+value.horatren+'</td>'+
 			'<td>'+value.tren+'</td>'+
-			'<td >'+value.idhorariotren+'</td>'+
+			'<td hidden>'+value.idhorariotren+'</td>'+
 			'<td >'+value.descripcion+'</td>'+
 			'<td >'+value.fecha+'</td>'+
 			'<td >'+value.cantidad+'</td>'+

@@ -48,7 +48,7 @@
 									<tr>
 										<th >Id</th>
 										<th>Tipodoc</th>
-										<th >Idtipodoc</th>
+										<th hidden>Idtipodoc</th>
 										<th >Nombre</th>
 										<th >Apellidos</th>
 										<th >Telefono</th>
@@ -69,7 +69,7 @@
 											<tr>
 												<td ><?php echo $cliente['idcliente'];?></td>
 												<td><?php echo $cliente['nombre'];?></td>
-												<td ><?php echo $cliente['idtipodoc'];?></td>
+												<td hidden><?php echo $cliente['idtipodoc'];?></td>
 												<td ><?php echo $cliente['clientenombre'];?></td>
 												<td ><?php echo $cliente['clienteapellidos'];?></td>
 												<td ><?php echo $cliente['clientetelefono'];?></td>
@@ -643,7 +643,7 @@ debugger
 		var fila = '<tr>'+
 			'<td >'+value.idcliente+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idtipodoc+'</td>'+
+			'<td hidden>'+value.idtipodoc+'</td>'+
 			'<td >'+value.clientenombre+'</td>'+
 			'<td >'+value.clienteapellidos+'</td>'+
 			'<td >'+value.clientetelefono+'</td>'+

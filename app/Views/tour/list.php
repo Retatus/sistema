@@ -54,7 +54,7 @@
 										<th >Diashabiles</th>
 										<th >Estado</th>
 										<th>Cattour</th>
-										<th >Idcat</th>
+										<th hidden>Idcat</th>
 										<th>Acciones</th>
 
 									</tr>
@@ -71,7 +71,7 @@
 												<td ><?php echo $tour['tourdiashabiles'];?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($tour['tourestado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
 												<td><?php echo $tour['nombre'];?></td>
-												<td ><?php echo $tour['idcattour'];?></td>
+												<td hidden><?php echo $tour['idcattour'];?></td>
 
 												<td>
 													<div class='row'>
@@ -575,7 +575,7 @@ debugger
 			'<td >'+value.tourdiashabiles+'</td>'+
 			'<td class = "hidden -xs">' + ((value.tourestado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idcattour+'</td>'+
+			'<td hidden>'+value.idcattour+'</td>'+
 
 			'<td>'+
 				'<div class="row">'+

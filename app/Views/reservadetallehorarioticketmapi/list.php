@@ -47,12 +47,12 @@
 								<thead>
 									<tr>
 										<th>Reserva</th>
-										<th >Idreserva</th>
+										<th hidden>Idreserva</th>
 										<th hidden>Id</th>
 										<th>clientetipo</th>
 										<th>horaticketmapi</th>
 										<th>ticketmapi</th>
-										<th >Idhorarioticketmapi</th>
+										<th hidden>Idhorarioticketmapi</th>
 										<th >Descripcion</th>
 										<th >Fecha</th>
 										<th >Cantidad</th>
@@ -69,12 +69,12 @@
 										<?php foreach($datos as $reservadetallehorarioticketmapi):?>
 											<tr>
 												<td><?php echo $reservadetallehorarioticketmapi['reservanombre'];?></td>
-												<td ><?php echo $reservadetallehorarioticketmapi['idreserva'];?></td>
+												<td hidden><?php echo $reservadetallehorarioticketmapi['idreserva'];?></td>
 												<td hidden><?php echo $reservadetallehorarioticketmapi['idreservadetallehorarioticketmapi'];?></td>
 												<td><?php echo $reservadetallehorarioticketmapi['clientetipo'];?></td>
 												<td><?php echo $reservadetallehorarioticketmapi['horaticketmapi'];?></td>
 												<td><?php echo $reservadetallehorarioticketmapi['ticketmapi'];?></td>
-												<td ><?php echo $reservadetallehorarioticketmapi['idhorarioticketmapi'];?></td>
+												<td hidden><?php echo $reservadetallehorarioticketmapi['idhorarioticketmapi'];?></td>
 												<td ><?php echo $reservadetallehorarioticketmapi['descripcion'];?></td>
 												<td ><?php echo $reservadetallehorarioticketmapi['fecha'];?></td>
 												<td ><?php echo $reservadetallehorarioticketmapi['cantidad'];?></td>
@@ -570,12 +570,12 @@ debugger
 		$.each(objeto, function(i, value) {
 		var fila = '<tr>'+
 			'<td>'+value.reservanombre+'</td>'+
-			'<td >'+value.idreserva+'</td>'+
+			'<td hidden>'+value.idreserva+'</td>'+
 			'<td hidden>'+value.idreservadetallehorarioticketmapi+'</td>'+
 			'<td>'+value.clientetipo+'</td>'+
 			'<td>'+value.horaticketmapi+'</td>'+
 			'<td>'+value.ticketmapi+'</td>'+
-			'<td >'+value.idhorarioticketmapi+'</td>'+
+			'<td hidden>'+value.idhorarioticketmapi+'</td>'+
 			'<td >'+value.descripcion+'</td>'+
 			'<td >'+value.fecha+'</td>'+
 			'<td >'+value.cantidad+'</td>'+

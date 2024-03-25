@@ -47,11 +47,11 @@
 								<thead>
 									<tr>
 										<th>Reserva</th>
-										<th >Idreserva</th>
+										<th hidden>Idreserva</th>
 										<th hidden>Id</th>
 										<th>cathabitacion</th>
 										<th>hotel</th>
-										<th >Idhotelhabitacion</th>
+										<th hidden>Idhotelhabitacion</th>
 										<th >Descripcion</th>
 										<th >Fechaingreso</th>
 										<th >Fechasalida</th>
@@ -71,11 +71,11 @@
 										<?php foreach($datos as $reservadetallehotelhabitacion):?>
 											<tr>
 												<td><?php echo $reservadetallehotelhabitacion['reservanombre'];?></td>
-												<td ><?php echo $reservadetallehotelhabitacion['idreserva'];?></td>
+												<td hidden><?php echo $reservadetallehotelhabitacion['idreserva'];?></td>
 												<td hidden><?php echo $reservadetallehotelhabitacion['idreservadetallehotelhabitacion'];?></td>
 												<td><?php echo $reservadetallehotelhabitacion['cathabitacion'];?></td>
 												<td><?php echo $reservadetallehotelhabitacion['hotel'];?></td>
-												<td ><?php echo $reservadetallehotelhabitacion['idhotelhabitacion'];?></td>
+												<td hidden><?php echo $reservadetallehotelhabitacion['idhotelhabitacion'];?></td>
 												<td ><?php echo $reservadetallehotelhabitacion['descripcion'];?></td>
 												<td ><?php echo $reservadetallehotelhabitacion['fechaingreso'];?></td>
 												<td ><?php echo $reservadetallehotelhabitacion['fechasalida'];?></td>
@@ -628,11 +628,11 @@ debugger
 		$.each(objeto, function(i, value) {
 		var fila = '<tr>'+
 			'<td>'+value.reservanombre+'</td>'+
-			'<td >'+value.idreserva+'</td>'+
+			'<td hidden>'+value.idreserva+'</td>'+
 			'<td hidden>'+value.idreservadetallehotelhabitacion+'</td>'+
 			'<td>'+value.cathabitacion+'</td>'+
 			'<td>'+value.hotel+'</td>'+
-			'<td >'+value.idhotelhabitacion+'</td>'+
+			'<td hidden>'+value.idhotelhabitacion+'</td>'+
 			'<td >'+value.descripcion+'</td>'+
 			'<td >'+value.fechaingreso+'</td>'+
 			'<td >'+value.fechasalida+'</td>'+

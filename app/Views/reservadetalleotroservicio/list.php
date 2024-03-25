@@ -47,10 +47,10 @@
 								<thead>
 									<tr>
 										<th>Reserva</th>
-										<th >Idreserva</th>
+										<th hidden>Idreserva</th>
 										<th hidden>Id</th>
 										<th>Otroservicio</th>
-										<th >Idotroservicio</th>
+										<th hidden>Idotroservicio</th>
 										<th >Descripcion</th>
 										<th >Fecha</th>
 										<th >Cantidad</th>
@@ -67,10 +67,10 @@
 										<?php foreach($datos as $reservadetalleotroservicio):?>
 											<tr>
 												<td><?php echo $reservadetalleotroservicio['reservanombre'];?></td>
-												<td ><?php echo $reservadetalleotroservicio['idreserva'];?></td>
+												<td hidden><?php echo $reservadetalleotroservicio['idreserva'];?></td>
 												<td hidden><?php echo $reservadetalleotroservicio['idreservadetalleotroservicio'];?></td>
 												<td><?php echo $reservadetalleotroservicio['otroservicionombre'];?></td>
-												<td ><?php echo $reservadetalleotroservicio['idotroservicio'];?></td>
+												<td hidden><?php echo $reservadetalleotroservicio['idotroservicio'];?></td>
 												<td ><?php echo $reservadetalleotroservicio['descripcion'];?></td>
 												<td ><?php echo $reservadetalleotroservicio['fecha'];?></td>
 												<td ><?php echo $reservadetalleotroservicio['cantidad'];?></td>
@@ -566,10 +566,10 @@ debugger
 		$.each(objeto, function(i, value) {
 		var fila = '<tr>'+
 			'<td>'+value.reservanombre+'</td>'+
-			'<td >'+value.idreserva+'</td>'+
+			'<td hidden>'+value.idreserva+'</td>'+
 			'<td hidden>'+value.idreservadetalleotroservicio+'</td>'+
 			'<td>'+value.otroservicionombre+'</td>'+
-			'<td >'+value.idotroservicio+'</td>'+
+			'<td hidden>'+value.idotroservicio+'</td>'+
 			'<td >'+value.descripcion+'</td>'+
 			'<td >'+value.fecha+'</td>'+
 			'<td >'+value.cantidad+'</td>'+

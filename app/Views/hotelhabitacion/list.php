@@ -50,9 +50,9 @@
 										<th>Hotel</th>
 										<th>banco</th>
 										<th>cathotel</th>
-										<th >Idhotel</th>
+										<th hidden>Idhotel</th>
 										<th>Cathabitacion</th>
-										<th >Idcathabitacion</th>
+										<th hidden>Idcathabitacion</th>
 										<th >Precio</th>
 										<th >Fecha</th>
 										<th >Estado</th>
@@ -69,9 +69,9 @@
 												<td><?php echo $hotelhabitacion['nombre'];?></td>
 												<td><?php echo $hotelhabitacion['banco'];?></td>
 												<td><?php echo $hotelhabitacion['cathotel'];?></td>
-												<td ><?php echo $hotelhabitacion['idhotel'];?></td>
+												<td hidden><?php echo $hotelhabitacion['idhotel'];?></td>
 												<td><?php echo $hotelhabitacion['nombre'];?></td>
-												<td ><?php echo $hotelhabitacion['idcathabitacion'];?></td>
+												<td hidden><?php echo $hotelhabitacion['idcathabitacion'];?></td>
 												<td ><?php echo $hotelhabitacion['precio'];?></td>
 												<td ><?php echo $hotelhabitacion['fecha'];?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($hotelhabitacion['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
@@ -610,9 +610,9 @@ debugger
 			'<td>'+value.nombre+'</td>'+
 			'<td>'+value.banco+'</td>'+
 			'<td>'+value.cathotel+'</td>'+
-			'<td >'+value.idhotel+'</td>'+
+			'<td hidden>'+value.idhotel+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idcathabitacion+'</td>'+
+			'<td hidden>'+value.idcathabitacion+'</td>'+
 			'<td >'+value.precio+'</td>'+
 			'<td >'+value.fecha+'</td>'+
 			'<td class = "hidden -xs">' + ((value.estado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+

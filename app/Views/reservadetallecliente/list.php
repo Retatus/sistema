@@ -48,10 +48,10 @@
 									<tr>
 										<th hidden>Id</th>
 										<th>Reserva</th>
-										<th >Idreserva</th>
+										<th hidden>Idreserva</th>
 										<th>tipodoc</th>
 										<th>Cliente</th>
-										<th >Idcliente</th>
+										<th hidden>Idcliente</th>
 										<th >Cantidad</th>
 										<th >Precio</th>
 										<th >Total</th>
@@ -67,10 +67,10 @@
 											<tr>
 												<td hidden><?php echo $reservadetallecliente['idreservadetallecliente'];?></td>
 												<td><?php echo $reservadetallecliente['reservanombre'];?></td>
-												<td ><?php echo $reservadetallecliente['idreserva'];?></td>
+												<td hidden><?php echo $reservadetallecliente['idreserva'];?></td>
 												<td><?php echo $reservadetallecliente['tipodoc'];?></td>
 												<td><?php echo $reservadetallecliente['clientenombre'];?></td>
-												<td ><?php echo $reservadetallecliente['idcliente'];?></td>
+												<td hidden><?php echo $reservadetallecliente['idcliente'];?></td>
 												<td ><?php echo $reservadetallecliente['cantidad'];?></td>
 												<td ><?php echo $reservadetallecliente['precio'];?></td>
 												<td ><?php echo $reservadetallecliente['total'];?></td>
@@ -524,10 +524,10 @@ debugger
 		var fila = '<tr>'+
 			'<td hidden>'+value.idreservadetallecliente+'</td>'+
 			'<td>'+value.reservanombre+'</td>'+
-			'<td >'+value.idreserva+'</td>'+
+			'<td hidden>'+value.idreserva+'</td>'+
 			'<td>'+value.tipodoc+'</td>'+
 			'<td>'+value.clientenombre+'</td>'+
-			'<td >'+value.idcliente+'</td>'+
+			'<td hidden>'+value.idcliente+'</td>'+
 			'<td >'+value.cantidad+'</td>'+
 			'<td >'+value.precio+'</td>'+
 			'<td >'+value.total+'</td>'+

@@ -48,9 +48,9 @@
 									<tr>
 										<th hidden>Id</th>
 										<th>Tren</th>
-										<th >Idtren</th>
+										<th hidden>Idtren</th>
 										<th>Horatren</th>
-										<th >Idhorario</th>
+										<th hidden>Idhorario</th>
 										<th >Precio</th>
 										<th >Estado</th>
 										<th>Acciones</th>
@@ -63,9 +63,9 @@
 											<tr>
 												<td hidden><?php echo $horariotren['idhorariotren'];?></td>
 												<td><?php echo $horariotren['nombre'];?></td>
-												<td ><?php echo $horariotren['idtren'];?></td>
+												<td hidden><?php echo $horariotren['idtren'];?></td>
 												<td><?php echo $horariotren['nombre'];?></td>
-												<td ><?php echo $horariotren['idhorario'];?></td>
+												<td hidden><?php echo $horariotren['idhorario'];?></td>
 												<td ><?php echo $horariotren['precio'];?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($horariotren['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
 
@@ -557,9 +557,9 @@ debugger
 		var fila = '<tr>'+
 			'<td hidden>'+value.idhorariotren+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idtren+'</td>'+
+			'<td hidden>'+value.idtren+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idhorario+'</td>'+
+			'<td hidden>'+value.idhorario+'</td>'+
 			'<td >'+value.precio+'</td>'+
 			'<td class = "hidden -xs">' + ((value.estado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
 

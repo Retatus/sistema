@@ -49,7 +49,7 @@
 										<th >Id</th>
 										<th >Nombre</th>
 										<th>Cathotel</th>
-										<th >Idcat</th>
+										<th hidden>Idcat</th>
 										<th >Direccion</th>
 										<th >Telefono</th>
 										<th >Correo</th>
@@ -57,7 +57,7 @@
 										<th >Razonsocial</th>
 										<th >Nrocuenta</th>
 										<th>Banco</th>
-										<th >Idbanco</th>
+										<th hidden>Idbanco</th>
 										<th >Ubigeo</th>
 										<th >Latitud</th>
 										<th >Longitud</th>
@@ -73,7 +73,7 @@
 												<td ><?php echo $hotel['idhotel'];?></td>
 												<td ><?php echo $hotel['nombre'];?></td>
 												<td><?php echo $hotel['nombre'];?></td>
-												<td ><?php echo $hotel['idcathotel'];?></td>
+												<td hidden><?php echo $hotel['idcathotel'];?></td>
 												<td ><?php echo $hotel['direccion'];?></td>
 												<td ><?php echo $hotel['telefono'];?></td>
 												<td ><?php echo $hotel['correo'];?></td>
@@ -81,7 +81,7 @@
 												<td ><?php echo $hotel['razonsocial'];?></td>
 												<td ><?php echo $hotel['nrocuenta'];?></td>
 												<td><?php echo $hotel['nombre'];?></td>
-												<td ><?php echo $hotel['idbanco'];?></td>
+												<td hidden><?php echo $hotel['idbanco'];?></td>
 												<td ><?php echo $hotel['ubigeo'];?></td>
 												<td ><?php echo $hotel['latitud'];?></td>
 												<td ><?php echo $hotel['longitud'];?></td>
@@ -693,7 +693,7 @@ debugger
 			'<td >'+value.idhotel+'</td>'+
 			'<td >'+value.nombre+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idcathotel+'</td>'+
+			'<td hidden>'+value.idcathotel+'</td>'+
 			'<td >'+value.direccion+'</td>'+
 			'<td >'+value.telefono+'</td>'+
 			'<td >'+value.correo+'</td>'+
@@ -701,7 +701,7 @@ debugger
 			'<td >'+value.razonsocial+'</td>'+
 			'<td >'+value.nrocuenta+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idbanco+'</td>'+
+			'<td hidden>'+value.idbanco+'</td>'+
 			'<td >'+value.ubigeo+'</td>'+
 			'<td >'+value.latitud+'</td>'+
 			'<td >'+value.longitud+'</td>'+

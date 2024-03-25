@@ -48,11 +48,11 @@
 									<tr>
 										<th hidden>Id</th>
 										<th>Horaticketmapi</th>
-										<th >Idhoraticketmapi</th>
+										<th hidden>Idhoraticketmapi</th>
 										<th>Ticketmapi</th>
-										<th >Idticketmapi</th>
+										<th hidden>Idticketmapi</th>
 										<th>Clientetipo</th>
-										<th >Idclientetipo</th>
+										<th hidden>Idclientetipo</th>
 										<th >Precio</th>
 										<th >Estado</th>
 										<th>Acciones</th>
@@ -65,11 +65,11 @@
 											<tr>
 												<td hidden><?php echo $horarioticketmapi['idhorarioticketmapi'];?></td>
 												<td><?php echo $horarioticketmapi['nombre'];?></td>
-												<td ><?php echo $horarioticketmapi['idhoraticketmapi'];?></td>
+												<td hidden><?php echo $horarioticketmapi['idhoraticketmapi'];?></td>
 												<td><?php echo $horarioticketmapi['nombre'];?></td>
-												<td ><?php echo $horarioticketmapi['idticketmapi'];?></td>
+												<td hidden><?php echo $horarioticketmapi['idticketmapi'];?></td>
 												<td><?php echo $horarioticketmapi['nombre'];?></td>
-												<td ><?php echo $horarioticketmapi['idclientetipo'];?></td>
+												<td hidden><?php echo $horarioticketmapi['idclientetipo'];?></td>
 												<td ><?php echo $horarioticketmapi['precio'];?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($horarioticketmapi['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
 
@@ -605,11 +605,11 @@ debugger
 		var fila = '<tr>'+
 			'<td hidden>'+value.idhorarioticketmapi+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idhoraticketmapi+'</td>'+
+			'<td hidden>'+value.idhoraticketmapi+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idticketmapi+'</td>'+
+			'<td hidden>'+value.idticketmapi+'</td>'+
 			'<td>'+value.nombre+'</td>'+
-			'<td >'+value.idclientetipo+'</td>'+
+			'<td hidden>'+value.idclientetipo+'</td>'+
 			'<td >'+value.precio+'</td>'+
 			'<td class = "hidden -xs">' + ((value.estado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
 
