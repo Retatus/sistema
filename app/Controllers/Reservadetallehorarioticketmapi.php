@@ -120,7 +120,7 @@ class Reservadetallehorarioticketmapi extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->reservadetallehorarioticketmapi->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reservadetallehorarioticketmapi->getreservadetallehorarioticketmapis($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reservadetallehorarioticketmapi->getreservadetallehorarioticketmapis($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 

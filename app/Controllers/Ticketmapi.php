@@ -89,7 +89,7 @@ class Ticketmapi extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->ticketmapi->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->ticketmapi->getticketmapis($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->ticketmapi->getticketmapis($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 

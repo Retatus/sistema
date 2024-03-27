@@ -111,7 +111,7 @@ class Hotelhabitacion extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->hotelhabitacion->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->hotelhabitacion->gethotelhabitacions($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->hotelhabitacion->gethotelhabitacions($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 

@@ -89,7 +89,7 @@ class Horaticketmapi extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->horaticketmapi->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->horaticketmapi->gethoraticketmapis($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->horaticketmapi->gethoraticketmapis($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 

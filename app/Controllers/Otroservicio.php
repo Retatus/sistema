@@ -92,7 +92,7 @@ class Otroservicio extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->otroservicio->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->otroservicio->getotroservicios($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->otroservicio->getotroservicios($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 

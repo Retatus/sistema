@@ -5,20 +5,12 @@ use App\Models\PaginadoModel;
 use App\Models\ReservaModel;
 use App\Models\TicketbusModel;
 use App\Models\ClienteModel;
-use App\Models\TipodocModel;
 use App\Models\HorarioticketmapiModel;
 use App\Models\HorariotrenModel;
 use App\Models\HotelhabitacionModel;
 use App\Models\OtroservicioModel;
 use App\Models\TourModel;
 
-use App\Models\ReservadetallebusModel;
-use App\Models\ReservadetalleclienteModel;
-use App\Models\ReservadetallehorarioticketmapiModel;
-use App\Models\ReservadetallehorariotrenModel;
-use App\Models\ReservadetallehotelhabitacionModel;
-use App\Models\ReservadetalleotroservicioModel;
-use App\Models\ReservadetalletourModel;
 
 class Reserva extends BaseController
 {
@@ -26,40 +18,24 @@ class Reserva extends BaseController
 	protected $reserva;
 	protected $ticketbus;
 	protected $cliente;
-	protected $tipodoc;
 	protected $horarioticketmapi;
 	protected $horariotren;
 	protected $hotelhabitacion;
 	protected $otroservicio;
 	protected $tour;
 
-	protected $reservadetallebus;
-	protected $reservadetallecliente;
-	protected $reservadetallehorarioticketmapi;
-	protected $reservadetallehorariotren;
-	protected $reservadetallehotelhabitacion;
-	protected $reservadetalleotroservicio;
-	protected $reservadetalletour;
 
 	public function __construct(){
 		$this->paginado = new PaginadoModel();
 		$this->reserva = new ReservaModel();
 		$this->ticketbus = new TicketbusModel();
 		$this->cliente = new ClienteModel();
-		$this->tipodoc = new TipodocModel();
 		$this->horarioticketmapi = new HorarioticketmapiModel();
 		$this->horariotren = new HorariotrenModel();
 		$this->hotelhabitacion = new HotelhabitacionModel();
 		$this->otroservicio = new OtroservicioModel();
 		$this->tour = new TourModel();
 
-		$this->reservadetallebus = new ReservadetallebusModel();
-		$this->reservadetallecliente = new ReservadetalleclienteModel();
-		$this->reservadetallehorarioticketmapi = new ReservadetallehorarioticketmapiModel();
-		$this->reservadetallehorariotren = new ReservadetallehorariotrenModel();
-		$this->reservadetallehotelhabitacion = new ReservadetallehotelhabitacionModel();
-		$this->reservadetalleotroservicio = new ReservadetalleotroservicioModel();
-		$this->reservadetalletour = new ReservadetalletourModel();
 	}
 
 	public function index($bestado = 1)
@@ -81,297 +57,15 @@ class Reserva extends BaseController
 		echo view('layouts/aside');
 		echo view('reserva/list', $data);
 		echo view('layouts/footer');
-		
-	}
 
-	public function add($id = 0)
-	{
-		$tipodoc = $this->tipodoc->getTipodocs(1, '', 10, 1);
-		$reserva = $this->reserva->getReserva($id);
-		$cliente = $this->reservadetallecliente->getReservadetallecliente2($id);
-		$servicios = $this->reserva->getNewReserva($id);
-		echo view('layouts/header', ['reserva'=>$reserva,'clientes' => $cliente,'servicios' => $servicios,'tipodocs' => $tipodoc]);
-		echo view('layouts/aside');
-		echo view('reserva/add');
-		echo view('layouts/footer');
 	}
-
-	public function edit($id = 0)
-	{
-		$tipodoc = $this->tipodoc->getTipodocs(1, '', 10, 1);
-		$reserva = $this->reserva->getReserva($id);
-		$cliente = $this->reservadetallecliente->getReservadetallecliente2($id);
-		$servicios = $this->reserva->getNewReserva($id);
-		echo view('layouts/header', ['reserva'=>$reserva,'clientes' => $cliente,'servicios' => $servicios,'tipodocs' => $tipodoc]);
-		echo view('layouts/aside');
-		echo view('reserva/edit');
-		echo view('layouts/footer');
-	}
-	
-	public function reservaadd()
-	{
-		$respt = array();
-		$maxid = 0;
-		$mensaje = '';
-		$entro = 'no';
-		$reserva = $this->request->getPost('reserva');
-		$pasajeros = $this->request->getPost('pasajeros');
-		$servicios = $this->request->getPost('servicios');
-		$data  = array(
-			'nidreserva'=> intval($reserva["idreserva"]),
-			'sreservanombre'=> $reserva["reservanombre"],
-			'tfechainicio'=> date_format(date_create(str_replace("/","-", $reserva["fechainicio"])),"Y-m-d"),
-			'tfechafin'=> date_format(date_create(str_replace("/","-", $reserva["fechafin"])),"Y-m-d"),
-			'ntipodoc'=> $reserva["tipodoc"],
-			'sidpersona'=> $reserva["idpersona"],
-			'sreservatelefono'=> $reserva["reservatelefono"],
-			'sreservacorreo'=> $reserva["reservacorreo"],
-			'dmontototal'=> doubleval($reserva["montototal"]),
-			'bpagado'=> intval($reserva["pagado"]),
-			'bestado'=> $reserva["estado"],
-		);
-		if ($this->reserva->existe($nidreserva) == 1) {
-			$id = 0; $mensaje = 'CODIGO YA EXISTE'; 
-		} else {
-			$this->reserva->insert($data);		
-			$id = 1; $mensaje = 'INSERTADO CORRECTAMENTE';
-			$maxid = $this->reserva->getMaxid();
-		}
-		if (!is_null($maxid)) {
-			foreach($pasajeros as $pasajero){
-				$data  = array(
-					'nidreserva' => intval($maxid),
-					'sidcliente' => $pasajero["idcliente"], 
-					'dprecio' => doubleval($pasajero["precio"]),
-					'bconfirmado' => intval($pasajero["confirmado"]),
-					'bestado' => intval($pasajero["estado"]),
-				);
-				$this->reservadetallecliente->insert($data);
-			}
-			
-			foreach($servicios as $servicio){	
-				switch ($servicio["tiposervicio"]) {
-					case 'BUS': // BUS
-						$data  = array(
-							'nidreserva' => intval($maxid),
-							'nidticketbus' => $servicio["idservicio"],
-							'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-							'ncantidad' => intval($servicio["cantidad"]),
-							'dprecio' => doubleval($servicio["precio"]),
-							'dtotal' => doubleval($servicio["total"]),
-							'bconfirmado' => intval($servicio["confirmado"]),
-							'bestado' => intval($servicio["estado"]),
-						);
-						$this->reservadetallebus->insert($data);
-						break;
-					case 'MAPI': // TICKET MAPI
-						$data  = array(
-							// 'nidreservadetallehorarioticketmapi' => intval($nidreservadetallehorarioticketmapi),
-							'nidreserva' => intval($maxid),
-							'nidhorarioticketmapi' => $servicio["idservicio"],
-							'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-							'ncantidad' => intval($servicio["cantidad"]),
-							'dprecio' => doubleval($servicio["precio"]),
-							'dtotal' => doubleval($servicio["total"]),
-							'bconfirmado' => intval($servicio["confirmado"]),
-							'bestado' => intval($servicio["estado"]),
-						);
-						$this->reservadetallehorarioticketmapi->insert($data);
-						break;
-					case 'TREN': // TREN
-						$data  = array(
-							// 'nidreservadetallehorariotren' => intval($nidreservadetallehorariotren),
-							'nidreserva' => intval($maxid),
-							'nidhorariotren' => $servicio["idservicio"],
-							'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-							'ncantidad' => intval($servicio["cantidad"]),
-							'dprecio' => doubleval($servicio["precio"]),
-							'dtotal' => doubleval($servicio["total"]),
-							'bconfirmado' => intval($servicio["confirmado"]),
-							'bestado' => intval($servicio["estado"]),
-						);
-						$this->reservadetallehorariotren->insert($data);
-						break;
-					case 'HOTEL': // HOTEL
-						$data  = array(
-							//'nidreservadetallehotelhabitacion' => intval($nidreservadetallehotelhabitacion),
-							'nidreserva' => intval($maxid),
-							'nidhotelhabitacion' => $servicio["idservicio"],
-							'tfechaingreso' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-							'tfechasalida' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-							'ncantidad' => intval($servicio["cantidad"]),
-							'dprecio' => doubleval($servicio["precio"]),
-							'dtotal' => doubleval($servicio["total"]),
-							'bconfirmado' => intval($servicio["confirmado"]),
-							'bestado' => intval($servicio["estado"]),
-						);
-						$this->reservadetallehotelhabitacion->insert($data);
-						break;
-					case 'OTROS': // OTROS SERVICION
-						$data  = array(
-							//'nidreservadetalleotroservicio' => intval($nidreservadetalleotroservicio),
-							'nidreserva' => intval($maxid),
-							'nidotroservicio' => $servicio["idservicio"],
-							'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-							'ncantidad' => intval($servicio["cantidad"]),
-							'dprecio' => doubleval($servicio["precio"]),
-							'dtotal' => doubleval($servicio["total"]),
-							'bconfirmado' => intval($servicio["confirmado"]),
-							'bestado' => intval($servicio["estado"]),
-						);
-						$this->reservadetalleotroservicio->insert($data);
-						break;
-					case 'TOUR': // TOUR
-						$data  = array(
-							'nidreserva' => intval($maxid),
-							'sidtour' => $servicio["idservicio"],
-							'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-							'ncantidad' => intval($servicio["cantidad"]),
-							'dprecio' => doubleval($servicio["precio"]),
-							'dtotal' => doubleval($servicio["total"]),
-							'bconfirmado' => intval($servicio["confirmado"]),
-							'bestado' => intval($servicio["estado"]),
-						);
-						$this->reservadetalletour->insert($data);
-						break;
-				}
-			}
-		}	
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'entro' => $entro];				
-		echo json_encode($respt);
-	}
-
-	public function reservaedit()
-	{
-		$respt = array();
-		$maxid = 0;
-		$mensaje = '';
-		$entro = 'no';
-		$reserva = $this->request->getPost('reserva');
-		$pasajeros = $this->request->getPost('pasajeros');
-		$servicios = $this->request->getPost('servicios');
-		$data  = array(
-			'nidreserva'=> intval($reserva["idreserva"]),
-			'sreservanombre'=> $reserva["reservanombre"],
-			'tfechainicio'=> date_format(date_create(str_replace("/","-", $reserva["fechainicio"])),"Y-m-d"),
-			'tfechafin'=> date_format(date_create(str_replace("/","-", $reserva["fechafin"])),"Y-m-d"),
-			'ntipodoc'=> $reserva["tipodoc"],
-			'sidpersona'=> $reserva["idpersona"],
-			'sreservatelefono'=> $reserva["reservatelefono"],
-			'sreservacorreo'=> $reserva["reservacorreo"],
-			'dmontototal'=> doubleval($reserva["montototal"]),
-			'bpagado'=> intval($reserva["pagado"]),
-			'bestado'=> $reserva["estado"],
-		);
-		$nidreserva = intval($reserva["idreserva"]);
-		$this->reserva->UpdateReserva($nidreserva, $data);
-		$id = 1; $mensaje = 'ACTUALIZO CORRECTAMENTE';
-		foreach($pasajeros as $pasajero){
-			$data  = array(
-				'nidreserva' => intval($maxid),
-				'sidcliente' => $pasajero["idcliente"], 
-				'dprecio' => doubleval($pasajero["precio"]),
-				'bconfirmado' => intval($pasajero["confirmado"]),
-				'bestado' => intval($pasajero["estado"]),
-			);
-			$this->reservadetallecliente->UpdateReservadetallecliente($nidreserva,$data);
-		}
-		foreach($servicios as $servicio){	
-			switch ($servicio["tiposervicio"]) {
-				case 'BUS': // BUS
-					$data  = array(
-						'nidreserva' => $nidreserva,
-						'nidticketbus' => $servicio["idservicio"],
-						'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-						'ncantidad' => intval($servicio["cantidad"]),
-						'dprecio' => doubleval($servicio["precio"]),
-						'dtotal' => doubleval($servicio["total"]),
-						'bconfirmado' => intval($servicio["confirmado"]),
-						'bestado' => intval($servicio["estado"]),
-					);
-					$this->reservadetallebus->UpdateReservadetallebus($nidreserva,$data);
-					break;
-				case 'MAPI': // TICKET MAPI
-					$data  = array(
-						// 'nidreservadetallehorarioticketmapi' => intval($nidreservadetallehorarioticketmapi),
-						'nidreserva' => $nidreserva,
-						'nidhorarioticketmapi' => 13, //$servicio["idservicio"],
-						'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-						'ncantidad' => intval($servicio["cantidad"]),
-						'dprecio' => doubleval($servicio["precio"]),
-						'dtotal' => doubleval($servicio["total"]),
-						'bconfirmado' => intval($servicio["confirmado"]),
-						'bestado' => intval($servicio["estado"]),
-					);
-					$this->reservadetallehorarioticketmapi->UpdateReservadetallehorarioticketmapi($nidreserva,$data);
-					break;
-				case 'TREN': // TREN
-					$data  = array(
-						// 'nidreservadetallehorariotren' => intval($nidreservadetallehorariotren),
-						'nidreserva' => $nidreserva,
-						'nidhorariotren' => $servicio["idservicio"],
-						'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-						'ncantidad' => intval($servicio["cantidad"]),
-						'dprecio' => doubleval($servicio["precio"]),
-						'dtotal' => doubleval($servicio["total"]),
-						'bconfirmado' => intval($servicio["confirmado"]),
-						'bestado' => intval($servicio["estado"]),
-					);
-					$this->reservadetallehorariotren->UpdateReservadetallehorariotren($nidreserva,$data);
-					break;
-				case 'HOTEL': // HOTEL
-					$data  = array(
-						//'nidreservadetallehotelhabitacion' => intval($nidreservadetallehotelhabitacion),
-						'nidreserva' => $nidreserva,
-						'nidhotelhabitacion' => $servicio["idservicio"],
-						'tfechaingreso' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-						'tfechasalida' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-						'ncantidad' => intval($servicio["cantidad"]),
-						'dprecio' => doubleval($servicio["precio"]),
-						'dtotal' => doubleval($servicio["total"]),
-						'bconfirmado' => intval($servicio["confirmado"]),
-						'bestado' => intval($servicio["estado"]),
-					);
-					$this->reservadetallehotelhabitacion->UpdateReservadetallehotelhabitacion($nidreserva,$data);
-					break;
-				case 'OTROS': // OTROS SERVICION
-					$data  = array(
-						//'nidreservadetalleotroservicio' => intval($nidreservadetalleotroservicio),
-						'nidreserva' => $nidreserva,
-						'nidotroservicio' => $servicio["idservicio"],
-						'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-						'ncantidad' => intval($servicio["cantidad"]),
-						'dprecio' => doubleval($servicio["precio"]),
-						'dtotal' => doubleval($servicio["total"]),
-						'bconfirmado' => intval($servicio["confirmado"]),
-						'bestado' => intval($servicio["estado"]),
-					);
-					$this->reservadetalleotroservicio->UpdateReservadetalleotroservicio($nidreserva,$data);
-					break;
-				case 'TOUR': // TOUR
-					$data  = array(
-						'nidreserva' => $nidreserva,
-						'sidtour' => $servicio["idservicio"],
-						'tfecha' => date_format(date_create(str_replace("/","-", $servicio["fecha"])),"Y-m-d"),
-						'ncantidad' => intval($servicio["cantidad"]),
-						'dprecio' => doubleval($servicio["precio"]),
-						'dtotal' => doubleval($servicio["total"]),
-						'bconfirmado' => intval($servicio["confirmado"]),
-						'bestado' => intval($servicio["estado"]),
-					);
-					$this->reservadetalletour->UpdateReservadetalletour($nidreserva,$data);
-					break;
-			}
-		}
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'entro' => $servicios];				
-		echo json_encode($respt);
-	}
-
 	public function agregar(){
 	
-		$total = $this->reserva->getNewReserva(59);
-		print_r($total);
+		$total = $this->reserva->getCount('', '');
+		$pag = $this->paginado->pagina(1, $total, 1);
+		print_r($pag);
 	}
+
 	public function opciones(){
 		$accion = (isset($_GET['accion'])) ? $_GET['accion']:'leer';
 		$pag = (int)(isset($_GET['pag'])) ? $_GET['pag']:1;
@@ -451,16 +145,16 @@ class Reserva extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->reserva->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reserva->getreservas($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reserva->getreservas($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 
-	// public function edit(){ 
-	// 	$nidreserva = strtoupper(trim($this->request->getPost('idreserva')));
+	public function edit(){ 
+		$nidreserva = strtoupper(trim($this->request->getPost('idreserva')));
 
-	// 	$data = $this->reserva->getReserva($nidreserva);
-	// 	echo json_encode($data);
-	// }
+		$data = $this->reserva->getReserva($nidreserva);
+		echo json_encode($data);
+	}
 
 
 	public function getreservasSelectNombre(){

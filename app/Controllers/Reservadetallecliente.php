@@ -112,7 +112,7 @@ class Reservadetallecliente extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->reservadetallecliente->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reservadetallecliente->getreservadetalleclientes($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reservadetallecliente->getreservadetalleclientes($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 

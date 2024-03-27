@@ -89,7 +89,7 @@ class Cathabitacion extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->cathabitacion->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->cathabitacion->getcathabitacions($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->cathabitacion->getcathabitacions($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 

@@ -120,7 +120,7 @@ class Reservadetalletour extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->reservadetalletour->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reservadetalletour->getreservadetalletours($todos, $texto, 10, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->reservadetalletour->getreservadetalletours($todos, $texto, 20, $pag)];
 		echo json_encode($respt);
 	}
 
