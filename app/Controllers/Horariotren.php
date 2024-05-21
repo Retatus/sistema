@@ -3,6 +3,11 @@
 use App\Controllers\BaseController;
 use App\Models\PaginadoModel;
 use App\Models\HorariotrenModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use App\Models\HoratrenModel;
 use App\Models\TrenModel;
 
@@ -153,43 +158,45 @@ class Horariotren extends BaseController
 		$total = $this->horariotren->getCount();
 
 		$horariotren = $this->horariotren->getHorariotrens(1, '', $total, 1);
-		$doc = new \PHPExcel();
-		$doc->setActiveSheetIndex(0);
-		$doc->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-		$doc->getActiveSheet()->getStyle('A1:F1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
-		$border = array('borders' => array('allborders' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))));
-		$doc->getActiveSheet()->SetCellValue('A1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('B1', 'IDTREN');
-		$doc->getActiveSheet()->SetCellValue('C1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('D1', 'IDHORARIO');
-		$doc->getActiveSheet()->SetCellValue('E1', 'PRECIO');
-		$doc->getActiveSheet()->SetCellValue('F1', 'ESTADO');
+		require_once ROOTPATH . 'vendor/autoload.php';
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->setActiveSheetIndex(0);
+		$sheet->getColumnDimension('A')->setAutoSize(true);
+		$sheet->getColumnDimension('B')->setAutoSize(true);
+		$sheet->getColumnDimension('C')->setAutoSize(true);
+		$sheet->getColumnDimension('D')->setAutoSize(true);
+		$sheet->getColumnDimension('E')->setAutoSize(true);
+		$sheet->getColumnDimension('F')->setAutoSize(true);
+		$sheet->getStyle('A1:F1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
+		$sheet->setCellValue('A1', 'NOMBRE');
+		$sheet->setCellValue('B1', 'IDTREN');
+		$sheet->setCellValue('C1', 'NOMBRE');
+		$sheet->setCellValue('D1', 'IDHORARIO');
+		$sheet->setCellValue('E1', 'PRECIO');
+		$sheet->setCellValue('F1', 'ESTADO');
 		$i=2;
 		foreach ($horariotren as $row) {
-			$doc->getActiveSheet()->SetCellValue('A'.$i, $row['nombre']);
-			$doc->getActiveSheet()->SetCellValue('B'.$i, $row['idtren']);
-			$doc->getActiveSheet()->SetCellValue('C'.$i, $row['nombre']);
-			$doc->getActiveSheet()->SetCellValue('D'.$i, $row['idhorario']);
-			$doc->getActiveSheet()->SetCellValue('E'.$i, $row['precio']);
-			$doc->getActiveSheet()->SetCellValue('F'.$i, $row['estado']);
+			$sheet->setCellValue('A'.$i, $row['nombre']);
+			$sheet->setCellValue('B'.$i, $row['idtren']);
+			$sheet->setCellValue('C'.$i, $row['nombre']);
+			$sheet->setCellValue('D'.$i, $row['idhorario']);
+			$sheet->setCellValue('E'.$i, $row['precio']);
+			$sheet->setCellValue('F'.$i, $row['estado']);
 			$i++;
 		}
-		$doc->getActiveSheet()->getStyle('A1:F1')->applyFromArray($border);
+		$sheet->getStyle('A1:F1')->applyFromArray($border);
 		for ($j = 1; $j < $i ; $j++) {
-			$doc->getActiveSheet()->getStyle('A'.$j.':F'.$j)->applyFromArray($border);
+			$sheet->getStyle('A'.$j.':F'.$j)->applyFromArray($border);
 		}
 
+		$writer = new Xls($spreadsheet);
 		$filename = 'Lista_horariotren.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');
-		$objWriter = \PHPExcel_IOFactory::createWriter($doc, 'Excel5');
-		$objWriter->save('php://output');
+		$writer->save('php://output');
+		exit;
 	}
 
 }

@@ -3,6 +3,11 @@
 use App\Controllers\BaseController;
 use App\Models\PaginadoModel;
 use App\Models\ClienteModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use App\Models\TipodocModel;
 
 
@@ -164,64 +169,66 @@ class Cliente extends BaseController
 		$total = $this->cliente->getCount();
 
 		$cliente = $this->cliente->getClientes(1, '', $total, 1);
-		$doc = new \PHPExcel();
-		$doc->setActiveSheetIndex(0);
-		$doc->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
-		$doc->getActiveSheet()->getStyle('A1:M1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
-		$border = array('borders' => array('allborders' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))));
-		$doc->getActiveSheet()->SetCellValue('A1', 'ID');
-		$doc->getActiveSheet()->SetCellValue('B1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('C1', 'IDTIPODOC');
-		$doc->getActiveSheet()->SetCellValue('D1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('E1', 'APELLIDOS');
-		$doc->getActiveSheet()->SetCellValue('F1', 'TELEFONO');
-		$doc->getActiveSheet()->SetCellValue('G1', 'CORREO');
-		$doc->getActiveSheet()->SetCellValue('H1', 'DIRECCION');
-		$doc->getActiveSheet()->SetCellValue('I1', 'PAIS');
-		$doc->getActiveSheet()->SetCellValue('J1', 'FECHANACIMIENTO');
-		$doc->getActiveSheet()->SetCellValue('K1', 'EDAD');
-		$doc->getActiveSheet()->SetCellValue('L1', 'SEXO');
-		$doc->getActiveSheet()->SetCellValue('M1', 'ESTADO');
+		require_once ROOTPATH . 'vendor/autoload.php';
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->setActiveSheetIndex(0);
+		$sheet->getColumnDimension('A')->setAutoSize(true);
+		$sheet->getColumnDimension('B')->setAutoSize(true);
+		$sheet->getColumnDimension('C')->setAutoSize(true);
+		$sheet->getColumnDimension('D')->setAutoSize(true);
+		$sheet->getColumnDimension('E')->setAutoSize(true);
+		$sheet->getColumnDimension('F')->setAutoSize(true);
+		$sheet->getColumnDimension('G')->setAutoSize(true);
+		$sheet->getColumnDimension('H')->setAutoSize(true);
+		$sheet->getColumnDimension('I')->setAutoSize(true);
+		$sheet->getColumnDimension('J')->setAutoSize(true);
+		$sheet->getColumnDimension('K')->setAutoSize(true);
+		$sheet->getColumnDimension('L')->setAutoSize(true);
+		$sheet->getColumnDimension('M')->setAutoSize(true);
+		$sheet->getStyle('A1:M1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
+		$sheet->setCellValue('A1', 'ID');
+		$sheet->setCellValue('B1', 'NOMBRE');
+		$sheet->setCellValue('C1', 'IDTIPODOC');
+		$sheet->setCellValue('D1', 'NOMBRE');
+		$sheet->setCellValue('E1', 'APELLIDOS');
+		$sheet->setCellValue('F1', 'TELEFONO');
+		$sheet->setCellValue('G1', 'CORREO');
+		$sheet->setCellValue('H1', 'DIRECCION');
+		$sheet->setCellValue('I1', 'PAIS');
+		$sheet->setCellValue('J1', 'FECHANACIMIENTO');
+		$sheet->setCellValue('K1', 'EDAD');
+		$sheet->setCellValue('L1', 'SEXO');
+		$sheet->setCellValue('M1', 'ESTADO');
 		$i=2;
 		foreach ($cliente as $row) {
-			$doc->getActiveSheet()->SetCellValue('A'.$i, $row['idcliente']);
-			$doc->getActiveSheet()->SetCellValue('B'.$i, $row['nombre']);
-			$doc->getActiveSheet()->SetCellValue('C'.$i, $row['idtipodoc']);
-			$doc->getActiveSheet()->SetCellValue('D'.$i, $row['clientenombre']);
-			$doc->getActiveSheet()->SetCellValue('E'.$i, $row['clienteapellidos']);
-			$doc->getActiveSheet()->SetCellValue('F'.$i, $row['clientetelefono']);
-			$doc->getActiveSheet()->SetCellValue('G'.$i, $row['clientecorreo']);
-			$doc->getActiveSheet()->SetCellValue('H'.$i, $row['clientedireccion']);
-			$doc->getActiveSheet()->SetCellValue('I'.$i, $row['clientepais']);
-			$doc->getActiveSheet()->SetCellValue('J'.$i, $row['clientefechanacimiento']);
-			$doc->getActiveSheet()->SetCellValue('K'.$i, $row['clienteedad']);
-			$doc->getActiveSheet()->SetCellValue('L'.$i, $row['clientesexo']);
-			$doc->getActiveSheet()->SetCellValue('M'.$i, $row['clienteestado']);
+			$sheet->setCellValue('A'.$i, $row['idcliente']);
+			$sheet->setCellValue('B'.$i, $row['nombre']);
+			$sheet->setCellValue('C'.$i, $row['idtipodoc']);
+			$sheet->setCellValue('D'.$i, $row['clientenombre']);
+			$sheet->setCellValue('E'.$i, $row['clienteapellidos']);
+			$sheet->setCellValue('F'.$i, $row['clientetelefono']);
+			$sheet->setCellValue('G'.$i, $row['clientecorreo']);
+			$sheet->setCellValue('H'.$i, $row['clientedireccion']);
+			$sheet->setCellValue('I'.$i, $row['clientepais']);
+			$sheet->setCellValue('J'.$i, $row['clientefechanacimiento']);
+			$sheet->setCellValue('K'.$i, $row['clienteedad']);
+			$sheet->setCellValue('L'.$i, $row['clientesexo']);
+			$sheet->setCellValue('M'.$i, $row['clienteestado']);
 			$i++;
 		}
-		$doc->getActiveSheet()->getStyle('A1:M1')->applyFromArray($border);
+		$sheet->getStyle('A1:M1')->applyFromArray($border);
 		for ($j = 1; $j < $i ; $j++) {
-			$doc->getActiveSheet()->getStyle('A'.$j.':M'.$j)->applyFromArray($border);
+			$sheet->getStyle('A'.$j.':M'.$j)->applyFromArray($border);
 		}
 
+		$writer = new Xls($spreadsheet);
 		$filename = 'Lista_cliente.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');
-		$objWriter = \PHPExcel_IOFactory::createWriter($doc, 'Excel5');
-		$objWriter->save('php://output');
+		$writer->save('php://output');
+		exit;
 	}
 
 }

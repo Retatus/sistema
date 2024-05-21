@@ -3,6 +3,11 @@
 use App\Controllers\BaseController;
 use App\Models\PaginadoModel;
 use App\Models\RestauranteModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 
 
 class Restaurante extends BaseController
@@ -153,64 +158,66 @@ class Restaurante extends BaseController
 		$total = $this->restaurante->getCount();
 
 		$restaurante = $this->restaurante->getRestaurantes(1, '', $total, 1);
-		$doc = new \PHPExcel();
-		$doc->setActiveSheetIndex(0);
-		$doc->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
-		$doc->getActiveSheet()->getStyle('A1:M1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
-		$border = array('borders' => array('allborders' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))));
-		$doc->getActiveSheet()->SetCellValue('A1', 'IDT');
-		$doc->getActiveSheet()->SetCellValue('B1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('C1', 'IDCATEGORIA');
-		$doc->getActiveSheet()->SetCellValue('D1', 'DIRECCION');
-		$doc->getActiveSheet()->SetCellValue('E1', 'TELEFONO');
-		$doc->getActiveSheet()->SetCellValue('F1', 'CORREO');
-		$doc->getActiveSheet()->SetCellValue('G1', 'RUC');
-		$doc->getActiveSheet()->SetCellValue('H1', 'RAZON');
-		$doc->getActiveSheet()->SetCellValue('I1', 'NROCUENTA');
-		$doc->getActiveSheet()->SetCellValue('J1', 'UBIGEO');
-		$doc->getActiveSheet()->SetCellValue('K1', 'LATITUD');
-		$doc->getActiveSheet()->SetCellValue('L1', 'LONGITUD');
-		$doc->getActiveSheet()->SetCellValue('M1', 'ESTADO');
+		require_once ROOTPATH . 'vendor/autoload.php';
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->setActiveSheetIndex(0);
+		$sheet->getColumnDimension('A')->setAutoSize(true);
+		$sheet->getColumnDimension('B')->setAutoSize(true);
+		$sheet->getColumnDimension('C')->setAutoSize(true);
+		$sheet->getColumnDimension('D')->setAutoSize(true);
+		$sheet->getColumnDimension('E')->setAutoSize(true);
+		$sheet->getColumnDimension('F')->setAutoSize(true);
+		$sheet->getColumnDimension('G')->setAutoSize(true);
+		$sheet->getColumnDimension('H')->setAutoSize(true);
+		$sheet->getColumnDimension('I')->setAutoSize(true);
+		$sheet->getColumnDimension('J')->setAutoSize(true);
+		$sheet->getColumnDimension('K')->setAutoSize(true);
+		$sheet->getColumnDimension('L')->setAutoSize(true);
+		$sheet->getColumnDimension('M')->setAutoSize(true);
+		$sheet->getStyle('A1:M1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
+		$sheet->setCellValue('A1', 'IDT');
+		$sheet->setCellValue('B1', 'NOMBRE');
+		$sheet->setCellValue('C1', 'IDCATEGORIA');
+		$sheet->setCellValue('D1', 'DIRECCION');
+		$sheet->setCellValue('E1', 'TELEFONO');
+		$sheet->setCellValue('F1', 'CORREO');
+		$sheet->setCellValue('G1', 'RUC');
+		$sheet->setCellValue('H1', 'RAZON');
+		$sheet->setCellValue('I1', 'NROCUENTA');
+		$sheet->setCellValue('J1', 'UBIGEO');
+		$sheet->setCellValue('K1', 'LATITUD');
+		$sheet->setCellValue('L1', 'LONGITUD');
+		$sheet->setCellValue('M1', 'ESTADO');
 		$i=2;
 		foreach ($restaurante as $row) {
-			$doc->getActiveSheet()->SetCellValue('A'.$i, $row['idtrestaurante']);
-			$doc->getActiveSheet()->SetCellValue('B'.$i, $row['restaurantenombre']);
-			$doc->getActiveSheet()->SetCellValue('C'.$i, $row['idrestaurantecategoria']);
-			$doc->getActiveSheet()->SetCellValue('D'.$i, $row['restaurantedireccion']);
-			$doc->getActiveSheet()->SetCellValue('E'.$i, $row['restaurantetelefono']);
-			$doc->getActiveSheet()->SetCellValue('F'.$i, $row['restaurantecorreo']);
-			$doc->getActiveSheet()->SetCellValue('G'.$i, $row['restauranteruc']);
-			$doc->getActiveSheet()->SetCellValue('H'.$i, $row['restauranterazon']);
-			$doc->getActiveSheet()->SetCellValue('I'.$i, $row['restaurantenrocuenta']);
-			$doc->getActiveSheet()->SetCellValue('J'.$i, $row['restauranteubigeo']);
-			$doc->getActiveSheet()->SetCellValue('K'.$i, $row['restaurantelatitud']);
-			$doc->getActiveSheet()->SetCellValue('L'.$i, $row['restaurantelongitud']);
-			$doc->getActiveSheet()->SetCellValue('M'.$i, $row['restauranteestado']);
+			$sheet->setCellValue('A'.$i, $row['idtrestaurante']);
+			$sheet->setCellValue('B'.$i, $row['restaurantenombre']);
+			$sheet->setCellValue('C'.$i, $row['idrestaurantecategoria']);
+			$sheet->setCellValue('D'.$i, $row['restaurantedireccion']);
+			$sheet->setCellValue('E'.$i, $row['restaurantetelefono']);
+			$sheet->setCellValue('F'.$i, $row['restaurantecorreo']);
+			$sheet->setCellValue('G'.$i, $row['restauranteruc']);
+			$sheet->setCellValue('H'.$i, $row['restauranterazon']);
+			$sheet->setCellValue('I'.$i, $row['restaurantenrocuenta']);
+			$sheet->setCellValue('J'.$i, $row['restauranteubigeo']);
+			$sheet->setCellValue('K'.$i, $row['restaurantelatitud']);
+			$sheet->setCellValue('L'.$i, $row['restaurantelongitud']);
+			$sheet->setCellValue('M'.$i, $row['restauranteestado']);
 			$i++;
 		}
-		$doc->getActiveSheet()->getStyle('A1:M1')->applyFromArray($border);
+		$sheet->getStyle('A1:M1')->applyFromArray($border);
 		for ($j = 1; $j < $i ; $j++) {
-			$doc->getActiveSheet()->getStyle('A'.$j.':M'.$j)->applyFromArray($border);
+			$sheet->getStyle('A'.$j.':M'.$j)->applyFromArray($border);
 		}
 
+		$writer = new Xls($spreadsheet);
 		$filename = 'Lista_restaurante.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');
-		$objWriter = \PHPExcel_IOFactory::createWriter($doc, 'Excel5');
-		$objWriter->save('php://output');
+		$writer->save('php://output');
+		exit;
 	}
 
 }

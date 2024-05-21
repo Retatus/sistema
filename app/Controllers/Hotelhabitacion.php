@@ -3,6 +3,11 @@
 use App\Controllers\BaseController;
 use App\Models\PaginadoModel;
 use App\Models\HotelhabitacionModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use App\Models\CathabitacionModel;
 use App\Models\HotelModel;
 
@@ -161,55 +166,57 @@ class Hotelhabitacion extends BaseController
 		$total = $this->hotelhabitacion->getCount();
 
 		$hotelhabitacion = $this->hotelhabitacion->getHotelhabitacions(1, '', $total, 1);
-		$doc = new \PHPExcel();
-		$doc->setActiveSheetIndex(0);
-		$doc->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-		$doc->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
-		$border = array('borders' => array('allborders' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))));
-		$doc->getActiveSheet()->SetCellValue('A1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('B1', 'BANCO');
-		$doc->getActiveSheet()->SetCellValue('C1', 'CATHOTEL');
-		$doc->getActiveSheet()->SetCellValue('D1', 'IDHOTEL');
-		$doc->getActiveSheet()->SetCellValue('E1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('F1', 'IDCATHABITACION');
-		$doc->getActiveSheet()->SetCellValue('G1', 'PRECIO');
-		$doc->getActiveSheet()->SetCellValue('H1', 'FECHA');
-		$doc->getActiveSheet()->SetCellValue('I1', 'ESTADO');
-		$doc->getActiveSheet()->SetCellValue('J1', 'CONFIRMADO');
+		require_once ROOTPATH . 'vendor/autoload.php';
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->setActiveSheetIndex(0);
+		$sheet->getColumnDimension('A')->setAutoSize(true);
+		$sheet->getColumnDimension('B')->setAutoSize(true);
+		$sheet->getColumnDimension('C')->setAutoSize(true);
+		$sheet->getColumnDimension('D')->setAutoSize(true);
+		$sheet->getColumnDimension('E')->setAutoSize(true);
+		$sheet->getColumnDimension('F')->setAutoSize(true);
+		$sheet->getColumnDimension('G')->setAutoSize(true);
+		$sheet->getColumnDimension('H')->setAutoSize(true);
+		$sheet->getColumnDimension('I')->setAutoSize(true);
+		$sheet->getColumnDimension('J')->setAutoSize(true);
+		$sheet->getStyle('A1:J1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
+		$sheet->setCellValue('A1', 'NOMBRE');
+		$sheet->setCellValue('B1', 'BANCO');
+		$sheet->setCellValue('C1', 'CATHOTEL');
+		$sheet->setCellValue('D1', 'IDHOTEL');
+		$sheet->setCellValue('E1', 'NOMBRE');
+		$sheet->setCellValue('F1', 'IDCATHABITACION');
+		$sheet->setCellValue('G1', 'PRECIO');
+		$sheet->setCellValue('H1', 'FECHA');
+		$sheet->setCellValue('I1', 'ESTADO');
+		$sheet->setCellValue('J1', 'CONFIRMADO');
 		$i=2;
 		foreach ($hotelhabitacion as $row) {
-			$doc->getActiveSheet()->SetCellValue('A'.$i, $row['nombre']);
-			$doc->getActiveSheet()->SetCellValue('B'.$i, $row['banco']);
-			$doc->getActiveSheet()->SetCellValue('C'.$i, $row['cathotel']);
-			$doc->getActiveSheet()->SetCellValue('D'.$i, $row['idhotel']);
-			$doc->getActiveSheet()->SetCellValue('E'.$i, $row['nombre']);
-			$doc->getActiveSheet()->SetCellValue('F'.$i, $row['idcathabitacion']);
-			$doc->getActiveSheet()->SetCellValue('G'.$i, $row['precio']);
-			$doc->getActiveSheet()->SetCellValue('H'.$i, $row['fecha']);
-			$doc->getActiveSheet()->SetCellValue('I'.$i, $row['estado']);
-			$doc->getActiveSheet()->SetCellValue('J'.$i, $row['confirmado']);
+			$sheet->setCellValue('A'.$i, $row['nombre']);
+			$sheet->setCellValue('B'.$i, $row['banco']);
+			$sheet->setCellValue('C'.$i, $row['cathotel']);
+			$sheet->setCellValue('D'.$i, $row['idhotel']);
+			$sheet->setCellValue('E'.$i, $row['nombre']);
+			$sheet->setCellValue('F'.$i, $row['idcathabitacion']);
+			$sheet->setCellValue('G'.$i, $row['precio']);
+			$sheet->setCellValue('H'.$i, $row['fecha']);
+			$sheet->setCellValue('I'.$i, $row['estado']);
+			$sheet->setCellValue('J'.$i, $row['confirmado']);
 			$i++;
 		}
-		$doc->getActiveSheet()->getStyle('A1:J1')->applyFromArray($border);
+		$sheet->getStyle('A1:J1')->applyFromArray($border);
 		for ($j = 1; $j < $i ; $j++) {
-			$doc->getActiveSheet()->getStyle('A'.$j.':J'.$j)->applyFromArray($border);
+			$sheet->getStyle('A'.$j.':J'.$j)->applyFromArray($border);
 		}
 
+		$writer = new Xls($spreadsheet);
 		$filename = 'Lista_hotelhabitacion.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');
-		$objWriter = \PHPExcel_IOFactory::createWriter($doc, 'Excel5');
-		$objWriter->save('php://output');
+		$writer->save('php://output');
+		exit;
 	}
 
 }

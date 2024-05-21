@@ -3,6 +3,11 @@
 use App\Controllers\BaseController;
 use App\Models\PaginadoModel;
 use App\Models\ReservadetalleotroservicioModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use App\Models\OtroservicioModel;
 use App\Models\ReservaModel;
 
@@ -170,58 +175,60 @@ class Reservadetalleotroservicio extends BaseController
 		$total = $this->reservadetalleotroservicio->getCount();
 
 		$reservadetalleotroservicio = $this->reservadetalleotroservicio->getReservadetalleotroservicios(1, '', $total, 1);
-		$doc = new \PHPExcel();
-		$doc->setActiveSheetIndex(0);
-		$doc->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-		$doc->getActiveSheet()->getStyle('A1:K1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
-		$border = array('borders' => array('allborders' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))));
-		$doc->getActiveSheet()->SetCellValue('A1', 'RESERVANOMBRE');
-		$doc->getActiveSheet()->SetCellValue('B1', 'IDRESERVA');
-		$doc->getActiveSheet()->SetCellValue('C1', 'OTROSERVICIONOMBRE');
-		$doc->getActiveSheet()->SetCellValue('D1', 'IDOTROSERVICIO');
-		$doc->getActiveSheet()->SetCellValue('E1', 'DESCRIPCION');
-		$doc->getActiveSheet()->SetCellValue('F1', 'FECHA');
-		$doc->getActiveSheet()->SetCellValue('G1', 'CANTIDAD');
-		$doc->getActiveSheet()->SetCellValue('H1', 'PRECIO');
-		$doc->getActiveSheet()->SetCellValue('I1', 'TOTAL');
-		$doc->getActiveSheet()->SetCellValue('J1', 'CONFIRMADO');
-		$doc->getActiveSheet()->SetCellValue('K1', 'ESTADO');
+		require_once ROOTPATH . 'vendor/autoload.php';
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->setActiveSheetIndex(0);
+		$sheet->getColumnDimension('A')->setAutoSize(true);
+		$sheet->getColumnDimension('B')->setAutoSize(true);
+		$sheet->getColumnDimension('C')->setAutoSize(true);
+		$sheet->getColumnDimension('D')->setAutoSize(true);
+		$sheet->getColumnDimension('E')->setAutoSize(true);
+		$sheet->getColumnDimension('F')->setAutoSize(true);
+		$sheet->getColumnDimension('G')->setAutoSize(true);
+		$sheet->getColumnDimension('H')->setAutoSize(true);
+		$sheet->getColumnDimension('I')->setAutoSize(true);
+		$sheet->getColumnDimension('J')->setAutoSize(true);
+		$sheet->getColumnDimension('K')->setAutoSize(true);
+		$sheet->getStyle('A1:K1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
+		$sheet->setCellValue('A1', 'RESERVANOMBRE');
+		$sheet->setCellValue('B1', 'IDRESERVA');
+		$sheet->setCellValue('C1', 'OTROSERVICIONOMBRE');
+		$sheet->setCellValue('D1', 'IDOTROSERVICIO');
+		$sheet->setCellValue('E1', 'DESCRIPCION');
+		$sheet->setCellValue('F1', 'FECHA');
+		$sheet->setCellValue('G1', 'CANTIDAD');
+		$sheet->setCellValue('H1', 'PRECIO');
+		$sheet->setCellValue('I1', 'TOTAL');
+		$sheet->setCellValue('J1', 'CONFIRMADO');
+		$sheet->setCellValue('K1', 'ESTADO');
 		$i=2;
 		foreach ($reservadetalleotroservicio as $row) {
-			$doc->getActiveSheet()->SetCellValue('A'.$i, $row['reservanombre']);
-			$doc->getActiveSheet()->SetCellValue('B'.$i, $row['idreserva']);
-			$doc->getActiveSheet()->SetCellValue('C'.$i, $row['otroservicionombre']);
-			$doc->getActiveSheet()->SetCellValue('D'.$i, $row['idotroservicio']);
-			$doc->getActiveSheet()->SetCellValue('E'.$i, $row['descripcion']);
-			$doc->getActiveSheet()->SetCellValue('F'.$i, $row['fecha']);
-			$doc->getActiveSheet()->SetCellValue('G'.$i, $row['cantidad']);
-			$doc->getActiveSheet()->SetCellValue('H'.$i, $row['precio']);
-			$doc->getActiveSheet()->SetCellValue('I'.$i, $row['total']);
-			$doc->getActiveSheet()->SetCellValue('J'.$i, $row['confirmado']);
-			$doc->getActiveSheet()->SetCellValue('K'.$i, $row['estado']);
+			$sheet->setCellValue('A'.$i, $row['reservanombre']);
+			$sheet->setCellValue('B'.$i, $row['idreserva']);
+			$sheet->setCellValue('C'.$i, $row['otroservicionombre']);
+			$sheet->setCellValue('D'.$i, $row['idotroservicio']);
+			$sheet->setCellValue('E'.$i, $row['descripcion']);
+			$sheet->setCellValue('F'.$i, $row['fecha']);
+			$sheet->setCellValue('G'.$i, $row['cantidad']);
+			$sheet->setCellValue('H'.$i, $row['precio']);
+			$sheet->setCellValue('I'.$i, $row['total']);
+			$sheet->setCellValue('J'.$i, $row['confirmado']);
+			$sheet->setCellValue('K'.$i, $row['estado']);
 			$i++;
 		}
-		$doc->getActiveSheet()->getStyle('A1:K1')->applyFromArray($border);
+		$sheet->getStyle('A1:K1')->applyFromArray($border);
 		for ($j = 1; $j < $i ; $j++) {
-			$doc->getActiveSheet()->getStyle('A'.$j.':K'.$j)->applyFromArray($border);
+			$sheet->getStyle('A'.$j.':K'.$j)->applyFromArray($border);
 		}
 
+		$writer = new Xls($spreadsheet);
 		$filename = 'Lista_reservadetalleotroservicio.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');
-		$objWriter = \PHPExcel_IOFactory::createWriter($doc, 'Excel5');
-		$objWriter->save('php://output');
+		$writer->save('php://output');
+		exit;
 	}
 
 }

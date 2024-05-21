@@ -3,6 +3,11 @@
 use App\Controllers\BaseController;
 use App\Models\PaginadoModel;
 use App\Models\TourModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use App\Models\CattourModel;
 
 
@@ -150,52 +155,54 @@ class Tour extends BaseController
 		$total = $this->tour->getCount();
 
 		$tour = $this->tour->getTours(1, '', $total, 1);
-		$doc = new \PHPExcel();
-		$doc->setActiveSheetIndex(0);
-		$doc->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-		$doc->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-		$doc->getActiveSheet()->getStyle('A1:I1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
-		$border = array('borders' => array('allborders' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))));
-		$doc->getActiveSheet()->SetCellValue('A1', 'ID');
-		$doc->getActiveSheet()->SetCellValue('B1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('C1', 'DESCRIPCION');
-		$doc->getActiveSheet()->SetCellValue('D1', 'PRECIO');
-		$doc->getActiveSheet()->SetCellValue('E1', 'COLOR');
-		$doc->getActiveSheet()->SetCellValue('F1', 'DIASHABILES');
-		$doc->getActiveSheet()->SetCellValue('G1', 'ESTADO');
-		$doc->getActiveSheet()->SetCellValue('H1', 'NOMBRE');
-		$doc->getActiveSheet()->SetCellValue('I1', 'IDCAT');
+		require_once ROOTPATH . 'vendor/autoload.php';
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->setActiveSheetIndex(0);
+		$sheet->getColumnDimension('A')->setAutoSize(true);
+		$sheet->getColumnDimension('B')->setAutoSize(true);
+		$sheet->getColumnDimension('C')->setAutoSize(true);
+		$sheet->getColumnDimension('D')->setAutoSize(true);
+		$sheet->getColumnDimension('E')->setAutoSize(true);
+		$sheet->getColumnDimension('F')->setAutoSize(true);
+		$sheet->getColumnDimension('G')->setAutoSize(true);
+		$sheet->getColumnDimension('H')->setAutoSize(true);
+		$sheet->getColumnDimension('I')->setAutoSize(true);
+		$sheet->getStyle('A1:I1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
+		$sheet->setCellValue('A1', 'ID');
+		$sheet->setCellValue('B1', 'NOMBRE');
+		$sheet->setCellValue('C1', 'DESCRIPCION');
+		$sheet->setCellValue('D1', 'PRECIO');
+		$sheet->setCellValue('E1', 'COLOR');
+		$sheet->setCellValue('F1', 'DIASHABILES');
+		$sheet->setCellValue('G1', 'ESTADO');
+		$sheet->setCellValue('H1', 'NOMBRE');
+		$sheet->setCellValue('I1', 'IDCAT');
 		$i=2;
 		foreach ($tour as $row) {
-			$doc->getActiveSheet()->SetCellValue('A'.$i, $row['idtour']);
-			$doc->getActiveSheet()->SetCellValue('B'.$i, $row['tournombre']);
-			$doc->getActiveSheet()->SetCellValue('C'.$i, $row['tourdescripcion']);
-			$doc->getActiveSheet()->SetCellValue('D'.$i, $row['tourprecio']);
-			$doc->getActiveSheet()->SetCellValue('E'.$i, $row['color']);
-			$doc->getActiveSheet()->SetCellValue('F'.$i, $row['tourdiashabiles']);
-			$doc->getActiveSheet()->SetCellValue('G'.$i, $row['tourestado']);
-			$doc->getActiveSheet()->SetCellValue('H'.$i, $row['nombre']);
-			$doc->getActiveSheet()->SetCellValue('I'.$i, $row['idcattour']);
+			$sheet->setCellValue('A'.$i, $row['idtour']);
+			$sheet->setCellValue('B'.$i, $row['tournombre']);
+			$sheet->setCellValue('C'.$i, $row['tourdescripcion']);
+			$sheet->setCellValue('D'.$i, $row['tourprecio']);
+			$sheet->setCellValue('E'.$i, $row['color']);
+			$sheet->setCellValue('F'.$i, $row['tourdiashabiles']);
+			$sheet->setCellValue('G'.$i, $row['tourestado']);
+			$sheet->setCellValue('H'.$i, $row['nombre']);
+			$sheet->setCellValue('I'.$i, $row['idcattour']);
 			$i++;
 		}
-		$doc->getActiveSheet()->getStyle('A1:I1')->applyFromArray($border);
+		$sheet->getStyle('A1:I1')->applyFromArray($border);
 		for ($j = 1; $j < $i ; $j++) {
-			$doc->getActiveSheet()->getStyle('A'.$j.':I'.$j)->applyFromArray($border);
+			$sheet->getStyle('A'.$j.':I'.$j)->applyFromArray($border);
 		}
 
+		$writer = new Xls($spreadsheet);
 		$filename = 'Lista_tour.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');
-		$objWriter = \PHPExcel_IOFactory::createWriter($doc, 'Excel5');
-		$objWriter->save('php://output');
+		$writer->save('php://output');
+		exit;
 	}
 
 }
