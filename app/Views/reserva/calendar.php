@@ -1,7 +1,9 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class='content-header'>
-	</section>
+    <section class="content-header">
+      
+    </section>
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -30,7 +32,34 @@
                 </div>
                 <!-- /.card-body -->
               </div>
-              
+              <!-- /.card -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Create Event</h3>
+                </div>
+                <div class="card-body">
+                  <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                    <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
+                    <ul class="fc-color-picker" id="color-chooser">
+                      <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-muted" href="#"><i class="fas fa-square"></i></a></li>
+                    </ul>
+                  </div>
+                  <!-- /btn-group -->
+                  <div class="input-group">
+                    <input id="new-event" type="text" class="form-control" placeholder="Event Title">
+
+                    <div class="input-group-append">
+                      <button id="add-new-event" type="button" class="btn btn-primary">Add</button>
+                    </div>
+                    <!-- /btn-group -->
+                  </div>
+                  <!-- /input-group -->
+                </div>
+              </div>
             </div>
           </div>
           <!-- /.col -->
@@ -51,44 +80,27 @@
     </section>
     <!-- /.content -->
   </div>
-<!-- Page specific script -->
-<!--  SECCION ====== SCRIPT ====== -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
-    
-<style>
-	#calendar {
-		max-width: 900px;
-		margin: 0 auto;
-	}
-</style>
-<script>
-	$(function() {
-		var base_url= '<?php echo base_url();?>';
-		var calendarEl = document.getElementById('calendar');
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			initialView: 'dayGridMonth',
-			events: function(fetchInfo, successCallback, failureCallback) {
-				$.ajax({
-					url: `${base_url}Reserva/getEvents`, // URL del método del controlador que devuelve los eventos
-					method: 'GET',
-					dataType: 'json',
-					success: function(data) {
-						successCallback(data);
-					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						console.error('Error al cargar eventos:', textStatus, errorThrown);
-						failureCallback('Error al cargar eventos');
-					}
-				});
-			}
-		});
+  <!-- /.content-wrapper -->
 
-		calendar.render();
-	});
-</script>
-<!-- <script>
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery UI -->
+<script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="../plugins/moment/moment.min.js"></script>
+<script src="../plugins/fullcalendar/main.min.js"></script>
+<script src="../plugins/fullcalendar-daygrid/main.min.js"></script>
+<script src="../plugins/fullcalendar-timegrid/main.min.js"></script>
+<script src="../plugins/fullcalendar-interaction/main.min.js"></script>
+<script src="../plugins/fullcalendar-bootstrap/main.min.js"></script>
+<!-- Page specific script -->
+<script>
   $(function () {
 
     /* initialize the external events
@@ -128,6 +140,7 @@
     var Calendar = FullCalendar.Calendar;
     var Draggable = FullCalendarInteraction.Draggable;
 
+    var base_url= '<?php echo base_url();?>';
     var containerEl = document.getElementById('external-events');
     var checkbox = document.getElementById('drop-remove');
     var calendarEl = document.getElementById('calendar');
@@ -147,6 +160,24 @@
         };
       }
     });
+    
+		// var calendar = new FullCalendar.Calendar(calendarEl, {
+		// 	initialView: 'dayGridMonth',
+		// 	events: function(fetchInfo, successCallback, failureCallback) {
+		// 		$.ajax({
+		// 			url: `${base_url}Reserva/getEvents`, // URL del método del controlador que devuelve los eventos
+		// 			method: 'GET',
+		// 			dataType: 'json',
+		// 			success: function(data) {
+		// 				successCallback(data);
+		// 			},
+		// 			error: function(jqXHR, textStatus, errorThrown) {
+		// 				console.error('Error al cargar eventos:', textStatus, errorThrown);
+		// 				failureCallback('Error al cargar eventos');
+		// 			}
+		// 		});
+		// 	}
+		// });
 
     var calendar = new Calendar(calendarEl, {
       plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
@@ -156,54 +187,68 @@
         right : 'dayGridMonth,timeGridWeek,timeGridDay'
       },
       'themeSystem': 'bootstrap',
+      events: function(fetchInfo, successCallback, failureCallback) {
+				$.ajax({
+					url: `${base_url}Reserva/getEvents`, // URL del método del controlador que devuelve los eventos
+					method: 'GET',
+					dataType: 'json',
+					success: function(data) {
+						successCallback(data);
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						console.error('Error al cargar eventos:', textStatus, errorThrown);
+						failureCallback('Error al cargar eventos');
+					}
+				});
+			},
       //Random default events
-      events    : [
-        {
-          title          : 'All Day Event',
-          start          : new Date(y, m, 1),
-          backgroundColor: '#f56954', //red
-          borderColor    : '#f56954', //red
-          allDay         : true
-        },
-        {
-          title          : 'Long Event',
-          start          : new Date(y, m, d - 5),
-          end            : new Date(y, m, d - 2),
-          backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12' //yellow
-        },
-        {
-          title          : 'Meeting',
-          start          : new Date(y, m, d, 10, 30),
-          allDay         : false,
-          backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
-        },
-        {
-          title          : 'Lunch',
-          start          : new Date(y, m, d, 12, 0),
-          end            : new Date(y, m, d, 14, 0),
-          allDay         : false,
-          backgroundColor: '#00c0ef', //Info (aqua)
-          borderColor    : '#00c0ef' //Info (aqua)
-        },
-        {
-          title          : 'Birthday Party',
-          start          : new Date(y, m, d + 1, 19, 0),
-          end            : new Date(y, m, d + 1, 22, 30),
-          allDay         : false,
-          backgroundColor: '#00a65a', //Success (green)
-          borderColor    : '#00a65a' //Success (green)
-        },
-        {
-          title          : 'Click for Google',
-          start          : new Date(y, m, 28),
-          end            : new Date(y, m, 29),
-          url            : 'http://google.com/',
-          backgroundColor: '#3c8dbc', //Primary (light-blue)
-          borderColor    : '#3c8dbc' //Primary (light-blue)
-        }
-      ],
+      // events    : [
+      //   {
+      //     title          : 'All Day Event',
+      //     start          : new Date(y, m, 1),
+      //     backgroundColor: '#f56954', //red
+      //     borderColor    : '#f56954', //red
+      //     allDay         : true
+      //   },
+      //   {
+      //     title          : 'Long Event',
+      //     start          : new Date(y, m, d - 5),
+      //     end            : new Date(y, m, d - 2),
+      //     backgroundColor: '#f39c12', //yellow
+      //     borderColor    : '#f39c12' //yellow
+      //   },
+      //   {
+      //     title          : 'Meeting',
+      //     start          : new Date(y, m, d, 10, 30),
+      //     allDay         : false,
+      //     backgroundColor: '#0073b7', //Blue
+      //     borderColor    : '#0073b7' //Blue
+      //   },
+      //   {
+      //     title          : 'Lunch',
+      //     start          : new Date(y, m, d, 12, 0),
+      //     end            : new Date(y, m, d, 14, 0),
+      //     allDay         : false,
+      //     backgroundColor: '#00c0ef', //Info (aqua)
+      //     borderColor    : '#00c0ef' //Info (aqua)
+      //   },
+      //   {
+      //     title          : 'Birthday Party',
+      //     start          : new Date(y, m, d + 1, 19, 0),
+      //     end            : new Date(y, m, d + 1, 22, 30),
+      //     allDay         : false,
+      //     backgroundColor: '#00a65a', //Success (green)
+      //     borderColor    : '#00a65a' //Success (green)
+      //   },
+      //   {
+      //     title          : 'Click for Google',
+      //     start          : new Date(y, m, 28),
+      //     end            : new Date(y, m, 29),
+      //     url            : 'http://google.com/',
+      //     backgroundColor: '#3c8dbc', //Primary (light-blue)
+      //     borderColor    : '#3c8dbc' //Primary (light-blue)
+      //   }
+      // ],
       editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
       drop      : function(info) {
@@ -257,4 +302,4 @@
       $('#new-event').val('')
     })
   })
-</script> -->
+</script>
