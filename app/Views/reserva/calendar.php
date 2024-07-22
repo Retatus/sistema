@@ -82,16 +82,13 @@
   </div>
   <!-- /.content-wrapper -->
 
-<!-- jQuery -->
-<script src="../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- jQuery UI -->
-<script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../dist/js/demo.js"></script>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+
+<!-- FullCalendar Locales -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/locales/es.js"></script>
+
 <!-- fullCalendar 2.2.5 -->
 <script src="../plugins/moment/moment.min.js"></script>
 <script src="../plugins/fullcalendar/main.min.js"></script>
@@ -99,6 +96,7 @@
 <script src="../plugins/fullcalendar-timegrid/main.min.js"></script>
 <script src="../plugins/fullcalendar-interaction/main.min.js"></script>
 <script src="../plugins/fullcalendar-bootstrap/main.min.js"></script>
+
 <!-- Page specific script -->
 <script>
   $(function () {
@@ -140,7 +138,6 @@
     var Calendar = FullCalendar.Calendar;
     var Draggable = FullCalendarInteraction.Draggable;
 
-    var base_url= '<?php echo base_url();?>';
     var containerEl = document.getElementById('external-events');
     var checkbox = document.getElementById('drop-remove');
     var calendarEl = document.getElementById('calendar');
@@ -161,24 +158,6 @@
       }
     });
     
-		// var calendar = new FullCalendar.Calendar(calendarEl, {
-		// 	initialView: 'dayGridMonth',
-		// 	events: function(fetchInfo, successCallback, failureCallback) {
-		// 		$.ajax({
-		// 			url: `${base_url}Reserva/getEvents`, // URL del método del controlador que devuelve los eventos
-		// 			method: 'GET',
-		// 			dataType: 'json',
-		// 			success: function(data) {
-		// 				successCallback(data);
-		// 			},
-		// 			error: function(jqXHR, textStatus, errorThrown) {
-		// 				console.error('Error al cargar eventos:', textStatus, errorThrown);
-		// 				failureCallback('Error al cargar eventos');
-		// 			}
-		// 		});
-		// 	}
-		// });
-
     var calendar = new Calendar(calendarEl, {
       plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
       header    : {
@@ -186,7 +165,16 @@
         center: 'title',
         right : 'dayGridMonth,timeGridWeek,timeGridDay'
       },
+      buttonText: {
+          today: 'Hoy',
+          month: 'Mes',
+          week: 'Semana',
+          day: 'Día'
+      },
       'themeSystem': 'bootstrap',
+      locale: 'es',  // Establece el idioma a español
+
+      //Random default events
       events: function(fetchInfo, successCallback, failureCallback) {
 				$.ajax({
 					url: `${base_url}Reserva/getEvents`, // URL del método del controlador que devuelve los eventos
@@ -201,54 +189,6 @@
 					}
 				});
 			},
-      //Random default events
-      // events    : [
-      //   {
-      //     title          : 'All Day Event',
-      //     start          : new Date(y, m, 1),
-      //     backgroundColor: '#f56954', //red
-      //     borderColor    : '#f56954', //red
-      //     allDay         : true
-      //   },
-      //   {
-      //     title          : 'Long Event',
-      //     start          : new Date(y, m, d - 5),
-      //     end            : new Date(y, m, d - 2),
-      //     backgroundColor: '#f39c12', //yellow
-      //     borderColor    : '#f39c12' //yellow
-      //   },
-      //   {
-      //     title          : 'Meeting',
-      //     start          : new Date(y, m, d, 10, 30),
-      //     allDay         : false,
-      //     backgroundColor: '#0073b7', //Blue
-      //     borderColor    : '#0073b7' //Blue
-      //   },
-      //   {
-      //     title          : 'Lunch',
-      //     start          : new Date(y, m, d, 12, 0),
-      //     end            : new Date(y, m, d, 14, 0),
-      //     allDay         : false,
-      //     backgroundColor: '#00c0ef', //Info (aqua)
-      //     borderColor    : '#00c0ef' //Info (aqua)
-      //   },
-      //   {
-      //     title          : 'Birthday Party',
-      //     start          : new Date(y, m, d + 1, 19, 0),
-      //     end            : new Date(y, m, d + 1, 22, 30),
-      //     allDay         : false,
-      //     backgroundColor: '#00a65a', //Success (green)
-      //     borderColor    : '#00a65a' //Success (green)
-      //   },
-      //   {
-      //     title          : 'Click for Google',
-      //     start          : new Date(y, m, 28),
-      //     end            : new Date(y, m, 29),
-      //     url            : 'http://google.com/',
-      //     backgroundColor: '#3c8dbc', //Primary (light-blue)
-      //     borderColor    : '#3c8dbc' //Primary (light-blue)
-      //   }
-      // ],
       editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
       drop      : function(info) {
@@ -277,6 +217,7 @@
         'border-color'    : currColor
       })
     })
+
     $('#add-new-event').click(function (e) {
       e.preventDefault()
       //Get value and make sure it is not null
