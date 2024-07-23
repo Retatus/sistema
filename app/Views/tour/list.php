@@ -46,42 +46,44 @@
 							<table id='TablaTour' class='table table-sm table-bordered table-striped'>
 								<thead>
 									<tr>
-										<th >Id</th>
-										<th >Nombre</th>
-										<th >Descripcion</th>
-										<th >Precio</th>
-										<th >Color</th>
-										<th >Diashabiles</th>
-										<th >Estado</th>
-										<th>Cattour</th>
-										<th hidden>Idcat</th>
+										<th>Idtour</th>
+										<th>Tournombre</th>
+										<th>Tourdescripcion</th>
+										<th>Tourprecio</th>
+										<th>Color</th>
+										<th>Tourdiashabiles</th>
+										<th>Tourestado</th>
+										<th hidden>Idcattour</th>
+										<th>Nombre</th>
+										<th>Concatenado</th>
+										<th>Concatenadodetalle</th>
 										<th>Acciones</th>
-
 									</tr>
 								</thead>
 								<tbody>
 									<?php if(!empty($datos)):?>
 										<?php foreach($datos as $tour):?>
 											<tr>
-												<td ><?php echo $tour['idtour'];?></td>
-												<td ><?php echo $tour['tournombre'];?></td>
-												<td ><?php echo $tour['tourdescripcion'];?></td>
-												<td ><?php echo $tour['tourprecio'];?></td>
-												<td><i class='fa fa-circle' style='color:<?php echo $tour['color'];?>'></i> <?php echo $tour['idtour'];?></td>
-												<td ><?php echo $tour['tourdiashabiles'];?></td>
+												<td><?php echo $tour['idtour'];?></td>
+												<td><?php echo $tour['tournombre'];?></td>
+												<td><?php echo $tour['tourdescripcion'];?></td>
+												<td><?php echo $tour['tourprecio'];?></td>
+												<td><?php echo $tour['color'];?></td>
+												<td><?php echo $tour['tourdiashabiles'];?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($tour['tourestado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
-												<td><?php echo $tour['nombre'];?></td>
 												<td hidden><?php echo $tour['idcattour'];?></td>
-
+												<td><?php echo $tour['nombre'];?></td>
+												<td><?php echo $tour['concatenado'];?></td>
+												<td><?php echo $tour['concatenadodetalle'];?></td>
 												<td>
 													<div class='row'>
 														<div style='margin: auto;'>
-															<button type='button' onclick="btnEditarTour('<?php echo $tour['idtour'].'\',\''. $tour['idcattour'];?>')" class='btn btn-info btn-xs'>
+															<button type='button' onclick="btnEditarTour('<?php echo $tour['idtour'].'\',\''.$tour['idcattour'];?>')" class='btn btn-info btn-xs'>
 																<span class='fa fa-search fa-xs'></span>
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $tour['idtour'].'\',\''. $tour['idcattour'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href="<?php echo base_url();?>reserva/add/<?php echo $tour['idtour'].'\',\''.$tour['idcattour'];?>"><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>
@@ -91,6 +93,8 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div class='card-footer'>
 						<div id='PaginadoTour'>
 							<?php echo $pag;?>
 						</div>
@@ -100,6 +104,7 @@
 		</div>
 	</section>
 </div>
+<!--  SECCION ====== MODAL ====== -->
 <div class='modal fade' id='modalAgregarTour' tabindex='-1'>
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
@@ -112,43 +117,42 @@
 		<div class='modal-body'>
 			<div class='form-group row'>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>id:</label>
+					<label class='col-sm-4'>Idtour:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idtour' name='idtour' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='idtour' name='idtour' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>nombre:</label>
+					<label class='col-sm-4' for='id'>Tournombre:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='tournombre' name='tournombre' placeholder='T001' autocomplete = 'off'>
-					</div>
-				</div>
-				<div class='col-12 form-group row'>
-					<label class='col-sm-2' for='id'>descripcion:</label>
-					<div class = 'col-sm-10'>
-						<textarea type='text' class='form-control form-control-sm text-uppercase    123' id='tourdescripcion' name='tourdescripcion' placeholder='T001' autocomplete = 'off'></textarea>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='tournombre' name='tournombre' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>precio:</label>
+					<label class='col-sm-4' for='id'>Tourprecio:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='tourprecio' name='tourprecio' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='tourprecio' name='tourprecio' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>color:</label>
+					<label class='col-sm-4'>Color</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='color' name='color' placeholder='T001' autocomplete = 'off'>
+						<div class='input-group my-colorpicker2 colorpicker-element' data-colorpicker-id='2'>
+							<input type='text' class='form-control form-control-sm text-uppercase' id='color' name='color' data-original-title='' title=''>
+							<div class='input-group-append'>
+								<span class='input-group-text'><i class='fas fa-square'></i></span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>diashabiles:</label>
+					<label class='col-sm-4' for='id'>Tourdiashabiles:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='tourdiashabiles' name='tourdiashabiles' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='tourdiashabiles' name='tourdiashabiles' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>estado:</label>
+					<label class='col-sm-4' for='rol'>Tourestado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='tourestado' name='tourestado'>
 							<option value = '1' selected >ACTIVO</option>
@@ -169,7 +173,12 @@
 						</select>
 					</div>
 				</div>
-
+				<div class='col-12 form-group row'>
+					<label class='col-sm-4' for='id'>Tourdescripcion:</label>
+					<div class = 'col-sm-12'>
+						<textarea type='text' class='form-control form-control-sm text-uppercase' id='tourdescripcion' name='tourdescripcion' placeholder='T001' autocomplete = 'off'></textarea>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class='modal-footer'>
@@ -181,134 +190,14 @@
 		</div>
 	</div>
 </div>
-<div class='modal fade show' id='modal_agregar_tcattour' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Cattour</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Cattour:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaCattour'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaCattour'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-
+<!--  SECCION ====== SCRIPT ====== -->
 <script>
 	var NuevoTour;
 	var base_url= '<?php echo base_url();?>';
-
-
-	function NumeroFilasTabla(){
-		TamanioTabla = $('#tabla_Habitaciones tr').length - 1;
-		$('#minmax').val(TamanioTabla)
-	}
-
-
 	function load(pag){
 		RecolectarDatosTour();
 		EnviarInformacionTour('leer', NuevoTour, false, pag);
 	}
-
-
-
-	$('#idreserva').autocomplete({ 
-		source: function(request, response) {
-			$.ajax({
-				type: 'POST',
-				url: base_url + '/reservadetalletour/autocompletereservas',
-				dataType: 'json',
-				data: { keyword: request.term },
-				success: function(data){
-					response($.map(data, function(item) {
-						return {
-							label: item.concatenado,
-							concatenado: item.concatenado,
-							idtour: item.idreserva,
-							nombre: item.reservanombre,
-
-							
-							concatenadodetalle: item.concatenadodetalle,
-
-						}
-					}))
-				}
-			});
-		},
-		minLength: 2,
-		select: function( event, ui ) {
-			$('#idreserva').val('');
-			var j = $('#tablaDetalleServicio tr').length;
-			var i = parseInt((j == 1 ? 0 : $('#tablaDetalleServicio').find('tr').eq(j - 1).find('td').eq(0).html()));
-			var rows = "<tr id=Fila_" + (i + 1) + ">"+
-				"<td hidden>" + (i + 1) + "</td>"+
-				"<td hidden><input type='text' class='form-control form-control-sm' id='detalleTipoServicio_" + (i + 1) + "' value='treservadetalletour'></td>"+
-				"<td hidden><input type='text' class='form-control form-control-sm' id='detalleIdReserva_" + (i + 1) + "' value=''></td>"+
-				"<td>"+
-					"<div class='row'>"+
-						"<div style='margin: auto;'>"+
-							"<a href='javascript:void(0)' style='color: #ef5350;' onClick='EliminarFila(" + (i + 1) + ")'><i class='fa fa-times'></i></a>"+
-						"</div>"+
-						"<div style='margin: auto;'>"+
-							"<a href='javascript:void(0)' style='color: #007bff;' onClick='AgregarDatos(" + (i + 1) + ")'><i class='fa fa-pencil'></i></a>"+
-						"</div>"+
-					"</div>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleGravado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='10'>GRAV</option>"+
-						"<option value='20'>EXON</option>"+
-						"<option value='30'>INAF</option>"+
-						"<option value='40'>EXPO</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>" + ui.item.idtour + "</td>"+
-				"<td>" + ui.item.concatenadodetalle + "</td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase datepicker" + (i + 1) + "' id='detalleFecha_" + (i + 1) + "' readonly></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detallecantidad_" + (i + 1) + "' placeholder='cantidad' value='1'></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detalleprecio_" + (i + 1) + "' placeholder='precio' value='" + 0.00 + "'></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detalletotal_" + (i + 1) + "' placeholder='total' value='' disabled></td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleConfirmado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='1'>CONFIRMADO</option>"+
-						"<option value='2'>PENDIENTE</option>"+
-						"<option value='3'>ANULADO</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detallePagado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='0'>PAGADO</option>"+
-						"<option value='0'>PENDIENTE</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleEstado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='0'>ACTIVO</option>"+
-						"<option value='0'>DESACTIVO</option>"+
-					"</select>"+
-				"</td>"+
-			"</tr>";
-			$('#tablaDetalleServicio').append(rows);
-			addDatepicker(i + 1);
-			ImporteTotalDetalle(i + 1);
-			return false;
-		}
-	});
-
-
-
 	$('#btnAgregarTour').click(function(){
 		LimpiarModalDatosTour();
 		$('#categoria').val(1);
@@ -319,15 +208,14 @@
 		$('#btnModalEliminarTour').toggle(false);
 		$('#modalAgregarTour').modal();
 	});
-
-
+//   SECCION ====== btn Editar ======
 	function btnEditarTour(Val0, Val1){
 		$.ajax({
 			type: 'POST',
 			url: base_url + '/tour/edit',
-			data: { idtour: Val0, idcattour: Val1},
+			data: {idtour: Val0, idcattour: Val1},
 			success: function(msg){
-		debugger
+				debugger
 				var temp = JSON.parse(msg);
 				console.log(temp);
 				LimpiarModalDatosTour();
@@ -339,51 +227,6 @@
 				$('#tourdiashabiles').val(temp.tourdiashabiles);
 				$('#tourestado').val(temp.tourestado);
 				$('#idcattour').select2().val(temp.idcattour).select2('destroy').select2();
-
-
-
-				$('#tabla_Habitaciones tr').not($('#tabla_Habitaciones tr:first')).remove();
-				var nrohabitaciones = 0;
-				console.log(temp.habitacion);
-				$.each(temp.habitacion, function(i, value) { 
-					nrohabitaciones++;
-					var rows = "<tr>" +
-					"<td hidden>" + (i + 1) + "</td>" +
-					"<td class='numero'>"+
-						"<a href='#' style='color: #ef5350;' class='delete'><i class='fa fa-times' style='padding-top: 10px;'></i></a>" +
-					"</td>" + 
-					"<td hidden><input type='text' class='form-control text-uppercase' id='codhabitacion_" +(i + 1)+ "' value="+value.idhabitacion+"></td>" +
-					"<td>" +
-						"<select class='form-control select2' id='catHabitacion_"+(i + 1)+"' style='width: 100%;'>" +
-							"<option value='0'>-- SELECCIONAR --</option>" +
-						"</select>" +
-					"</td>" +
-					"<td><input type='text' class='form-control solo_numero' id='precio_" +(i + 1)+"' value="+value.precio+"></td>" +
-					"<td>" +
-						"<select class='form-control' id='estado_" +(i + 1)+ "' style='padding: 6px 2px;'>" +
-						"</select>" +
-					"</td>" +
-					"</tr>";
-					$('#tabla_Habitaciones').append(rows);
-
-
-					$('.delete').off().click(function (e) {
-						var i = $('#tabla_Habitaciones tr').length - 1; 
-						if (i > 1) {
-							$(this).parent('td').parent('tr').remove();
-							NumeroFilasTabla();
-						} 
-					});
-
-
-					addCatHabitacion((i + 1));
-					$('#catHabitacion_'+(i + 1)).select2().val(value.idcathabitacion).select2('destroy').select2();
-					addEstado((i + 1)); 
-					$('#estado_'+(i + 1)).val(value.estado);            
-				});
-				$('#minmax').val(nrohabitaciones);
-
-
 				$('#btnModalAgregarTour').toggle(false);
 				$('#btnModalEditarTour').toggle(true);
 				$('#btnModalEliminarTour').toggle(true);
@@ -394,11 +237,8 @@
 			}
 		});
 	}
-
-
 	$('#btnModalAgregarTour').click(function(){
-debugger
-
+		debugger
 		if (ValidarCamposVaciosTour() != 0) {
 			alert('Completar campos obligatorios');
 		}else{
@@ -407,8 +247,6 @@ debugger
 			EnviarInformacionTour('agregar', NuevoTour, true);
 		}
 	});
-
-
 	$('#btnModalEditarTour').click(function(){
 		if (ValidarCamposVaciosTour() != 0) {
 			alert('Completar campos obligatorios');
@@ -417,8 +255,6 @@ debugger
 			EnviarInformacionTour('modificar', NuevoTour, true);
 		}
 	});
-
-
 	$('#btnModalEliminarTour').click(function(){
 		var bool=confirm('ESTA SEGURO DE ELIMINAR EL DATO?');
 		if(bool){
@@ -426,26 +262,18 @@ debugger
 			EnviarInformacionTour('eliminar', NuevoTour, true);
 		}
 	});
-
-
 	$('#btnModalCerrarHotel').click(function(){
 		$('#IdModalGrupoCodigoHotel').prop('hidden', false); 
 		LimpiarModalDatosTour();
 	});
-
-
 	$('#btnFiltroTour').click(function(){
 		RecolectarDatosTour();
 		EnviarInformacionTour('leer', NuevoTour, false);
 	});
-
-
 	function Paginado(pag) {
 		RecolectarDatosTour();
 		EnviarInformacionTour('leer', NuevoTour, false, pag);
 	}
-
-
 	function RecolectarDatosTour(){
 		NuevoTour = {
 			idtour: $('#idtour').val().toUpperCase(),
@@ -456,13 +284,10 @@ debugger
 			tourdiashabiles: $('#tourdiashabiles').val().toUpperCase(),
 			tourestado: $('#tourestado').val().toUpperCase(),
 			idcattour: $('#idcattour').val().toUpperCase(),
-
 			todos: $('#idFTodos').val(),
 			texto: $('#idFTexto').val()
 		};
 	}
-
-
 	function EnviarInformacionTour(accion, objEvento, modal, pag=1) { 
 		$.ajax({
 			type: 'POST',
@@ -504,109 +329,105 @@ debugger
 			}
 		});
 	}
-
-
 	function LimpiarModalDatosTour(){
-		$('#idtour').val('0');
+		$('#idtour').val('');
 		$('#tournombre').val('');
 		$('#tourdescripcion').val('');
 		$('#tourprecio').val('');
 		$('#color').val('');
 		$('#tourdiashabiles').val('');
 		$('#idcattour').select2().val(0).select2('destroy').select2();
-
 	}
-
-
 	function ValidarCamposVaciosTour(){
 		var error = 0;
 		if ($('#idtour').val() == ''){
 			Resaltado('idtour');
 			error++;
+		}else{
+			NoResaltado('idtour');
 		}
 		if ($('#tournombre').val() == ''){
 			Resaltado('tournombre');
 			error++;
+		}else{
+			NoResaltado('tournombre');
 		}
 		if ($('#tourdescripcion').val() == ''){
 			Resaltado('tourdescripcion');
 			error++;
+		}else{
+			NoResaltado('tourdescripcion');
 		}
 		if ($('#tourprecio').val() == ''){
 			Resaltado('tourprecio');
 			error++;
+		}else{
+			NoResaltado('tourprecio');
 		}
 		if ($('#color').val() == ''){
 			Resaltado('color');
 			error++;
+		}else{
+			NoResaltado('color');
 		}
 		if ($('#tourdiashabiles').val() == ''){
 			Resaltado('tourdiashabiles');
 			error++;
+		}else{
+			NoResaltado('tourdiashabiles');
 		}
 		if ($('#tourestado').val() == ''){
 			Resaltado('tourestado');
 			error++;
+		}else{
+			NoResaltado('tourestado');
 		}
-		if ($('#idcattour').val() == ''){
+		var value = $('#idcattour').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idcattour');
 			error++;
+		}else{
+			NoResaltado('idcattour');
 		}
-
 		return error;
 	}
-
-
 	function Resaltado(id){
 		$('#'+id).css('border-color', '#ef5350');
 		$('#'+id).focus();
 	}
 
-
-	function CargartablaTour(objeto){   
+	function NoResaltado(id){
+		$('#'+id).css('border-color', '#ced4da');
+	}
+	function CargartablaTour(objeto){
 		$('#TablaTour tr').not($('#TablaTour tr:first')).remove();
 		$.each(objeto, function(i, value) {
-		var fila = '<tr>'+
-			'<td >'+value.idtour+'</td>'+
-			'<td >'+value.tournombre+'</td>'+
-			'<td >'+value.tourdescripcion+'</td>'+
-			'<td >'+value.tourprecio+'</td>'+
-			'<td><i class="fa fa-circle" style="color:'+value.color+'"></i> '+value.idtour+'</td>'+
-			'<td >'+value.tourdiashabiles+'</td>'+
-			'<td class = "hidden -xs">' + ((value.tourestado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
-			'<td>'+value.nombre+'</td>'+
-			'<td hidden>'+value.idcattour+'</td>'+
-
-			'<td>'+
-				'<div class="row">'+
-					'<div style="margin: auto;">'+
-						'<button type="button" onclick="btnEditarTour(\''+value.idtour+'\', \''+value.idcattour+'\')" class="btn btn-info btn-xs">'+
-							'<span class="fa fa-search fa-sm"></span>'+
-						'</button>'+
-					'</div>'+
-						'<div style="margin: auto;">'+
-							'<a class="btn btn-success btn-xs" href="<?php echo base_url();?>/reserva/add"><i class="fa fa-pencil"></i></a>'+
-					'</div>'+
-				'</div>'+
-			'</td>'+
-		'</tr>';
-		$('#TablaTour tbody').append(fila);
+				var fila = `<tr>
+				<td>${value.idtour}</td>
+				<td>${value.tournombre}</td>
+				<td>${value.tourdescripcion}</td>
+				<td>${value.tourprecio}</td>
+				<td>${value.color}</td>
+				<td>${value.tourdiashabiles}</td>
+				<td class = 'hidden-xs'>${value.tourestado == '1' ? 'ACTIVO' : 'DESACTIVO'}</td>
+				<td hidden>${value.idcattour}</td>
+				<td>${value.nombre}</td>
+				<td>${value.concatenado}</td>
+				<td>${value.concatenadodetalle}</td>
+				<td>
+				<div class='row'>
+					<div style='margin: auto;'>
+						<button type='button' onclick="btnEditarTour('${value.idtour}', '${value.idcattour}')" class='btn btn-info btn-xs'>
+							<span class='fa fa-search fa-xs'></span>
+						</button>
+					</div>
+						<div style='margin: auto;'>
+							<a class='btn btn-success btn-xs' href='<?php echo base_url();?>/reserva/add/$tour['idtour'].'\',\''.$tour['idcattour']'><i class='fa fa-pencil'></i></a>
+					</div>
+				</div>
+				</td>
+				</tr>`
+			$('#TablaTour tbody').append(fila);
 		});
-	}
-
-
-	function addEstado(i){
-		$('#estado_'+i).append($('<option>').val('1').text('ACTIVO'));
-		$('#estado_'+i).append($('<option>').val('0').text('DESACTIVO'));
-	}
-
-
-	function addCatHabitacion(i) {
-		var sel = document.getElementById('habitacion');
-		var Length = sel.length;
-		for (var j = 0; j < Length; j++) {
-		var opt = sel[j];
-		$('#catHabitacion_'+i).append($('<option>').val(opt.value).text(opt.label));            
-		}
 	}
 </script>

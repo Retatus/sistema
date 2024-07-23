@@ -1,6 +1,6 @@
 <?php namespace App\Controllers;
-
 use App\Controllers\BaseController;
+use DateTime;
 use App\Models\PaginadoModel;
 use App\Models\RestauranteModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -16,58 +16,65 @@ class Restaurante extends BaseController
 	protected $restaurante;
 
 
+//   SECCION ====== CONSTRUCT ======
 	public function __construct(){
 		$this->paginado = new PaginadoModel();
 		$this->restaurante = new RestauranteModel();
 
 	}
 
+//   SECCION ====== INDEX ======
 	public function index($bestado = 1)
 	{
-		$restaurante = $this->restaurante->getRestaurantes(1, '', 20, 1);
+		$restaurante = $this->restaurante->getRestaurantes(20, 1, 1, '');
 		$total = $this->restaurante->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);
 		$data = ['titulo' => 'restaurante', 'pag' => $pag, 'datos' => $restaurante];
+		$restaurante = $this->restaurante->getRestaurantes(10, 1, 1, '');
 
-		echo view('layouts/header');
+		echo view('layouts/header', []);
 		echo view('layouts/aside');
 		echo view('restaurante/list', $data);
 		echo view('layouts/footer');
 
 	}
+//   SECCION ====== AGREGAR ======
 	public function agregar(){
-	
+
 		$total = $this->restaurante->getCount('', '');
 		$pag = $this->paginado->pagina(1, $total, 1);
 		print_r($pag);
 	}
 
+//   SECCION ====== OPCIONES ======
 	public function opciones(){
 		$accion = (isset($_GET['accion'])) ? $_GET['accion']:'leer';
 		$pag = (int)(isset($_GET['pag'])) ? $_GET['pag']:1;
-
+		
 		$todos = $this->request->getPost('todos');
 		$texto = strtoupper(trim($this->request->getPost('texto')));
 
-		$sidtrestaurante = strtoupper(trim($this->request->getPost('idtrestaurante')));
-		$srestaurantenombre = strtoupper(trim($this->request->getPost('restaurantenombre')));
-		$nidrestaurantecategoria = strtoupper(trim($this->request->getPost('idrestaurantecategoria')));
-		$srestaurantedireccion = strtoupper(trim($this->request->getPost('restaurantedireccion')));
-		$srestaurantetelefono = strtoupper(trim($this->request->getPost('restaurantetelefono')));
-		$srestaurantecorreo = strtoupper(trim($this->request->getPost('restaurantecorreo')));
-		$srestauranteruc = strtoupper(trim($this->request->getPost('restauranteruc')));
-		$srestauranterazon = strtoupper(trim($this->request->getPost('restauranterazon')));
-		$srestaurantenrocuenta = strtoupper(trim($this->request->getPost('restaurantenrocuenta')));
-		$srestauranteubigeo = strtoupper(trim($this->request->getPost('restauranteubigeo')));
-		$drestaurantelatitud = strtoupper(trim($this->request->getPost('restaurantelatitud')));
-		$drestaurantelongitud = strtoupper(trim($this->request->getPost('restaurantelongitud')));
-		$brestauranteestado = strtoupper(trim($this->request->getPost('restauranteestado')));
+		if($accion !== 'leer'){
+			$sidtrestaurante = strtoupper(trim($this->request->getPost('idtrestaurante')));
+			$srestaurantenombre = strtoupper(trim($this->request->getPost('restaurantenombre')));
+			$nidrestaurantecategoria = strtoupper(trim($this->request->getPost('idrestaurantecategoria')));
+			$srestaurantedireccion = strtoupper(trim($this->request->getPost('restaurantedireccion')));
+			$srestaurantetelefono = strtoupper(trim($this->request->getPost('restaurantetelefono')));
+			$srestaurantecorreo = strtoupper(trim($this->request->getPost('restaurantecorreo')));
+			$srestauranteruc = strtoupper(trim($this->request->getPost('restauranteruc')));
+			$srestauranterazon = strtoupper(trim($this->request->getPost('restauranterazon')));
+			$srestaurantenrocuenta = strtoupper(trim($this->request->getPost('restaurantenrocuenta')));
+			$srestauranteubigeo = strtoupper(trim($this->request->getPost('restauranteubigeo')));
+			$drestaurantelatitud = strtoupper(trim($this->request->getPost('restaurantelatitud')));
+			$drestaurantelongitud = strtoupper(trim($this->request->getPost('restaurantelongitud')));
+			$brestauranteestado = strtoupper(trim($this->request->getPost('restauranteestado')));
+		}
 
 
 		$respt = array();
 		$id = 0; $mensaje = '';
-		switch ($accion) {
+		switch ($accion){
 			case 'agregar':
 				$data  = array(
 					'sidtrestaurante' => $sidtrestaurante,
@@ -85,7 +92,7 @@ class Restaurante extends BaseController
 					'brestauranteestado' => intval($brestauranteestado),
 
 				);
-				if ($this->restaurante->existe($sidtrestaurante) == 1) {
+				if ($this->restaurante->existe($sidtrestaurante) == 1){
 					$id = 0; $mensaje = 'CODIGO YA EXISTE'; 
 				} else {
 					$this->restaurante->insert($data);
@@ -124,11 +131,12 @@ class Restaurante extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->restaurante->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->restaurante->getrestaurantes($todos, $texto, 20, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->restaurante->getRestaurantes(20, $pag, $todos, $texto)];
 		echo json_encode($respt);
 	}
 
-	public function edit(){ 
+//   SECCION ====== EDIT ======
+	public function edit(){
 		$sidtrestaurante = strtoupper(trim($this->request->getPost('idtrestaurante')));
 
 		$data = $this->restaurante->getRestaurante($sidtrestaurante);
@@ -136,13 +144,22 @@ class Restaurante extends BaseController
 	}
 
 
-	public function getrestaurantesSelectNombre(){
+	public function autocompleterestaurantes()
+	{
+		$todos = 1;
+		$keyword = $this->request->getPost('keyword');
+		$data = $this->restaurante->getAutocompleterestaurantes($todos,$keyword);
+		echo json_encode($data);
+	}
+//   SECCION ====== Restaurante SELECT NOMBRE ======
+	public function getRestaurantesSelectNombre(){
 		$searchTerm = trim($this->request->getPost('term'));
-		$response = $this->restaurante->getrestaurantesSelectNombre($searchTerm);
+		$response = $this->restaurante->getRestaurantesSelectNombre($searchTerm);
 		echo json_encode($response);
 	}
 
 
+//   SECCION ====== PDF ======
 	public function pdf()
 	{
 		$pdf = new \FPDF();
@@ -153,11 +170,12 @@ class Restaurante extends BaseController
 		$this->response->setHeader('Content-Type', 'application/pdf');
 	}
 
+//   SECCION ====== EXCEL ======
 	public function excel()
 	{
 		$total = $this->restaurante->getCount();
 
-		$restaurante = $this->restaurante->getRestaurantes(1, '', $total, 1);
+		$restaurante = $this->restaurante->getRestaurantes($total, 1, 1, '');
 		require_once ROOTPATH . 'vendor/autoload.php';
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->setActiveSheetIndex(0);
@@ -174,23 +192,27 @@ class Restaurante extends BaseController
 		$sheet->getColumnDimension('K')->setAutoSize(true);
 		$sheet->getColumnDimension('L')->setAutoSize(true);
 		$sheet->getColumnDimension('M')->setAutoSize(true);
-		$sheet->getStyle('A1:M1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$sheet->getColumnDimension('N')->setAutoSize(true);
+		$sheet->getColumnDimension('O')->setAutoSize(true);
+		$sheet->getStyle('A1:O1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
 		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
-		$sheet->setCellValue('A1', 'IDT');
-		$sheet->setCellValue('B1', 'NOMBRE');
-		$sheet->setCellValue('C1', 'IDCATEGORIA');
-		$sheet->setCellValue('D1', 'DIRECCION');
-		$sheet->setCellValue('E1', 'TELEFONO');
-		$sheet->setCellValue('F1', 'CORREO');
-		$sheet->setCellValue('G1', 'RUC');
-		$sheet->setCellValue('H1', 'RAZON');
-		$sheet->setCellValue('I1', 'NROCUENTA');
-		$sheet->setCellValue('J1', 'UBIGEO');
-		$sheet->setCellValue('K1', 'LATITUD');
-		$sheet->setCellValue('L1', 'LONGITUD');
-		$sheet->setCellValue('M1', 'ESTADO');
+		$sheet->setCellValue('A1', 'IDTRESTAURANTE');
+		$sheet->setCellValue('B1', 'RESTAURANTENOMBRE');
+		$sheet->setCellValue('C1', 'IDRESTAURANTECATEGORIA');
+		$sheet->setCellValue('D1', 'RESTAURANTEDIRECCION');
+		$sheet->setCellValue('E1', 'RESTAURANTETELEFONO');
+		$sheet->setCellValue('F1', 'RESTAURANTECORREO');
+		$sheet->setCellValue('G1', 'RESTAURANTERUC');
+		$sheet->setCellValue('H1', 'RESTAURANTERAZON');
+		$sheet->setCellValue('I1', 'RESTAURANTENROCUENTA');
+		$sheet->setCellValue('J1', 'RESTAURANTEUBIGEO');
+		$sheet->setCellValue('K1', 'RESTAURANTELATITUD');
+		$sheet->setCellValue('L1', 'RESTAURANTELONGITUD');
+		$sheet->setCellValue('M1', 'RESTAURANTEESTADO');
+		$sheet->setCellValue('N1', 'CONCATENADO');
+		$sheet->setCellValue('O1', 'CONCATENADODETALLE');
 		$i=2;
-		foreach ($restaurante as $row) {
+		foreach ($restaurante as $row){
 			$sheet->setCellValue('A'.$i, $row['idtrestaurante']);
 			$sheet->setCellValue('B'.$i, $row['restaurantenombre']);
 			$sheet->setCellValue('C'.$i, $row['idrestaurantecategoria']);
@@ -204,15 +226,17 @@ class Restaurante extends BaseController
 			$sheet->setCellValue('K'.$i, $row['restaurantelatitud']);
 			$sheet->setCellValue('L'.$i, $row['restaurantelongitud']);
 			$sheet->setCellValue('M'.$i, $row['restauranteestado']);
+			$sheet->setCellValue('N'.$i, $row['concatenado']);
+			$sheet->setCellValue('O'.$i, $row['concatenadodetalle']);
 			$i++;
 		}
-		$sheet->getStyle('A1:M1')->applyFromArray($border);
-		for ($j = 1; $j < $i ; $j++) {
-			$sheet->getStyle('A'.$j.':M'.$j)->applyFromArray($border);
+		$sheet->getStyle('A1:O1')->applyFromArray($border);
+		for ($j = 1; $j < $i ; $j++){
+			$sheet->getStyle('A'.$j.':O'.$j)->applyFromArray($border);
 		}
 
 		$writer = new Xls($spreadsheet);
-		$filename = 'Lista_restaurante.xls';
+		$filename = 'Lista_Restaurante.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');

@@ -1,51 +1,45 @@
-<?php 
-namespace App\Controllers;
-use CodeIgniter\Controller;
+<?php namespace App\Controllers;
+use App\Controllers\BaseController;
+use App\Models\UsuarioModel;
 
 class Login extends BaseController
 {
     public function login()
     {
-        // Verificar si el formulario ha sido enviado
+        helper(['form', 'url']);
+        
+        $data = [];
+        
         if ($this->request->getMethod() === 'post') {
-            // Validar los campos del formulario
             $rules = [
-                'username' => 'required|valid_email',
+                'username' => 'required',
                 'password' => 'required'
             ];
+            
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+                $u = $this->request->getPost('username');
+                $p = $this->request->getPost('password');
 
-            if ($this->validate($rules)) {
-                // Procesar la autenticación
-                $username = $this->request->getPost('username');
-                $password = $this->request->getPost('password');
-
-                // Aquí debes incluir la lógica de autenticación, como comprobar en la base de datos si las credenciales son válidas.
-
-                // Ejemplo básico de autenticación:
-                if ($username === 'usuario@example.com' && $password === 'contraseña') {
-                    // Usuario autenticado correctamente
+                $model = new UsuarioModel();
+                $user = $model->where('susuarionrodoc', $u)->first();  
+                if ($user && password_verify($p, $user['susuariopassword'])) {
+                    session()->set('logged_in', true);
+                    session()->set('user_id', $user['susuarionrodoc']);
+                    session()->set('username', $user['susuarionombre']);
                     return redirect()->to(base_url('reserva'));
                 } else {
-                    // Credenciales incorrectas
-                    //return redirect()->back()->withInput()->with('error', 'Credenciales incorrectas');
-                    return redirect()->to(previous_url())->withInput()->with('error', 'Credenciales incorrectas');
+                    $data['error'] = 'Usuario o contraseña incorrectos.';
                 }
-            } else {
-                // Validación fallida
-                //return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-                return redirect()->to(base_url('login/login'))->withInput()->with('error', 'Credenciales incorrectas');
             }
-        }
-
-        // Si no se ha enviado el formulario, cargar la vista de inicio de sesión
-        return view('login/login');
+        }        
+        return view('login/login', $data);
     }
 
     public function logout()
     {
-        // Destruir la sesión y redirigir al inicio de sesión
         session()->destroy();
-        //return redirect()->to('login');
         return redirect()->to(base_url('login'));
     }
 

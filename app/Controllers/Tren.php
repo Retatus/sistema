@@ -1,6 +1,6 @@
 <?php namespace App\Controllers;
-
 use App\Controllers\BaseController;
+use DateTime;
 use App\Models\PaginadoModel;
 use App\Models\TrenModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -16,49 +16,56 @@ class Tren extends BaseController
 	protected $tren;
 
 
+//   SECCION ====== CONSTRUCT ======
 	public function __construct(){
 		$this->paginado = new PaginadoModel();
 		$this->tren = new TrenModel();
 
 	}
 
+//   SECCION ====== INDEX ======
 	public function index($bestado = 1)
 	{
-		$tren = $this->tren->getTrens(1, '', 20, 1);
+		$tren = $this->tren->getTrens(20, 1, 1, '');
 		$total = $this->tren->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);
 		$data = ['titulo' => 'tren', 'pag' => $pag, 'datos' => $tren];
+		$tren = $this->tren->getTrens(10, 1, 1, '');
 
-		echo view('layouts/header');
+		echo view('layouts/header', []);
 		echo view('layouts/aside');
 		echo view('tren/list', $data);
 		echo view('layouts/footer');
 
 	}
+//   SECCION ====== AGREGAR ======
 	public function agregar(){
-	
+
 		$total = $this->tren->getCount('', '');
 		$pag = $this->paginado->pagina(1, $total, 1);
 		print_r($pag);
 	}
 
+//   SECCION ====== OPCIONES ======
 	public function opciones(){
 		$accion = (isset($_GET['accion'])) ? $_GET['accion']:'leer';
 		$pag = (int)(isset($_GET['pag'])) ? $_GET['pag']:1;
-
+		
 		$todos = $this->request->getPost('todos');
 		$texto = strtoupper(trim($this->request->getPost('texto')));
 
-		$nidtren = strtoupper(trim($this->request->getPost('idtren')));
-		$snombre = strtoupper(trim($this->request->getPost('nombre')));
-		$sempresa = strtoupper(trim($this->request->getPost('empresa')));
-		$bestado = strtoupper(trim($this->request->getPost('estado')));
+		if($accion !== 'leer'){
+			$nidtren = strtoupper(trim($this->request->getPost('idtren')));
+			$snombre = strtoupper(trim($this->request->getPost('nombre')));
+			$sempresa = strtoupper(trim($this->request->getPost('empresa')));
+			$bestado = strtoupper(trim($this->request->getPost('estado')));
+		}
 
 
 		$respt = array();
 		$id = 0; $mensaje = '';
-		switch ($accion) {
+		switch ($accion){
 			case 'agregar':
 				$data  = array(
 					'nidtren' => $nidtren,
@@ -67,7 +74,7 @@ class Tren extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				if ($this->tren->existe($nidtren) == 1) {
+				if ($this->tren->existe($nidtren) == 1){
 					$id = 0; $mensaje = 'CODIGO YA EXISTE'; 
 				} else {
 					$this->tren->insert($data);
@@ -97,11 +104,12 @@ class Tren extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->tren->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->tren->gettrens($todos, $texto, 20, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->tren->getTrens(20, $pag, $todos, $texto)];
 		echo json_encode($respt);
 	}
 
-	public function edit(){ 
+//   SECCION ====== EDIT ======
+	public function edit(){
 		$nidtren = strtoupper(trim($this->request->getPost('idtren')));
 
 		$data = $this->tren->getTren($nidtren);
@@ -109,13 +117,22 @@ class Tren extends BaseController
 	}
 
 
-	public function gettrensSelectNombre(){
+	public function autocompletetrens()
+	{
+		$todos = 1;
+		$keyword = $this->request->getPost('keyword');
+		$data = $this->tren->getAutocompletetrens($todos,$keyword);
+		echo json_encode($data);
+	}
+//   SECCION ====== Tren SELECT NOMBRE ======
+	public function getTrensSelectNombre(){
 		$searchTerm = trim($this->request->getPost('term'));
-		$response = $this->tren->gettrensSelectNombre($searchTerm);
+		$response = $this->tren->getTrensSelectNombre($searchTerm);
 		echo json_encode($response);
 	}
 
 
+//   SECCION ====== PDF ======
 	public function pdf()
 	{
 		$pdf = new \FPDF();
@@ -126,36 +143,46 @@ class Tren extends BaseController
 		$this->response->setHeader('Content-Type', 'application/pdf');
 	}
 
+//   SECCION ====== EXCEL ======
 	public function excel()
 	{
 		$total = $this->tren->getCount();
 
-		$tren = $this->tren->getTrens(1, '', $total, 1);
+		$tren = $this->tren->getTrens($total, 1, 1, '');
 		require_once ROOTPATH . 'vendor/autoload.php';
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->setActiveSheetIndex(0);
 		$sheet->getColumnDimension('A')->setAutoSize(true);
 		$sheet->getColumnDimension('B')->setAutoSize(true);
 		$sheet->getColumnDimension('C')->setAutoSize(true);
-		$sheet->getStyle('A1:C1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$sheet->getColumnDimension('D')->setAutoSize(true);
+		$sheet->getColumnDimension('E')->setAutoSize(true);
+		$sheet->getColumnDimension('F')->setAutoSize(true);
+		$sheet->getStyle('A1:F1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
 		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
-		$sheet->setCellValue('A1', 'NOMBRE');
-		$sheet->setCellValue('B1', 'EMPRESA');
-		$sheet->setCellValue('C1', 'ESTADO');
+		$sheet->setCellValue('A1', 'IDTREN');
+		$sheet->setCellValue('B1', 'NOMBRE');
+		$sheet->setCellValue('C1', 'EMPRESA');
+		$sheet->setCellValue('D1', 'ESTADO');
+		$sheet->setCellValue('E1', 'CONCATENADO');
+		$sheet->setCellValue('F1', 'CONCATENADODETALLE');
 		$i=2;
-		foreach ($tren as $row) {
-			$sheet->setCellValue('A'.$i, $row['nombre']);
-			$sheet->setCellValue('B'.$i, $row['empresa']);
-			$sheet->setCellValue('C'.$i, $row['estado']);
+		foreach ($tren as $row){
+			$sheet->setCellValue('A'.$i, $row['idtren']);
+			$sheet->setCellValue('B'.$i, $row['nombre']);
+			$sheet->setCellValue('C'.$i, $row['empresa']);
+			$sheet->setCellValue('D'.$i, $row['estado']);
+			$sheet->setCellValue('E'.$i, $row['concatenado']);
+			$sheet->setCellValue('F'.$i, $row['concatenadodetalle']);
 			$i++;
 		}
-		$sheet->getStyle('A1:C1')->applyFromArray($border);
-		for ($j = 1; $j < $i ; $j++) {
-			$sheet->getStyle('A'.$j.':C'.$j)->applyFromArray($border);
+		$sheet->getStyle('A1:F1')->applyFromArray($border);
+		for ($j = 1; $j < $i ; $j++){
+			$sheet->getStyle('A'.$j.':F'.$j)->applyFromArray($border);
 		}
 
 		$writer = new Xls($spreadsheet);
-		$filename = 'Lista_tren.xls';
+		$filename = 'Lista_Tren.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');

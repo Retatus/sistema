@@ -1,15 +1,15 @@
 <?php namespace App\Controllers;
-
 use App\Controllers\BaseController;
+use DateTime;
 use App\Models\PaginadoModel;
 use App\Models\HotelModel;
+use App\Models\BancoModel;
+use App\Models\CathotelModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
-use App\Models\BancoModel;
-use App\Models\CathotelModel;
 
 
 class Hotel extends BaseController
@@ -20,6 +20,7 @@ class Hotel extends BaseController
 	protected $cathotel;
 
 
+//   SECCION ====== CONSTRUCT ======
 	public function __construct(){
 		$this->paginado = new PaginadoModel();
 		$this->hotel = new HotelModel();
@@ -28,15 +29,17 @@ class Hotel extends BaseController
 
 	}
 
+//   SECCION ====== INDEX ======
 	public function index($bestado = 1)
 	{
-		$hotel = $this->hotel->getHotels(1, '', 20, 1);
+		$hotel = $this->hotel->getHotels(20, 1, 1, '');
 		$total = $this->hotel->getCount();
 		$adjacents = 1;
 		$pag = $this->paginado->pagina(1, $total, $adjacents);
 		$data = ['titulo' => 'hotel', 'pag' => $pag, 'datos' => $hotel];
-		$banco = $this->banco->getBancos(1, '', 10, 1);
-		$cathotel = $this->cathotel->getCathotels(1, '', 10, 1);
+		$hotel = $this->hotel->getHotels(10, 1, 1, '');
+		$banco = $this->banco->getBancos(10, 1, 1, '');
+		$cathotel = $this->cathotel->getCathotels(10, 1, 1, '');
 
 		echo view('layouts/header', ['bancos' => $banco, 'cathotels' => $cathotel]);
 		echo view('layouts/aside');
@@ -44,39 +47,43 @@ class Hotel extends BaseController
 		echo view('layouts/footer');
 
 	}
+//   SECCION ====== AGREGAR ======
 	public function agregar(){
-	
+
 		$total = $this->hotel->getCount('', '');
 		$pag = $this->paginado->pagina(1, $total, 1);
 		print_r($pag);
 	}
 
+//   SECCION ====== OPCIONES ======
 	public function opciones(){
 		$accion = (isset($_GET['accion'])) ? $_GET['accion']:'leer';
 		$pag = (int)(isset($_GET['pag'])) ? $_GET['pag']:1;
-
+		
 		$todos = $this->request->getPost('todos');
 		$texto = strtoupper(trim($this->request->getPost('texto')));
 
-		$sidhotel = strtoupper(trim($this->request->getPost('idhotel')));
-		$snombre = strtoupper(trim($this->request->getPost('nombre')));
-		$nidcathotel = strtoupper(trim($this->request->getPost('idcathotel')));
-		$sdireccion = strtoupper(trim($this->request->getPost('direccion')));
-		$stelefono = strtoupper(trim($this->request->getPost('telefono')));
-		$scorreo = strtoupper(trim($this->request->getPost('correo')));
-		$sruc = strtoupper(trim($this->request->getPost('ruc')));
-		$srazonsocial = strtoupper(trim($this->request->getPost('razonsocial')));
-		$snrocuenta = strtoupper(trim($this->request->getPost('nrocuenta')));
-		$nidbanco = strtoupper(trim($this->request->getPost('idbanco')));
-		$subigeo = strtoupper(trim($this->request->getPost('ubigeo')));
-		$dlatitud = strtoupper(trim($this->request->getPost('latitud')));
-		$dlongitud = strtoupper(trim($this->request->getPost('longitud')));
-		$bestado = strtoupper(trim($this->request->getPost('estado')));
+		if($accion !== 'leer'){
+			$sidhotel = strtoupper(trim($this->request->getPost('idhotel')));
+			$snombre = strtoupper(trim($this->request->getPost('nombre')));
+			$nidcathotel = strtoupper(trim($this->request->getPost('idcathotel')));
+			$sdireccion = strtoupper(trim($this->request->getPost('direccion')));
+			$stelefono = strtoupper(trim($this->request->getPost('telefono')));
+			$scorreo = strtoupper(trim($this->request->getPost('correo')));
+			$sruc = strtoupper(trim($this->request->getPost('ruc')));
+			$srazonsocial = strtoupper(trim($this->request->getPost('razonsocial')));
+			$snrocuenta = strtoupper(trim($this->request->getPost('nrocuenta')));
+			$nidbanco = strtoupper(trim($this->request->getPost('idbanco')));
+			$subigeo = strtoupper(trim($this->request->getPost('ubigeo')));
+			$dlatitud = strtoupper(trim($this->request->getPost('latitud')));
+			$dlongitud = strtoupper(trim($this->request->getPost('longitud')));
+			$bestado = strtoupper(trim($this->request->getPost('estado')));
+		}
 
 
 		$respt = array();
 		$id = 0; $mensaje = '';
-		switch ($accion) {
+		switch ($accion){
 			case 'agregar':
 				$data  = array(
 					'sidhotel' => $sidhotel,
@@ -95,7 +102,7 @@ class Hotel extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				if ($this->hotel->existe($sidhotel,$nidbanco,$nidcathotel) == 1) {
+				if ($this->hotel->existe($sidhotel, $nidcathotel, $nidbanco) == 1){
 					$id = 0; $mensaje = 'CODIGO YA EXISTE'; 
 				} else {
 					$this->hotel->insert($data);
@@ -119,7 +126,7 @@ class Hotel extends BaseController
 					'bestado' => intval($bestado),
 
 				);
-				$this->hotel->UpdateHotel($sidhotel,$nidbanco,$nidcathotel, $data);
+				$this->hotel->UpdateHotel($sidhotel, $nidcathotel, $nidbanco, $data);
 				$id = 1; $mensaje = 'ATUALIZADO CORRECTAMENTE';
 				break;
 			case 'eliminar':
@@ -135,19 +142,28 @@ class Hotel extends BaseController
 		}
 		$adjacents = 1;
 		$total = $this->hotel->getCount($todos, $texto);
-		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->hotel->gethotels($todos, $texto, 20, $pag)];
+		$respt = ['id' => $id, 'mensaje' => $mensaje, 'pag' => $this->paginado->pagina($pag, $total, $adjacents), 'datos' => $this->hotel->getHotels(20, $pag, $todos, $texto)];
 		echo json_encode($respt);
 	}
 
-	public function edit(){ 
+//   SECCION ====== EDIT ======
+	public function edit(){
 		$sidhotel = strtoupper(trim($this->request->getPost('idhotel')));
 		$nidcathotel = strtoupper(trim($this->request->getPost('idcathotel')));
 		$nidbanco = strtoupper(trim($this->request->getPost('idbanco')));
 
-		$data = $this->hotel->getHotel($sidhotel,$nidbanco,$nidcathotel);
+		$data = $this->hotel->getHotel($sidhotel, $nidcathotel, $nidbanco);
 		echo json_encode($data);
 	}
 
+
+	public function autocompletehotels()
+	{
+		$todos = 1;
+		$keyword = $this->request->getPost('keyword');
+		$data = $this->hotel->getAutocompletehotels($todos,$keyword);
+		echo json_encode($data);
+	}
 	public function autocompletebancos()
 	{
 		$todos = 1;
@@ -162,14 +178,15 @@ class Hotel extends BaseController
 		$data = $this->cathotel->getAutocompletecathotels($todos,$keyword);
 		echo json_encode($data);
 	}
-
-	public function gethotelsSelectNombre(){
+//   SECCION ====== Hotel SELECT NOMBRE ======
+	public function getHotelsSelectNombre(){
 		$searchTerm = trim($this->request->getPost('term'));
-		$response = $this->hotel->gethotelsSelectNombre($searchTerm);
+		$response = $this->hotel->getHotelsSelectNombre($searchTerm);
 		echo json_encode($response);
 	}
 
 
+//   SECCION ====== PDF ======
 	public function pdf()
 	{
 		$pdf = new \FPDF();
@@ -180,11 +197,12 @@ class Hotel extends BaseController
 		$this->response->setHeader('Content-Type', 'application/pdf');
 	}
 
+//   SECCION ====== EXCEL ======
 	public function excel()
 	{
 		$total = $this->hotel->getCount();
 
-		$hotel = $this->hotel->getHotels(1, '', $total, 1);
+		$hotel = $this->hotel->getHotels($total, 1, 1, '');
 		require_once ROOTPATH . 'vendor/autoload.php';
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->setActiveSheetIndex(0);
@@ -204,51 +222,57 @@ class Hotel extends BaseController
 		$sheet->getColumnDimension('N')->setAutoSize(true);
 		$sheet->getColumnDimension('O')->setAutoSize(true);
 		$sheet->getColumnDimension('P')->setAutoSize(true);
-		$sheet->getStyle('A1:P1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
+		$sheet->getColumnDimension('Q')->setAutoSize(true);
+		$sheet->getColumnDimension('R')->setAutoSize(true);
+		$sheet->getStyle('A1:R1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF92C5FC');
 		$border = ['borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FF000000'], ], ], ];
-		$sheet->setCellValue('A1', 'ID');
+		$sheet->setCellValue('A1', 'IDHOTEL');
 		$sheet->setCellValue('B1', 'NOMBRE');
-		$sheet->setCellValue('C1', 'NOMBRE');
-		$sheet->setCellValue('D1', 'IDCAT');
-		$sheet->setCellValue('E1', 'DIRECCION');
-		$sheet->setCellValue('F1', 'TELEFONO');
-		$sheet->setCellValue('G1', 'CORREO');
-		$sheet->setCellValue('H1', 'RUC');
-		$sheet->setCellValue('I1', 'RAZONSOCIAL');
-		$sheet->setCellValue('J1', 'NROCUENTA');
-		$sheet->setCellValue('K1', 'NOMBRE');
-		$sheet->setCellValue('L1', 'IDBANCO');
-		$sheet->setCellValue('M1', 'UBIGEO');
-		$sheet->setCellValue('N1', 'LATITUD');
-		$sheet->setCellValue('O1', 'LONGITUD');
-		$sheet->setCellValue('P1', 'ESTADO');
+		$sheet->setCellValue('C1', 'DIRECCION');
+		$sheet->setCellValue('D1', 'TELEFONO');
+		$sheet->setCellValue('E1', 'CORREO');
+		$sheet->setCellValue('F1', 'RUC');
+		$sheet->setCellValue('G1', 'RAZONSOCIAL');
+		$sheet->setCellValue('H1', 'NROCUENTA');
+		$sheet->setCellValue('I1', 'UBIGEO');
+		$sheet->setCellValue('J1', 'LATITUD');
+		$sheet->setCellValue('K1', 'LONGITUD');
+		$sheet->setCellValue('L1', 'ESTADO');
+		$sheet->setCellValue('M1', 'IDBANCO');
+		$sheet->setCellValue('N1', 'NOMBRE');
+		$sheet->setCellValue('O1', 'IDCATHOTEL');
+		$sheet->setCellValue('P1', 'NOMBRE');
+		$sheet->setCellValue('Q1', 'CONCATENADO');
+		$sheet->setCellValue('R1', 'CONCATENADODETALLE');
 		$i=2;
-		foreach ($hotel as $row) {
+		foreach ($hotel as $row){
 			$sheet->setCellValue('A'.$i, $row['idhotel']);
 			$sheet->setCellValue('B'.$i, $row['nombre']);
-			$sheet->setCellValue('C'.$i, $row['nombre']);
-			$sheet->setCellValue('D'.$i, $row['idcathotel']);
-			$sheet->setCellValue('E'.$i, $row['direccion']);
-			$sheet->setCellValue('F'.$i, $row['telefono']);
-			$sheet->setCellValue('G'.$i, $row['correo']);
-			$sheet->setCellValue('H'.$i, $row['ruc']);
-			$sheet->setCellValue('I'.$i, $row['razonsocial']);
-			$sheet->setCellValue('J'.$i, $row['nrocuenta']);
-			$sheet->setCellValue('K'.$i, $row['nombre']);
-			$sheet->setCellValue('L'.$i, $row['idbanco']);
-			$sheet->setCellValue('M'.$i, $row['ubigeo']);
-			$sheet->setCellValue('N'.$i, $row['latitud']);
-			$sheet->setCellValue('O'.$i, $row['longitud']);
-			$sheet->setCellValue('P'.$i, $row['estado']);
+			$sheet->setCellValue('C'.$i, $row['direccion']);
+			$sheet->setCellValue('D'.$i, $row['telefono']);
+			$sheet->setCellValue('E'.$i, $row['correo']);
+			$sheet->setCellValue('F'.$i, $row['ruc']);
+			$sheet->setCellValue('G'.$i, $row['razonsocial']);
+			$sheet->setCellValue('H'.$i, $row['nrocuenta']);
+			$sheet->setCellValue('I'.$i, $row['ubigeo']);
+			$sheet->setCellValue('J'.$i, $row['latitud']);
+			$sheet->setCellValue('K'.$i, $row['longitud']);
+			$sheet->setCellValue('L'.$i, $row['estado']);
+			$sheet->setCellValue('M'.$i, $row['idbanco']);
+			$sheet->setCellValue('N'.$i, $row['nombre']);
+			$sheet->setCellValue('O'.$i, $row['idcathotel']);
+			$sheet->setCellValue('P'.$i, $row['nombre']);
+			$sheet->setCellValue('Q'.$i, $row['concatenado']);
+			$sheet->setCellValue('R'.$i, $row['concatenadodetalle']);
 			$i++;
 		}
-		$sheet->getStyle('A1:P1')->applyFromArray($border);
-		for ($j = 1; $j < $i ; $j++) {
-			$sheet->getStyle('A'.$j.':P'.$j)->applyFromArray($border);
+		$sheet->getStyle('A1:R1')->applyFromArray($border);
+		for ($j = 1; $j < $i ; $j++){
+			$sheet->getStyle('A'.$j.':R'.$j)->applyFromArray($border);
 		}
 
 		$writer = new Xls($spreadsheet);
-		$filename = 'Lista_hotel.xls';
+		$filename = 'Lista_Hotel.xls';
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename='.$filename.'');
 		header('Cache-Control: max-age=0');

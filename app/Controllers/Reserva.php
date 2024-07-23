@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 use App\Controllers\BaseController;
+use DateTime;
 use App\Models\PaginadoModel;
 use App\Models\ReservaModel;
 use App\Models\EventModel;
@@ -20,6 +21,7 @@ class Reserva extends BaseController
 	public function __construct(){
 		$this->paginado = new PaginadoModel();
 		$this->reserva = new ReservaModel();
+
 	}
 
 	public function calendar()
@@ -85,21 +87,23 @@ class Reserva extends BaseController
 		$todos = $this->request->getPost('todos');
 		$texto = strtoupper(trim($this->request->getPost('texto')));
 
-		$nidreserva = strtoupper(trim($this->request->getPost('idreserva')));
-		$sreservanombre = strtoupper(trim($this->request->getPost('reservanombre')));
-		$tempdate = trim($this->request->getPost('fechainicio'));
-		$tempdate = explode('/', $tempdate);
-		$tfechainicio = date('Y-m-d', strtotime($tempdate[1].'/'.$tempdate[0].'/'.$tempdate[2]));
-		$tempdate = trim($this->request->getPost('fechafin'));
-		$tempdate = explode('/', $tempdate);
-		$tfechafin = date('Y-m-d', strtotime($tempdate[1].'/'.$tempdate[0].'/'.$tempdate[2]));
-		$ntipodoc = strtoupper(trim($this->request->getPost('tipodoc')));
-		$sidpersona = strtoupper(trim($this->request->getPost('idpersona')));
-		$sreservatelefono = strtoupper(trim($this->request->getPost('reservatelefono')));
-		$sreservacorreo = strtoupper(trim($this->request->getPost('reservacorreo')));
-		$dmontototal = strtoupper(trim($this->request->getPost('montototal')));
-		$bpagado = strtoupper(trim($this->request->getPost('pagado')));
-		$bestado = strtoupper(trim($this->request->getPost('estado')));
+		if($accion !== 'leer'){
+			$nidreserva = strtoupper(trim($this->request->getPost('idreserva')));
+			$sreservanombre = strtoupper(trim($this->request->getPost('reservanombre')));
+			$tempdate = trim($this->request->getPost('fechainicio'));
+			$tempdate = explode('/', $tempdate);
+			$tfechainicio = date('Y-m-d', strtotime($tempdate[1].'/'.$tempdate[0].'/'.$tempdate[2]));
+			$tempdate = trim($this->request->getPost('fechafin'));
+			$tempdate = explode('/', $tempdate);
+			$tfechafin = date('Y-m-d', strtotime($tempdate[1].'/'.$tempdate[0].'/'.$tempdate[2]));
+			$ntipodoc = strtoupper(trim($this->request->getPost('tipodoc')));
+			$sidpersona = strtoupper(trim($this->request->getPost('idpersona')));
+			$sreservatelefono = strtoupper(trim($this->request->getPost('reservatelefono')));
+			$sreservacorreo = strtoupper(trim($this->request->getPost('reservacorreo')));
+			$dmontototal = strtoupper(trim($this->request->getPost('montototal')));
+			$bpagado = strtoupper(trim($this->request->getPost('pagado')));
+			$bestado = strtoupper(trim($this->request->getPost('estado')));
+		}
 
 
 		$respt = array();

@@ -46,56 +46,58 @@
 							<table id='TablaHotel' class='table table-sm table-bordered table-striped'>
 								<thead>
 									<tr>
-										<th >Id</th>
-										<th >Nombre</th>
-										<th>Cathotel</th>
-										<th hidden>Idcat</th>
-										<th >Direccion</th>
-										<th >Telefono</th>
-										<th >Correo</th>
-										<th >Ruc</th>
-										<th >Razonsocial</th>
-										<th >Nrocuenta</th>
-										<th>Banco</th>
+										<th>Idhotel</th>
+										<th>Nombre</th>
+										<th>Direccion</th>
+										<th>Telefono</th>
+										<th>Correo</th>
+										<th>Ruc</th>
+										<th>Razonsocial</th>
+										<th>Nrocuenta</th>
+										<th>Ubigeo</th>
+										<th>Latitud</th>
+										<th>Longitud</th>
+										<th>Estado</th>
 										<th hidden>Idbanco</th>
-										<th >Ubigeo</th>
-										<th >Latitud</th>
-										<th >Longitud</th>
-										<th >Estado</th>
+										<th>Nombre</th>
+										<th hidden>Idcathotel</th>
+										<th>Nombre</th>
+										<th>Concatenado</th>
+										<th>Concatenadodetalle</th>
 										<th>Acciones</th>
-
 									</tr>
 								</thead>
 								<tbody>
 									<?php if(!empty($datos)):?>
 										<?php foreach($datos as $hotel):?>
 											<tr>
-												<td ><?php echo $hotel['idhotel'];?></td>
-												<td ><?php echo $hotel['nombre'];?></td>
+												<td><?php echo $hotel['idhotel'];?></td>
+												<td><?php echo $hotel['nombre'];?></td>
+												<td><?php echo $hotel['direccion'];?></td>
+												<td><?php echo $hotel['telefono'];?></td>
+												<td><?php echo $hotel['correo'];?></td>
+												<td><?php echo $hotel['ruc'];?></td>
+												<td><?php echo $hotel['razonsocial'];?></td>
+												<td><?php echo $hotel['nrocuenta'];?></td>
+												<td><?php echo $hotel['ubigeo'];?></td>
+												<td><?php echo $hotel['latitud'];?></td>
+												<td><?php echo $hotel['longitud'];?></td>
+												<td class = 'hidden-xs'><?php echo $est = ($hotel['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
+												<td hidden><?php echo $hotel['idbanco'];?></td>
 												<td><?php echo $hotel['nombre'];?></td>
 												<td hidden><?php echo $hotel['idcathotel'];?></td>
-												<td ><?php echo $hotel['direccion'];?></td>
-												<td ><?php echo $hotel['telefono'];?></td>
-												<td ><?php echo $hotel['correo'];?></td>
-												<td ><?php echo $hotel['ruc'];?></td>
-												<td ><?php echo $hotel['razonsocial'];?></td>
-												<td ><?php echo $hotel['nrocuenta'];?></td>
 												<td><?php echo $hotel['nombre'];?></td>
-												<td hidden><?php echo $hotel['idbanco'];?></td>
-												<td ><?php echo $hotel['ubigeo'];?></td>
-												<td ><?php echo $hotel['latitud'];?></td>
-												<td ><?php echo $hotel['longitud'];?></td>
-												<td class = 'hidden-xs'><?php echo $est = ($hotel['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
-
+												<td><?php echo $hotel['concatenado'];?></td>
+												<td><?php echo $hotel['concatenadodetalle'];?></td>
 												<td>
 													<div class='row'>
 														<div style='margin: auto;'>
-															<button type='button' onclick="btnEditarHotel('<?php echo $hotel['idhotel'].'\',\''. $hotel['idbanco'].'\',\''. $hotel['idcathotel'];?>')" class='btn btn-info btn-xs'>
+															<button type='button' onclick="btnEditarHotel('<?php echo $hotel['idhotel'].'\',\''.$hotel['idcathotel'].'\',\''.$hotel['idbanco'];?>')" class='btn btn-info btn-xs'>
 																<span class='fa fa-search fa-xs'></span>
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $hotel['idhotel'].'\',\''. $hotel['idbanco'].'\',\''. $hotel['idcathotel'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href="<?php echo base_url();?>reserva/add/<?php echo $hotel['idhotel'].'\',\''.$hotel['idcathotel'].'\',\''.$hotel['idbanco'];?>"><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>
@@ -105,6 +107,8 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div class='card-footer'>
 						<div id='PaginadoHotel'>
 							<?php echo $pag;?>
 						</div>
@@ -114,6 +118,7 @@
 		</div>
 	</section>
 </div>
+<!--  SECCION ====== MODAL ====== -->
 <div class='modal fade' id='modalAgregarHotel' tabindex='-1'>
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
@@ -126,28 +131,15 @@
 		<div class='modal-body'>
 			<div class='form-group row'>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>id:</label>
+					<label class='col-sm-4'>Idhotel:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idhotel' name='idhotel' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='idhotel' name='idhotel' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>nombre:</label>
+					<label class='col-sm-4' for='id'>Nombre:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='nombre' name='nombre' placeholder='T001' autocomplete = 'off'>
-					</div>
-				</div>
-				<div class='col-6 form-group row'>
-					<label class='col-sm-4'>Banco:</label>
-					<div class = 'col-sm-8'>
-						<select class='form-control form-control-sm select2' id='idbanco'>
-							<option value='0'>-- SELECCIONAR1 --</option>
-							<?php if (!empty($bancos)):?>
-								<?php foreach($bancos as $banco):?>
-									<option value= '<?php echo $banco['idbanco'];?>'><?php echo $banco['concatenado'];?></option>
-								<?php endforeach;?>
-							<?php endif;?>
-						</select>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='nombre' name='nombre' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
@@ -164,61 +156,74 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>direccion:</label>
+					<label class='col-sm-4' for='id'>Direccion:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='direccion' name='direccion' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='direccion' name='direccion' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>telefono:</label>
+					<label class='col-sm-4' for='id'>Telefono:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='telefono' name='telefono' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='telefono' name='telefono' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>correo:</label>
+					<label class='col-sm-4' for='id'>Correo:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='correo' name='correo' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='correo' name='correo' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>ruc:</label>
+					<label class='col-sm-4' for='id'>Ruc:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='ruc' name='ruc' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='ruc' name='ruc' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>razonsocial:</label>
+					<label class='col-sm-4' for='id'>Razonsocial:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='razonsocial' name='razonsocial' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='razonsocial' name='razonsocial' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>nrocuenta:</label>
+					<label class='col-sm-4' for='id'>Nrocuenta:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='nrocuenta' name='nrocuenta' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='nrocuenta' name='nrocuenta' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>ubigeo:</label>
+					<label class='col-sm-4'>Banco:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='ubigeo' name='ubigeo' placeholder='T001' autocomplete = 'off'>
+						<select class='form-control form-control-sm select2' id='idbanco'>
+							<option value='0'>-- SELECCIONAR1 --</option>
+							<?php if (!empty($bancos)):?>
+								<?php foreach($bancos as $banco):?>
+									<option value= '<?php echo $banco['idbanco'];?>'><?php echo $banco['concatenado'];?></option>
+								<?php endforeach;?>
+							<?php endif;?>
+						</select>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>latitud:</label>
+					<label class='col-sm-4' for='id'>Ubigeo:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='latitud' name='latitud' placeholder='T001' autocomplete = 'off'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='ubigeo' name='ubigeo' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>longitud:</label>
+					<label class='col-sm-4' for='id'>Latitud:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='longitud' name='longitud' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='latitud' name='latitud' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>estado:</label>
+					<label class='col-sm-4' for='id'>Longitud:</label>
+					<div class = 'col-sm-8'>
+						<input type='number' class='form-control form-control-sm' id='longitud' name='longitud' placeholder='0.00' autocomplete = 'off'>
+					</div>
+				</div>
+				<div class='col-6 form-group row'>
+					<label class='col-sm-4' for='rol'>Estado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='estado' name='estado'>
 							<option value = '1' selected >ACTIVO</option>
@@ -226,7 +231,6 @@
 						</select>
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<div class='modal-footer'>
@@ -238,158 +242,14 @@
 		</div>
 	</div>
 </div>
-<div class='modal fade show' id='modal_agregar_tbanco' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Banco</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Banco:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaBanco'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaBanco'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-<div class='modal fade show' id='modal_agregar_tcathotel' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Cathotel</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Cathotel:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaCathotel'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaCathotel'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-
+<!--  SECCION ====== SCRIPT ====== -->
 <script>
 	var NuevoHotel;
 	var base_url= '<?php echo base_url();?>';
-
-
-	function NumeroFilasTabla(){
-		TamanioTabla = $('#tabla_Habitaciones tr').length - 1;
-		$('#minmax').val(TamanioTabla)
-	}
-
-
 	function load(pag){
 		RecolectarDatosHotel();
 		EnviarInformacionHotel('leer', NuevoHotel, false, pag);
 	}
-
-
-
-	$('#idcathabitacion').autocomplete({ 
-		source: function(request, response) {
-			$.ajax({
-				type: 'POST',
-				url: base_url + '/hotelhabitacion/autocompletecathabitacions',
-				dataType: 'json',
-				data: { keyword: request.term },
-				success: function(data){
-					response($.map(data, function(item) {
-						return {
-							label: item.concatenado,
-							concatenado: item.concatenado,
-							idtour: item.idcathabitacion,
-							nombre: item.nombre,
-
-							
-							concatenadodetalle: item.concatenadodetalle,
-
-						}
-					}))
-				}
-			});
-		},
-		minLength: 2,
-		select: function( event, ui ) {
-			$('#idcathabitacion').val('');
-			var j = $('#tablaDetalleServicio tr').length;
-			var i = parseInt((j == 1 ? 0 : $('#tablaDetalleServicio').find('tr').eq(j - 1).find('td').eq(0).html()));
-			var rows = "<tr id=Fila_" + (i + 1) + ">"+
-				"<td hidden>" + (i + 1) + "</td>"+
-				"<td hidden><input type='text' class='form-control form-control-sm' id='detalleTipoServicio_" + (i + 1) + "' value='thotelhabitacion'></td>"+
-				"<td hidden><input type='text' class='form-control form-control-sm' id='detalleIdReserva_" + (i + 1) + "' value=''></td>"+
-				"<td>"+
-					"<div class='row'>"+
-						"<div style='margin: auto;'>"+
-							"<a href='javascript:void(0)' style='color: #ef5350;' onClick='EliminarFila(" + (i + 1) + ")'><i class='fa fa-times'></i></a>"+
-						"</div>"+
-						"<div style='margin: auto;'>"+
-							"<a href='javascript:void(0)' style='color: #007bff;' onClick='AgregarDatos(" + (i + 1) + ")'><i class='fa fa-pencil'></i></a>"+
-						"</div>"+
-					"</div>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleGravado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='10'>GRAV</option>"+
-						"<option value='20'>EXON</option>"+
-						"<option value='30'>INAF</option>"+
-						"<option value='40'>EXPO</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>" + ui.item.idtour + "</td>"+
-				"<td>" + ui.item.concatenadodetalle + "</td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase datepicker" + (i + 1) + "' id='detalleFecha_" + (i + 1) + "' readonly></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detallecantidad_" + (i + 1) + "' placeholder='cantidad' value='1'></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detalleprecio_" + (i + 1) + "' placeholder='precio' value='" + 0.00 + "'></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detalletotal_" + (i + 1) + "' placeholder='total' value='' disabled></td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleConfirmado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='1'>CONFIRMADO</option>"+
-						"<option value='2'>PENDIENTE</option>"+
-						"<option value='3'>ANULADO</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detallePagado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='0'>PAGADO</option>"+
-						"<option value='0'>PENDIENTE</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleEstado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='0'>ACTIVO</option>"+
-						"<option value='0'>DESACTIVO</option>"+
-					"</select>"+
-				"</td>"+
-			"</tr>";
-			$('#tablaDetalleServicio').append(rows);
-			addDatepicker(i + 1);
-			ImporteTotalDetalle(i + 1);
-			return false;
-		}
-	});
-
-
-
 	$('#btnAgregarHotel').click(function(){
 		LimpiarModalDatosHotel();
 		$('#categoria').val(1);
@@ -400,15 +260,14 @@
 		$('#btnModalEliminarHotel').toggle(false);
 		$('#modalAgregarHotel').modal();
 	});
-
-
+//   SECCION ====== btn Editar ======
 	function btnEditarHotel(Val0, Val1, Val2){
 		$.ajax({
 			type: 'POST',
 			url: base_url + '/hotel/edit',
-			data: { idhotel: Val0, idbanco: Val1, idcathotel: Val2},
+			data: {idhotel: Val0, idcathotel: Val1, idbanco: Val2},
 			success: function(msg){
-		debugger
+				debugger
 				var temp = JSON.parse(msg);
 				console.log(temp);
 				LimpiarModalDatosHotel();
@@ -426,51 +285,6 @@
 				$('#latitud').val(temp.latitud);
 				$('#longitud').val(temp.longitud);
 				$('#estado').val(temp.estado);
-
-
-
-				$('#tabla_Habitaciones tr').not($('#tabla_Habitaciones tr:first')).remove();
-				var nrohabitaciones = 0;
-				console.log(temp.habitacion);
-				$.each(temp.habitacion, function(i, value) { 
-					nrohabitaciones++;
-					var rows = "<tr>" +
-					"<td hidden>" + (i + 1) + "</td>" +
-					"<td class='numero'>"+
-						"<a href='#' style='color: #ef5350;' class='delete'><i class='fa fa-times' style='padding-top: 10px;'></i></a>" +
-					"</td>" + 
-					"<td hidden><input type='text' class='form-control text-uppercase' id='codhabitacion_" +(i + 1)+ "' value="+value.idhabitacion+"></td>" +
-					"<td>" +
-						"<select class='form-control select2' id='catHabitacion_"+(i + 1)+"' style='width: 100%;'>" +
-							"<option value='0'>-- SELECCIONAR --</option>" +
-						"</select>" +
-					"</td>" +
-					"<td><input type='text' class='form-control solo_numero' id='precio_" +(i + 1)+"' value="+value.precio+"></td>" +
-					"<td>" +
-						"<select class='form-control' id='estado_" +(i + 1)+ "' style='padding: 6px 2px;'>" +
-						"</select>" +
-					"</td>" +
-					"</tr>";
-					$('#tabla_Habitaciones').append(rows);
-
-
-					$('.delete').off().click(function (e) {
-						var i = $('#tabla_Habitaciones tr').length - 1; 
-						if (i > 1) {
-							$(this).parent('td').parent('tr').remove();
-							NumeroFilasTabla();
-						} 
-					});
-
-
-					addCatHabitacion((i + 1));
-					$('#catHabitacion_'+(i + 1)).select2().val(value.idcathabitacion).select2('destroy').select2();
-					addEstado((i + 1)); 
-					$('#estado_'+(i + 1)).val(value.estado);            
-				});
-				$('#minmax').val(nrohabitaciones);
-
-
 				$('#btnModalAgregarHotel').toggle(false);
 				$('#btnModalEditarHotel').toggle(true);
 				$('#btnModalEliminarHotel').toggle(true);
@@ -481,11 +295,8 @@
 			}
 		});
 	}
-
-
 	$('#btnModalAgregarHotel').click(function(){
-debugger
-
+		debugger
 		if (ValidarCamposVaciosHotel() != 0) {
 			alert('Completar campos obligatorios');
 		}else{
@@ -494,8 +305,6 @@ debugger
 			EnviarInformacionHotel('agregar', NuevoHotel, true);
 		}
 	});
-
-
 	$('#btnModalEditarHotel').click(function(){
 		if (ValidarCamposVaciosHotel() != 0) {
 			alert('Completar campos obligatorios');
@@ -504,8 +313,6 @@ debugger
 			EnviarInformacionHotel('modificar', NuevoHotel, true);
 		}
 	});
-
-
 	$('#btnModalEliminarHotel').click(function(){
 		var bool=confirm('ESTA SEGURO DE ELIMINAR EL DATO?');
 		if(bool){
@@ -513,26 +320,18 @@ debugger
 			EnviarInformacionHotel('eliminar', NuevoHotel, true);
 		}
 	});
-
-
 	$('#btnModalCerrarHotel').click(function(){
 		$('#IdModalGrupoCodigoHotel').prop('hidden', false); 
 		LimpiarModalDatosHotel();
 	});
-
-
 	$('#btnFiltroHotel').click(function(){
 		RecolectarDatosHotel();
 		EnviarInformacionHotel('leer', NuevoHotel, false);
 	});
-
-
 	function Paginado(pag) {
 		RecolectarDatosHotel();
 		EnviarInformacionHotel('leer', NuevoHotel, false, pag);
 	}
-
-
 	function RecolectarDatosHotel(){
 		NuevoHotel = {
 			idhotel: $('#idhotel').val().toUpperCase(),
@@ -549,13 +348,10 @@ debugger
 			latitud: $('#latitud').val().toUpperCase(),
 			longitud: $('#longitud').val().toUpperCase(),
 			estado: $('#estado').val().toUpperCase(),
-
 			todos: $('#idFTodos').val(),
 			texto: $('#idFTexto').val()
 		};
 	}
-
-
 	function EnviarInformacionHotel(accion, objEvento, modal, pag=1) { 
 		$.ajax({
 			type: 'POST',
@@ -597,10 +393,8 @@ debugger
 			}
 		});
 	}
-
-
 	function LimpiarModalDatosHotel(){
-		$('#idhotel').val('0');
+		$('#idhotel').val('');
 		$('#nombre').val('');
 		$('#idcathotel').select2().val(0).select2('destroy').select2();
 		$('#direccion').val('');
@@ -613,130 +407,143 @@ debugger
 		$('#ubigeo').val('');
 		$('#latitud').val('');
 		$('#longitud').val('');
-
 	}
-
-
 	function ValidarCamposVaciosHotel(){
 		var error = 0;
 		if ($('#idhotel').val() == ''){
 			Resaltado('idhotel');
 			error++;
+		}else{
+			NoResaltado('idhotel');
 		}
 		if ($('#nombre').val() == ''){
 			Resaltado('nombre');
 			error++;
+		}else{
+			NoResaltado('nombre');
 		}
-		if ($('#idcathotel').val() == ''){
+		var value = $('#idcathotel').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idcathotel');
 			error++;
+		}else{
+			NoResaltado('idcathotel');
 		}
 		if ($('#direccion').val() == ''){
 			Resaltado('direccion');
 			error++;
+		}else{
+			NoResaltado('direccion');
 		}
 		if ($('#telefono').val() == ''){
 			Resaltado('telefono');
 			error++;
+		}else{
+			NoResaltado('telefono');
 		}
-		if ($('#correo').val() == ''){
+		var email = $('#correo').val();
+		var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+		if (!emailRegex.test(email)){
 			Resaltado('correo');
 			error++;
+		}else{
+			NoResaltado('correo');
 		}
 		if ($('#ruc').val() == ''){
 			Resaltado('ruc');
 			error++;
+		}else{
+			NoResaltado('ruc');
 		}
 		if ($('#razonsocial').val() == ''){
 			Resaltado('razonsocial');
 			error++;
+		}else{
+			NoResaltado('razonsocial');
 		}
 		if ($('#nrocuenta').val() == ''){
 			Resaltado('nrocuenta');
 			error++;
+		}else{
+			NoResaltado('nrocuenta');
 		}
-		if ($('#idbanco').val() == ''){
+		var value = $('#idbanco').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idbanco');
 			error++;
+		}else{
+			NoResaltado('idbanco');
 		}
 		if ($('#ubigeo').val() == ''){
 			Resaltado('ubigeo');
 			error++;
+		}else{
+			NoResaltado('ubigeo');
 		}
 		if ($('#latitud').val() == ''){
 			Resaltado('latitud');
 			error++;
+		}else{
+			NoResaltado('latitud');
 		}
 		if ($('#longitud').val() == ''){
 			Resaltado('longitud');
 			error++;
+		}else{
+			NoResaltado('longitud');
 		}
 		if ($('#estado').val() == ''){
 			Resaltado('estado');
 			error++;
+		}else{
+			NoResaltado('estado');
 		}
-
 		return error;
 	}
-
-
 	function Resaltado(id){
 		$('#'+id).css('border-color', '#ef5350');
 		$('#'+id).focus();
 	}
 
-
-	function CargartablaHotel(objeto){   
+	function NoResaltado(id){
+		$('#'+id).css('border-color', '#ced4da');
+	}
+	function CargartablaHotel(objeto){
 		$('#TablaHotel tr').not($('#TablaHotel tr:first')).remove();
 		$.each(objeto, function(i, value) {
-		var fila = '<tr>'+
-			'<td >'+value.idhotel+'</td>'+
-			'<td >'+value.nombre+'</td>'+
-			'<td>'+value.nombre+'</td>'+
-			'<td hidden>'+value.idcathotel+'</td>'+
-			'<td >'+value.direccion+'</td>'+
-			'<td >'+value.telefono+'</td>'+
-			'<td >'+value.correo+'</td>'+
-			'<td >'+value.ruc+'</td>'+
-			'<td >'+value.razonsocial+'</td>'+
-			'<td >'+value.nrocuenta+'</td>'+
-			'<td>'+value.nombre+'</td>'+
-			'<td hidden>'+value.idbanco+'</td>'+
-			'<td >'+value.ubigeo+'</td>'+
-			'<td >'+value.latitud+'</td>'+
-			'<td >'+value.longitud+'</td>'+
-			'<td class = "hidden -xs">' + ((value.estado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
-
-			'<td>'+
-				'<div class="row">'+
-					'<div style="margin: auto;">'+
-						'<button type="button" onclick="btnEditarHotel(\''+value.idhotel+'\', \''+value.idbanco+'\', \''+value.idcathotel+'\')" class="btn btn-info btn-xs">'+
-							'<span class="fa fa-search fa-sm"></span>'+
-						'</button>'+
-					'</div>'+
-						'<div style="margin: auto;">'+
-							'<a class="btn btn-success btn-xs" href="<?php echo base_url();?>/reserva/add"><i class="fa fa-pencil"></i></a>'+
-					'</div>'+
-				'</div>'+
-			'</td>'+
-		'</tr>';
-		$('#TablaHotel tbody').append(fila);
+				var fila = `<tr>
+				<td>${value.idhotel}</td>
+				<td>${value.nombre}</td>
+				<td>${value.direccion}</td>
+				<td>${value.telefono}</td>
+				<td>${value.correo}</td>
+				<td>${value.ruc}</td>
+				<td>${value.razonsocial}</td>
+				<td>${value.nrocuenta}</td>
+				<td>${value.ubigeo}</td>
+				<td>${value.latitud}</td>
+				<td>${value.longitud}</td>
+				<td class = 'hidden-xs'>${value.estado == '1' ? 'ACTIVO' : 'DESACTIVO'}</td>
+				<td hidden>${value.idbanco}</td>
+				<td>${value.nombre}</td>
+				<td hidden>${value.idcathotel}</td>
+				<td>${value.nombre}</td>
+				<td>${value.concatenado}</td>
+				<td>${value.concatenadodetalle}</td>
+				<td>
+				<div class='row'>
+					<div style='margin: auto;'>
+						<button type='button' onclick="btnEditarHotel('${value.idhotel}', '${value.idcathotel}', '${value.idbanco}')" class='btn btn-info btn-xs'>
+							<span class='fa fa-search fa-xs'></span>
+						</button>
+					</div>
+						<div style='margin: auto;'>
+							<a class='btn btn-success btn-xs' href='<?php echo base_url();?>/reserva/add/$hotel['idhotel'].'\',\''.$hotel['idcathotel'].'\',\''.$hotel['idbanco']'><i class='fa fa-pencil'></i></a>
+					</div>
+				</div>
+				</td>
+				</tr>`
+			$('#TablaHotel tbody').append(fila);
 		});
-	}
-
-
-	function addEstado(i){
-		$('#estado_'+i).append($('<option>').val('1').text('ACTIVO'));
-		$('#estado_'+i).append($('<option>').val('0').text('DESACTIVO'));
-	}
-
-
-	function addCatHabitacion(i) {
-		var sel = document.getElementById('habitacion');
-		var Length = sel.length;
-		for (var j = 0; j < Length; j++) {
-		var opt = sel[j];
-		$('#catHabitacion_'+i).append($('<option>').val(opt.value).text(opt.label));            
-		}
 	}
 </script>

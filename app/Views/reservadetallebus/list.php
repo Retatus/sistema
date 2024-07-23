@@ -46,48 +46,50 @@
 							<table id='TablaReservadetallebus' class='table table-sm table-bordered table-striped'>
 								<thead>
 									<tr>
-										<th>Reserva</th>
-										<th hidden>Idreserva</th>
 										<th hidden>Idreservadetalleticketbus</th>
-										<th>Ticketbus</th>
+										<th>Descripcion</th>
+										<th>Fecha</th>
+										<th>Cantidad</th>
+										<th>Precio</th>
+										<th>Total</th>
+										<th>Confirmado</th>
+										<th>Estado</th>
+										<th hidden>Idreserva</th>
+										<th>Reservanombre</th>
 										<th hidden>Idticketbus</th>
-										<th >Descripcion</th>
-										<th >Fecha</th>
-										<th >Cantidad</th>
-										<th >Precio</th>
-										<th >Total</th>
-										<th >Confirmado</th>
-										<th >Estado</th>
+										<th>Nombre</th>
+										<th>Concatenado</th>
+										<th>Concatenadodetalle</th>
 										<th>Acciones</th>
-
 									</tr>
 								</thead>
 								<tbody>
 									<?php if(!empty($datos)):?>
 										<?php foreach($datos as $reservadetallebus):?>
 											<tr>
-												<td><?php echo $reservadetallebus['reservanombre'];?></td>
-												<td hidden><?php echo $reservadetallebus['idreserva'];?></td>
 												<td hidden><?php echo $reservadetallebus['idreservadetalleticketbus'];?></td>
-												<td><?php echo $reservadetallebus['nombre'];?></td>
-												<td hidden><?php echo $reservadetallebus['idticketbus'];?></td>
-												<td ><?php echo $reservadetallebus['descripcion'];?></td>
-												<td ><?php echo $reservadetallebus['fecha'];?></td>
-												<td ><?php echo $reservadetallebus['cantidad'];?></td>
-												<td ><?php echo $reservadetallebus['precio'];?></td>
-												<td ><?php echo $reservadetallebus['total'];?></td>
+												<td><?php echo $reservadetallebus['descripcion'];?></td>
+												<td><?php echo $reservadetallebus['fecha'];?></td>
+												<td><?php echo $reservadetallebus['cantidad'];?></td>
+												<td><?php echo $reservadetallebus['precio'];?></td>
+												<td><?php echo $reservadetallebus['total'];?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($reservadetallebus['confirmado']== 1) ? 'CONFIRMADO' : 'PENDIENTE';?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($reservadetallebus['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
-
+												<td hidden><?php echo $reservadetallebus['idreserva'];?></td>
+												<td><?php echo $reservadetallebus['reservanombre'];?></td>
+												<td hidden><?php echo $reservadetallebus['idticketbus'];?></td>
+												<td><?php echo $reservadetallebus['nombre'];?></td>
+												<td><?php echo $reservadetallebus['concatenado'];?></td>
+												<td><?php echo $reservadetallebus['concatenadodetalle'];?></td>
 												<td>
 													<div class='row'>
 														<div style='margin: auto;'>
-															<button type='button' onclick="btnEditarReservadetallebus('<?php echo $reservadetallebus['idreservadetalleticketbus'].'\',\''. $reservadetallebus['idreserva'].'\',\''. $reservadetallebus['idticketbus'];?>')" class='btn btn-info btn-xs'>
+															<button type='button' onclick="btnEditarReservadetallebus('<?php echo $reservadetallebus['idreserva'].'\',\''.$reservadetallebus['idreservadetalleticketbus'].'\',\''.$reservadetallebus['idticketbus'];?>')" class='btn btn-info btn-xs'>
 																<span class='fa fa-search fa-xs'></span>
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $reservadetallebus['idreservadetalleticketbus'].'\',\''. $reservadetallebus['idreserva'].'\',\''. $reservadetallebus['idticketbus'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href="<?php echo base_url();?>reserva/add/<?php echo $reservadetallebus['idreserva'].'\',\''.$reservadetallebus['idreservadetalleticketbus'].'\',\''.$reservadetallebus['idticketbus'];?>"><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>
@@ -97,6 +99,8 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div class='card-footer'>
 						<div id='PaginadoReservadetallebus'>
 							<?php echo $pag;?>
 						</div>
@@ -106,6 +110,7 @@
 		</div>
 	</section>
 </div>
+<!--  SECCION ====== MODAL ====== -->
 <div class='modal fade' id='modalAgregarReservadetallebus' tabindex='-1'>
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
@@ -130,6 +135,12 @@
 						</select>
 					</div>
 				</div>
+				<div class='col-6 form-group row' hidden>
+					<label class='col-sm-4'>Idreservadetalleticketbus:</label>
+					<div class = 'col-sm-8'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='idreservadetalleticketbus' name='idreservadetalleticketbus' placeholder='T001' autocomplete = 'off'>
+					</div>
+				</div>
 				<div class='col-6 form-group row'>
 					<label class='col-sm-4'>Ticketbus:</label>
 					<div class = 'col-sm-8'>
@@ -143,20 +154,8 @@
 						</select>
 					</div>
 				</div>
-				<div class='col-6 form-group row'hidden>
-					<label class='col-sm-4' for='id'>idreservadetalleticketbus:</label>
-					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idreservadetalleticketbus' name='idreservadetalleticketbus' placeholder='T001' autocomplete = 'off'>
-					</div>
-				</div>
-				<div class='col-12 form-group row'>
-					<label class='col-sm-2' for='id'>descripcion:</label>
-					<div class = 'col-sm-10'>
-						<textarea type='text' class='form-control form-control-sm text-uppercase    123' id='descripcion' name='descripcion' placeholder='T001' autocomplete = 'off'></textarea>
-					</div>
-				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4'>fecha:</label>
+					<label class='col-sm-4'>Fecha:</label>
 					<div class='col-sm-8'>
 						<div class='input-group'>
 							<div class='input-group-prepend'>
@@ -169,25 +168,25 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>cantidad:</label>
+					<label class='col-sm-4' for='id'>Cantidad:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='cantidad' name='cantidad' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='cantidad' name='cantidad' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>precio:</label>
+					<label class='col-sm-4' for='id'>Precio:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='precio' name='precio' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='precio' name='precio' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>total:</label>
+					<label class='col-sm-4' for='id'>Total:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='total' name='total' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='total' name='total' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>confirmado:</label>
+					<label class='col-sm-4' for='rol'>Confirmado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='confirmado' name='confirmado'>
 							<option value = '1' selected >CONFIRMADO</option>
@@ -196,7 +195,7 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>estado:</label>
+					<label class='col-sm-4' for='rol'>Estado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='estado' name='estado'>
 							<option value = '1' selected >ACTIVO</option>
@@ -204,7 +203,12 @@
 						</select>
 					</div>
 				</div>
-
+				<div class='col-12 form-group row'>
+					<label class='col-sm-4' for='id'>Descripcion:</label>
+					<div class = 'col-sm-12'>
+						<textarea type='text' class='form-control form-control-sm text-uppercase' id='descripcion' name='descripcion' placeholder='T001' autocomplete = 'off'></textarea>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class='modal-footer'>
@@ -216,72 +220,14 @@
 		</div>
 	</div>
 </div>
-<div class='modal fade show' id='modal_agregar_treserva' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Reserva</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Reserva:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaReserva'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaReserva'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-<div class='modal fade show' id='modal_agregar_tticketbus' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Ticketbus</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Ticketbus:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaTicketbus'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaTicketbus'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-
+<!--  SECCION ====== SCRIPT ====== -->
 <script>
 	var NuevoReservadetallebus;
 	var base_url= '<?php echo base_url();?>';
-
-
-	function NumeroFilasTabla(){
-		TamanioTabla = $('#tabla_Habitaciones tr').length - 1;
-		$('#minmax').val(TamanioTabla)
-	}
-
-
 	function load(pag){
 		RecolectarDatosReservadetallebus();
 		EnviarInformacionReservadetallebus('leer', NuevoReservadetallebus, false, pag);
 	}
-
-
 	$('#fecha').datepicker({
 		language: 'es',
 		todayBtn: 'linked',
@@ -290,10 +236,7 @@
 		multidate: false,
 		todayHighlight: true
 	});
-
-
-
-
+	
 	$('#btnAgregarReservadetallebus').click(function(){
 		LimpiarModalDatosReservadetallebus();
 		$('#categoria').val(1);
@@ -304,15 +247,14 @@
 		$('#btnModalEliminarReservadetallebus').toggle(false);
 		$('#modalAgregarReservadetallebus').modal();
 	});
-
-
+//   SECCION ====== btn Editar ======
 	function btnEditarReservadetallebus(Val0, Val1, Val2){
 		$.ajax({
 			type: 'POST',
 			url: base_url + '/reservadetallebus/edit',
-			data: { idreservadetalleticketbus: Val0, idreserva: Val1, idticketbus: Val2},
+			data: {idreserva: Val0, idreservadetalleticketbus: Val1, idticketbus: Val2},
 			success: function(msg){
-		debugger
+				debugger
 				var temp = JSON.parse(msg);
 				console.log(temp);
 				LimpiarModalDatosReservadetallebus();
@@ -326,51 +268,6 @@
 				$('#total').val(temp.total);
 				$('#confirmado').val(temp.confirmado);
 				$('#estado').val(temp.estado);
-
-
-
-				$('#tabla_Habitaciones tr').not($('#tabla_Habitaciones tr:first')).remove();
-				var nrohabitaciones = 0;
-				console.log(temp.habitacion);
-				$.each(temp.habitacion, function(i, value) { 
-					nrohabitaciones++;
-					var rows = "<tr>" +
-					"<td hidden>" + (i + 1) + "</td>" +
-					"<td class='numero'>"+
-						"<a href='#' style='color: #ef5350;' class='delete'><i class='fa fa-times' style='padding-top: 10px;'></i></a>" +
-					"</td>" + 
-					"<td hidden><input type='text' class='form-control text-uppercase' id='codhabitacion_" +(i + 1)+ "' value="+value.idhabitacion+"></td>" +
-					"<td>" +
-						"<select class='form-control select2' id='catHabitacion_"+(i + 1)+"' style='width: 100%;'>" +
-							"<option value='0'>-- SELECCIONAR --</option>" +
-						"</select>" +
-					"</td>" +
-					"<td><input type='text' class='form-control solo_numero' id='precio_" +(i + 1)+"' value="+value.precio+"></td>" +
-					"<td>" +
-						"<select class='form-control' id='estado_" +(i + 1)+ "' style='padding: 6px 2px;'>" +
-						"</select>" +
-					"</td>" +
-					"</tr>";
-					$('#tabla_Habitaciones').append(rows);
-
-
-					$('.delete').off().click(function (e) {
-						var i = $('#tabla_Habitaciones tr').length - 1; 
-						if (i > 1) {
-							$(this).parent('td').parent('tr').remove();
-							NumeroFilasTabla();
-						} 
-					});
-
-
-					addCatHabitacion((i + 1));
-					$('#catHabitacion_'+(i + 1)).select2().val(value.idcathabitacion).select2('destroy').select2();
-					addEstado((i + 1)); 
-					$('#estado_'+(i + 1)).val(value.estado);            
-				});
-				$('#minmax').val(nrohabitaciones);
-
-
 				$('#btnModalAgregarReservadetallebus').toggle(false);
 				$('#btnModalEditarReservadetallebus').toggle(true);
 				$('#btnModalEliminarReservadetallebus').toggle(true);
@@ -381,11 +278,8 @@
 			}
 		});
 	}
-
-
 	$('#btnModalAgregarReservadetallebus').click(function(){
-debugger
-
+		debugger
 		if (ValidarCamposVaciosReservadetallebus() != 0) {
 			alert('Completar campos obligatorios');
 		}else{
@@ -394,8 +288,6 @@ debugger
 			EnviarInformacionReservadetallebus('agregar', NuevoReservadetallebus, true);
 		}
 	});
-
-
 	$('#btnModalEditarReservadetallebus').click(function(){
 		if (ValidarCamposVaciosReservadetallebus() != 0) {
 			alert('Completar campos obligatorios');
@@ -404,8 +296,6 @@ debugger
 			EnviarInformacionReservadetallebus('modificar', NuevoReservadetallebus, true);
 		}
 	});
-
-
 	$('#btnModalEliminarReservadetallebus').click(function(){
 		var bool=confirm('ESTA SEGURO DE ELIMINAR EL DATO?');
 		if(bool){
@@ -413,26 +303,18 @@ debugger
 			EnviarInformacionReservadetallebus('eliminar', NuevoReservadetallebus, true);
 		}
 	});
-
-
 	$('#btnModalCerrarHotel').click(function(){
 		$('#IdModalGrupoCodigoHotel').prop('hidden', false); 
 		LimpiarModalDatosReservadetallebus();
 	});
-
-
 	$('#btnFiltroReservadetallebus').click(function(){
 		RecolectarDatosReservadetallebus();
 		EnviarInformacionReservadetallebus('leer', NuevoReservadetallebus, false);
 	});
-
-
 	function Paginado(pag) {
 		RecolectarDatosReservadetallebus();
 		EnviarInformacionReservadetallebus('leer', NuevoReservadetallebus, false, pag);
 	}
-
-
 	function RecolectarDatosReservadetallebus(){
 		NuevoReservadetallebus = {
 			idreserva: $('#idreserva').val().toUpperCase(),
@@ -445,13 +327,10 @@ debugger
 			total: $('#total').val().toUpperCase(),
 			confirmado: $('#confirmado').val().toUpperCase(),
 			estado: $('#estado').val().toUpperCase(),
-
 			todos: $('#idFTodos').val(),
 			texto: $('#idFTexto').val()
 		};
 	}
-
-
 	function EnviarInformacionReservadetallebus(accion, objEvento, modal, pag=1) { 
 		$.ajax({
 			type: 'POST',
@@ -493,121 +372,124 @@ debugger
 			}
 		});
 	}
-
-
 	function LimpiarModalDatosReservadetallebus(){
 		$('#idreserva').select2().val(0).select2('destroy').select2();
 		$('#idreservadetalleticketbus').val('0');
 		$('#idticketbus').select2().val(0).select2('destroy').select2();
 		$('#descripcion').val('');
 		$('#fecha').val('');
-		$('#cantidad').val('');
+		$('#cantidad').val('0');
 		$('#precio').val('');
 		$('#total').val('');
-
 	}
-
-
 	function ValidarCamposVaciosReservadetallebus(){
 		var error = 0;
-		if ($('#idreserva').val() == ''){
+		var value = $('#idreserva').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idreserva');
 			error++;
+		}else{
+			NoResaltado('idreserva');
 		}
-		if ($('#idreservadetalleticketbus').val() == ''){
+		var value = $('#idreservadetalleticketbus').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idreservadetalleticketbus');
 			error++;
+		}else{
+			NoResaltado('idreservadetalleticketbus');
 		}
-		if ($('#idticketbus').val() == ''){
+		var value = $('#idticketbus').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idticketbus');
 			error++;
+		}else{
+			NoResaltado('idticketbus');
 		}
 		if ($('#descripcion').val() == ''){
 			Resaltado('descripcion');
 			error++;
+		}else{
+			NoResaltado('descripcion');
 		}
 		if ($('#fecha').val() == ''){
 			Resaltado('fecha');
 			error++;
+		}else{
+			NoResaltado('fecha');
 		}
-		if ($('#cantidad').val() == ''){
+		var value = $('#cantidad').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('cantidad');
 			error++;
+		}else{
+			NoResaltado('cantidad');
 		}
 		if ($('#precio').val() == ''){
 			Resaltado('precio');
 			error++;
+		}else{
+			NoResaltado('precio');
 		}
 		if ($('#total').val() == ''){
 			Resaltado('total');
 			error++;
+		}else{
+			NoResaltado('total');
 		}
 		if ($('#confirmado').val() == ''){
 			Resaltado('confirmado');
 			error++;
+		}else{
+			NoResaltado('confirmado');
 		}
 		if ($('#estado').val() == ''){
 			Resaltado('estado');
 			error++;
+		}else{
+			NoResaltado('estado');
 		}
-
 		return error;
 	}
-
-
 	function Resaltado(id){
 		$('#'+id).css('border-color', '#ef5350');
 		$('#'+id).focus();
 	}
 
-
-	function CargartablaReservadetallebus(objeto){   
+	function NoResaltado(id){
+		$('#'+id).css('border-color', '#ced4da');
+	}
+	function CargartablaReservadetallebus(objeto){
 		$('#TablaReservadetallebus tr').not($('#TablaReservadetallebus tr:first')).remove();
 		$.each(objeto, function(i, value) {
-		var fila = '<tr>'+
-			'<td>'+value.reservanombre+'</td>'+
-			'<td hidden>'+value.idreserva+'</td>'+
-			'<td hidden>'+value.idreservadetalleticketbus+'</td>'+
-			'<td>'+value.nombre+'</td>'+
-			'<td hidden>'+value.idticketbus+'</td>'+
-			'<td >'+value.descripcion+'</td>'+
-			'<td >'+value.fecha+'</td>'+
-			'<td >'+value.cantidad+'</td>'+
-			'<td >'+value.precio+'</td>'+
-			'<td >'+value.total+'</td>'+
-			'<td class = "hidden -xs">' + ((value.confirmado == '1') ? 'CONFIRMADO' : 'PENDIENTE') + '</td>'+
-			'<td class = "hidden -xs">' + ((value.estado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
-
-			'<td>'+
-				'<div class="row">'+
-					'<div style="margin: auto;">'+
-						'<button type="button" onclick="btnEditarReservadetallebus(\''+value.idreservadetalleticketbus+'\', \''+value.idreserva+'\', \''+value.idticketbus+'\')" class="btn btn-info btn-xs">'+
-							'<span class="fa fa-search fa-sm"></span>'+
-						'</button>'+
-					'</div>'+
-						'<div style="margin: auto;">'+
-							'<a class="btn btn-success btn-xs" href="<?php echo base_url();?>/reserva/add"><i class="fa fa-pencil"></i></a>'+
-					'</div>'+
-				'</div>'+
-			'</td>'+
-		'</tr>';
-		$('#TablaReservadetallebus tbody').append(fila);
+				var fila = `<tr>
+				<td hidden>${value.idreservadetalleticketbus}</td>
+				<td>${value.descripcion}</td>
+				<td>${value.fecha}</td>
+				<td>${value.cantidad}</td>
+				<td>${value.precio}</td>
+				<td>${value.total}</td>
+				<td class = 'hidden-xs'>${value.confirmado == '1' ? 'CONFIRMADO' : 'PENDIENTE'}</td>
+				<td class = 'hidden-xs'>${value.estado == '1' ? 'ACTIVO' : 'DESACTIVO'}</td>
+				<td hidden>${value.idreserva}</td>
+				<td>${value.reservanombre}</td>
+				<td hidden>${value.idticketbus}</td>
+				<td>${value.nombre}</td>
+				<td>${value.concatenado}</td>
+				<td>${value.concatenadodetalle}</td>
+				<td>
+				<div class='row'>
+					<div style='margin: auto;'>
+						<button type='button' onclick="btnEditarReservadetallebus('${value.idreserva}', '${value.idreservadetalleticketbus}', '${value.idticketbus}')" class='btn btn-info btn-xs'>
+							<span class='fa fa-search fa-xs'></span>
+						</button>
+					</div>
+						<div style='margin: auto;'>
+							<a class='btn btn-success btn-xs' href='<?php echo base_url();?>/reserva/add/$reservadetallebus['idreserva'].'\',\''.$reservadetallebus['idreservadetalleticketbus'].'\',\''.$reservadetallebus['idticketbus']'><i class='fa fa-pencil'></i></a>
+					</div>
+				</div>
+				</td>
+				</tr>`
+			$('#TablaReservadetallebus tbody').append(fila);
 		});
-	}
-
-
-	function addEstado(i){
-		$('#estado_'+i).append($('<option>').val('1').text('ACTIVO'));
-		$('#estado_'+i).append($('<option>').val('0').text('DESACTIVO'));
-	}
-
-
-	function addCatHabitacion(i) {
-		var sel = document.getElementById('habitacion');
-		var Length = sel.length;
-		for (var j = 0; j < Length; j++) {
-		var opt = sel[j];
-		$('#catHabitacion_'+i).append($('<option>').val(opt.value).text(opt.label));            
-		}
 	}
 </script>

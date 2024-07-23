@@ -46,19 +46,22 @@
 							<table id='TablaHotelhabitacion' class='table table-sm table-bordered table-striped'>
 								<thead>
 									<tr>
-										<th hidden>Id</th>
-										<th>Hotel</th>
-										<th>banco</th>
-										<th>cathotel</th>
-										<th hidden>Idhotel</th>
-										<th>Cathabitacion</th>
+										<th hidden>Idhotelhabitacion</th>
+										<th>Precio</th>
+										<th>Fecha</th>
+										<th>Estado</th>
+										<th>Confirmado</th>
 										<th hidden>Idcathabitacion</th>
-										<th >Precio</th>
-										<th >Fecha</th>
-										<th >Estado</th>
-										<th >Confirmado</th>
+										<th>Nombre</th>
+										<th>Idhotel</th>
+										<th>Nombre</th>
+										<th hidden>Idbanco</th>
+										<th>Nombre</th>
+										<th hidden>Idcathotel</th>
+										<th>Nombre</th>
+										<th>Concatenado</th>
+										<th>Concatenadodetalle</th>
 										<th>Acciones</th>
-
 									</tr>
 								</thead>
 								<tbody>
@@ -66,26 +69,29 @@
 										<?php foreach($datos as $hotelhabitacion):?>
 											<tr>
 												<td hidden><?php echo $hotelhabitacion['idhotelhabitacion'];?></td>
-												<td><?php echo $hotelhabitacion['nombre'];?></td>
-												<td><?php echo $hotelhabitacion['banco'];?></td>
-												<td><?php echo $hotelhabitacion['cathotel'];?></td>
-												<td hidden><?php echo $hotelhabitacion['idhotel'];?></td>
-												<td><?php echo $hotelhabitacion['nombre'];?></td>
-												<td hidden><?php echo $hotelhabitacion['idcathabitacion'];?></td>
-												<td ><?php echo $hotelhabitacion['precio'];?></td>
-												<td ><?php echo $hotelhabitacion['fecha'];?></td>
+												<td><?php echo $hotelhabitacion['precio'];?></td>
+												<td><?php echo $hotelhabitacion['fecha'];?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($hotelhabitacion['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
 												<td class = 'hidden-xs'><?php echo $est = ($hotelhabitacion['confirmado']== 1) ? 'CONFIRMADO' : 'PENDIENTE';?></td>
-
+												<td hidden><?php echo $hotelhabitacion['idcathabitacion'];?></td>
+												<td><?php echo $hotelhabitacion['nombre'];?></td>
+												<td><?php echo $hotelhabitacion['idhotel'];?></td>
+												<td><?php echo $hotelhabitacion['nombre'];?></td>
+												<td hidden><?php echo $hotelhabitacion['idbanco'];?></td>
+												<td><?php echo $hotelhabitacion['nombre'];?></td>
+												<td hidden><?php echo $hotelhabitacion['idcathotel'];?></td>
+												<td><?php echo $hotelhabitacion['nombre'];?></td>
+												<td><?php echo $hotelhabitacion['concatenado'];?></td>
+												<td><?php echo $hotelhabitacion['concatenadodetalle'];?></td>
 												<td>
 													<div class='row'>
 														<div style='margin: auto;'>
-															<button type='button' onclick="btnEditarHotelhabitacion('<?php echo $hotelhabitacion['idhotelhabitacion'].'\',\''. $hotelhabitacion['idcathabitacion'].'\',\''. $hotelhabitacion['idhotel'];?>')" class='btn btn-info btn-xs'>
+															<button type='button' onclick="btnEditarHotelhabitacion('<?php echo $hotelhabitacion['idhotelhabitacion'].'\',\''.$hotelhabitacion['idhotel'].'\',\''.$hotelhabitacion['idcathabitacion'];?>')" class='btn btn-info btn-xs'>
 																<span class='fa fa-search fa-xs'></span>
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $hotelhabitacion['idhotelhabitacion'].'\',\''. $hotelhabitacion['idcathabitacion'].'\',\''. $hotelhabitacion['idhotel'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href="<?php echo base_url();?>reserva/add/<?php echo $hotelhabitacion['idhotelhabitacion'].'\',\''.$hotelhabitacion['idhotel'].'\',\''.$hotelhabitacion['idcathabitacion'];?>"><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>
@@ -95,6 +101,8 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div class='card-footer'>
 						<div id='PaginadoHotelhabitacion'>
 							<?php echo $pag;?>
 						</div>
@@ -104,6 +112,7 @@
 		</div>
 	</section>
 </div>
+<!--  SECCION ====== MODAL ====== -->
 <div class='modal fade' id='modalAgregarHotelhabitacion' tabindex='-1'>
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
@@ -115,23 +124,10 @@
 		</div>
 		<div class='modal-body'>
 			<div class='form-group row'>
-				<div class='col-6 form-group row'hidden>
-					<label class='col-sm-4' for='id'>id:</label>
-					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idhotelhabitacion' name='idhotelhabitacion' placeholder='T001' autocomplete = 'off'>
-					</div>
-				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4'>Cathabitacion:</label>
+					<label class='col-sm-4'>Idhotelhabitacion:</label>
 					<div class = 'col-sm-8'>
-						<select class='form-control form-control-sm select2' id='idcathabitacion'>
-							<option value='0'>-- SELECCIONAR1 --</option>
-							<?php if (!empty($cathabitacions)):?>
-								<?php foreach($cathabitacions as $cathabitacion):?>
-									<option value= '<?php echo $cathabitacion['idcathabitacion'];?>'><?php echo $cathabitacion['concatenado'];?></option>
-								<?php endforeach;?>
-							<?php endif;?>
-						</select>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='idhotelhabitacion' name='idhotelhabitacion' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
@@ -148,13 +144,26 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>precio:</label>
+					<label class='col-sm-4'>Cathabitacion:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='precio' name='precio' placeholder='T001' autocomplete = 'off'>
+						<select class='form-control form-control-sm select2' id='idcathabitacion'>
+							<option value='0'>-- SELECCIONAR1 --</option>
+							<?php if (!empty($cathabitacions)):?>
+								<?php foreach($cathabitacions as $cathabitacion):?>
+									<option value= '<?php echo $cathabitacion['idcathabitacion'];?>'><?php echo $cathabitacion['concatenado'];?></option>
+								<?php endforeach;?>
+							<?php endif;?>
+						</select>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4'>fecha:</label>
+					<label class='col-sm-4' for='id'>Precio:</label>
+					<div class = 'col-sm-8'>
+						<input type='number' class='form-control form-control-sm' id='precio' name='precio' placeholder='0.00' autocomplete = 'off'>
+					</div>
+				</div>
+				<div class='col-6 form-group row'>
+					<label class='col-sm-4'>Fecha:</label>
 					<div class='col-sm-8'>
 						<div class='input-group'>
 							<div class='input-group-prepend'>
@@ -167,7 +176,7 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>estado:</label>
+					<label class='col-sm-4' for='rol'>Estado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='estado' name='estado'>
 							<option value = '1' selected >ACTIVO</option>
@@ -176,7 +185,7 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>confirmado:</label>
+					<label class='col-sm-4' for='rol'>Confirmado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='confirmado' name='confirmado'>
 							<option value = '1' selected >CONFIRMADO</option>
@@ -184,7 +193,6 @@
 						</select>
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<div class='modal-footer'>
@@ -196,72 +204,14 @@
 		</div>
 	</div>
 </div>
-<div class='modal fade show' id='modal_agregar_tcathabitacion' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Cathabitacion</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Cathabitacion:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaCathabitacion'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaCathabitacion'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-<div class='modal fade show' id='modal_agregar_thotel' aria-modal='true' style='padding-right: 17px;z-index: 2500;'>
-	<div class='modal-dialog modal-sm'>
-		<div class='modal-content'>
-		<div class='modal-header'>
-			<h4 class='modal-title'>Agregar Hotel</h4>
-			<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-			<span aria-hidden='true'>×</span>
-			</button>
-		</div>
-		<div class='modal-body'>
-			<div class='form-group row'>
-				<label class='col-sm-3'>Hotel:</label>
-				<div class = 'col-sm-9'>
-					<input type='text' class='form-control form-control-sm' id='IdNuevaHotel'>
-				</div>
-			</div>
-		</div>
-		<div class='modal-footer'>
-			<button type='button' class='btn btn-success btn-sm' id='IdBtnNuevaHotel'>Agregar</button>
-			<button type='button' class='btn btn-primary btn-sm' data-dismiss='modal'>Cerrar</button>
-		</div>
-		</div>
-	</div>
-</div>
-
+<!--  SECCION ====== SCRIPT ====== -->
 <script>
 	var NuevoHotelhabitacion;
 	var base_url= '<?php echo base_url();?>';
-
-
-	function NumeroFilasTabla(){
-		TamanioTabla = $('#tabla_Habitaciones tr').length - 1;
-		$('#minmax').val(TamanioTabla)
-	}
-
-
 	function load(pag){
 		RecolectarDatosHotelhabitacion();
 		EnviarInformacionHotelhabitacion('leer', NuevoHotelhabitacion, false, pag);
 	}
-
-
 	$('#fecha').datepicker({
 		language: 'es',
 		todayBtn: 'linked',
@@ -270,92 +220,7 @@
 		multidate: false,
 		todayHighlight: true
 	});
-
-	$('#idreserva').autocomplete({ 
-		source: function(request, response) {
-			$.ajax({
-				type: 'POST',
-				url: base_url + '/reservadetallehotelhabitacion/autocompletereservas',
-				dataType: 'json',
-				data: { keyword: request.term },
-				success: function(data){
-					response($.map(data, function(item) {
-						return {
-							label: item.concatenado,
-							concatenado: item.concatenado,
-							idtour: item.idreserva,
-							nombre: item.reservanombre,
-
-							
-							concatenadodetalle: item.concatenadodetalle,
-
-						}
-					}))
-				}
-			});
-		},
-		minLength: 2,
-		select: function( event, ui ) {
-			$('#idreserva').val('');
-			var j = $('#tablaDetalleServicio tr').length;
-			var i = parseInt((j == 1 ? 0 : $('#tablaDetalleServicio').find('tr').eq(j - 1).find('td').eq(0).html()));
-			var rows = "<tr id=Fila_" + (i + 1) + ">"+
-				"<td hidden>" + (i + 1) + "</td>"+
-				"<td hidden><input type='text' class='form-control form-control-sm' id='detalleTipoServicio_" + (i + 1) + "' value='treservadetallehotelhabitacion'></td>"+
-				"<td hidden><input type='text' class='form-control form-control-sm' id='detalleIdReserva_" + (i + 1) + "' value=''></td>"+
-				"<td>"+
-					"<div class='row'>"+
-						"<div style='margin: auto;'>"+
-							"<a href='javascript:void(0)' style='color: #ef5350;' onClick='EliminarFila(" + (i + 1) + ")'><i class='fa fa-times'></i></a>"+
-						"</div>"+
-						"<div style='margin: auto;'>"+
-							"<a href='javascript:void(0)' style='color: #007bff;' onClick='AgregarDatos(" + (i + 1) + ")'><i class='fa fa-pencil'></i></a>"+
-						"</div>"+
-					"</div>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleGravado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='10'>GRAV</option>"+
-						"<option value='20'>EXON</option>"+
-						"<option value='30'>INAF</option>"+
-						"<option value='40'>EXPO</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>" + ui.item.idtour + "</td>"+
-				"<td>" + ui.item.concatenadodetalle + "</td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase datepicker" + (i + 1) + "' id='detalleFecha_" + (i + 1) + "' readonly></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detallecantidad_" + (i + 1) + "' placeholder='cantidad' value='1'></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detalleprecio_" + (i + 1) + "' placeholder='precio' value='" + 0.00 + "'></td>"+
-				"<td><input type='text' class='form-control form-control-sm text-uppercase numeroDerecha' id='detalletotal_" + (i + 1) + "' placeholder='total' value='' disabled></td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleConfirmado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='1'>CONFIRMADO</option>"+
-						"<option value='2'>PENDIENTE</option>"+
-						"<option value='3'>ANULADO</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detallePagado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='0'>PAGADO</option>"+
-						"<option value='0'>PENDIENTE</option>"+
-					"</select>"+
-				"</td>"+
-				"<td>"+
-					"<select class='form-control form-control-sm select2' id='detalleEstado_" + (i + 1) + "' style='width: 100%;'>"+
-						"<option value='0'>ACTIVO</option>"+
-						"<option value='0'>DESACTIVO</option>"+
-					"</select>"+
-				"</td>"+
-			"</tr>";
-			$('#tablaDetalleServicio').append(rows);
-			addDatepicker(i + 1);
-			ImporteTotalDetalle(i + 1);
-			return false;
-		}
-	});
-
-
-
+	
 	$('#btnAgregarHotelhabitacion').click(function(){
 		LimpiarModalDatosHotelhabitacion();
 		$('#categoria').val(1);
@@ -366,15 +231,14 @@
 		$('#btnModalEliminarHotelhabitacion').toggle(false);
 		$('#modalAgregarHotelhabitacion').modal();
 	});
-
-
+//   SECCION ====== btn Editar ======
 	function btnEditarHotelhabitacion(Val0, Val1, Val2){
 		$.ajax({
 			type: 'POST',
 			url: base_url + '/hotelhabitacion/edit',
-			data: { idhotelhabitacion: Val0, idcathabitacion: Val1, idhotel: Val2},
+			data: {idhotelhabitacion: Val0, idhotel: Val1, idcathabitacion: Val2},
 			success: function(msg){
-		debugger
+				debugger
 				var temp = JSON.parse(msg);
 				console.log(temp);
 				LimpiarModalDatosHotelhabitacion();
@@ -385,51 +249,6 @@
 				$('#fecha').val(temp.fecha);
 				$('#estado').val(temp.estado);
 				$('#confirmado').val(temp.confirmado);
-
-
-
-				$('#tabla_Habitaciones tr').not($('#tabla_Habitaciones tr:first')).remove();
-				var nrohabitaciones = 0;
-				console.log(temp.habitacion);
-				$.each(temp.habitacion, function(i, value) { 
-					nrohabitaciones++;
-					var rows = "<tr>" +
-					"<td hidden>" + (i + 1) + "</td>" +
-					"<td class='numero'>"+
-						"<a href='#' style='color: #ef5350;' class='delete'><i class='fa fa-times' style='padding-top: 10px;'></i></a>" +
-					"</td>" + 
-					"<td hidden><input type='text' class='form-control text-uppercase' id='codhabitacion_" +(i + 1)+ "' value="+value.idhabitacion+"></td>" +
-					"<td>" +
-						"<select class='form-control select2' id='catHabitacion_"+(i + 1)+"' style='width: 100%;'>" +
-							"<option value='0'>-- SELECCIONAR --</option>" +
-						"</select>" +
-					"</td>" +
-					"<td><input type='text' class='form-control solo_numero' id='precio_" +(i + 1)+"' value="+value.precio+"></td>" +
-					"<td>" +
-						"<select class='form-control' id='estado_" +(i + 1)+ "' style='padding: 6px 2px;'>" +
-						"</select>" +
-					"</td>" +
-					"</tr>";
-					$('#tabla_Habitaciones').append(rows);
-
-
-					$('.delete').off().click(function (e) {
-						var i = $('#tabla_Habitaciones tr').length - 1; 
-						if (i > 1) {
-							$(this).parent('td').parent('tr').remove();
-							NumeroFilasTabla();
-						} 
-					});
-
-
-					addCatHabitacion((i + 1));
-					$('#catHabitacion_'+(i + 1)).select2().val(value.idcathabitacion).select2('destroy').select2();
-					addEstado((i + 1)); 
-					$('#estado_'+(i + 1)).val(value.estado);            
-				});
-				$('#minmax').val(nrohabitaciones);
-
-
 				$('#btnModalAgregarHotelhabitacion').toggle(false);
 				$('#btnModalEditarHotelhabitacion').toggle(true);
 				$('#btnModalEliminarHotelhabitacion').toggle(true);
@@ -440,11 +259,8 @@
 			}
 		});
 	}
-
-
 	$('#btnModalAgregarHotelhabitacion').click(function(){
-debugger
-
+		debugger
 		if (ValidarCamposVaciosHotelhabitacion() != 0) {
 			alert('Completar campos obligatorios');
 		}else{
@@ -453,8 +269,6 @@ debugger
 			EnviarInformacionHotelhabitacion('agregar', NuevoHotelhabitacion, true);
 		}
 	});
-
-
 	$('#btnModalEditarHotelhabitacion').click(function(){
 		if (ValidarCamposVaciosHotelhabitacion() != 0) {
 			alert('Completar campos obligatorios');
@@ -463,8 +277,6 @@ debugger
 			EnviarInformacionHotelhabitacion('modificar', NuevoHotelhabitacion, true);
 		}
 	});
-
-
 	$('#btnModalEliminarHotelhabitacion').click(function(){
 		var bool=confirm('ESTA SEGURO DE ELIMINAR EL DATO?');
 		if(bool){
@@ -472,26 +284,18 @@ debugger
 			EnviarInformacionHotelhabitacion('eliminar', NuevoHotelhabitacion, true);
 		}
 	});
-
-
 	$('#btnModalCerrarHotel').click(function(){
 		$('#IdModalGrupoCodigoHotel').prop('hidden', false); 
 		LimpiarModalDatosHotelhabitacion();
 	});
-
-
 	$('#btnFiltroHotelhabitacion').click(function(){
 		RecolectarDatosHotelhabitacion();
 		EnviarInformacionHotelhabitacion('leer', NuevoHotelhabitacion, false);
 	});
-
-
 	function Paginado(pag) {
 		RecolectarDatosHotelhabitacion();
 		EnviarInformacionHotelhabitacion('leer', NuevoHotelhabitacion, false, pag);
 	}
-
-
 	function RecolectarDatosHotelhabitacion(){
 		NuevoHotelhabitacion = {
 			idhotelhabitacion: $('#idhotelhabitacion').val().toUpperCase(),
@@ -501,13 +305,10 @@ debugger
 			fecha: $('#fecha').val().toUpperCase(),
 			estado: $('#estado').val().toUpperCase(),
 			confirmado: $('#confirmado').val().toUpperCase(),
-
 			todos: $('#idFTodos').val(),
 			texto: $('#idFTexto').val()
 		};
 	}
-
-
 	function EnviarInformacionHotelhabitacion(accion, objEvento, modal, pag=1) { 
 		$.ajax({
 			type: 'POST',
@@ -549,105 +350,102 @@ debugger
 			}
 		});
 	}
-
-
 	function LimpiarModalDatosHotelhabitacion(){
 		$('#idhotelhabitacion').val('0');
 		$('#idhotel').select2().val(0).select2('destroy').select2();
 		$('#idcathabitacion').select2().val(0).select2('destroy').select2();
 		$('#precio').val('');
 		$('#fecha').val('');
-
 	}
-
-
 	function ValidarCamposVaciosHotelhabitacion(){
 		var error = 0;
-		if ($('#idhotelhabitacion').val() == ''){
+		var value = $('#idhotelhabitacion').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idhotelhabitacion');
 			error++;
+		}else{
+			NoResaltado('idhotelhabitacion');
 		}
 		if ($('#idhotel').val() == ''){
 			Resaltado('idhotel');
 			error++;
+		}else{
+			NoResaltado('idhotel');
 		}
-		if ($('#idcathabitacion').val() == ''){
+		var value = $('#idcathabitacion').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idcathabitacion');
 			error++;
+		}else{
+			NoResaltado('idcathabitacion');
 		}
 		if ($('#precio').val() == ''){
 			Resaltado('precio');
 			error++;
+		}else{
+			NoResaltado('precio');
 		}
 		if ($('#fecha').val() == ''){
 			Resaltado('fecha');
 			error++;
+		}else{
+			NoResaltado('fecha');
 		}
 		if ($('#estado').val() == ''){
 			Resaltado('estado');
 			error++;
+		}else{
+			NoResaltado('estado');
 		}
 		if ($('#confirmado').val() == ''){
 			Resaltado('confirmado');
 			error++;
+		}else{
+			NoResaltado('confirmado');
 		}
-
 		return error;
 	}
-
-
 	function Resaltado(id){
 		$('#'+id).css('border-color', '#ef5350');
 		$('#'+id).focus();
 	}
 
-
-	function CargartablaHotelhabitacion(objeto){   
+	function NoResaltado(id){
+		$('#'+id).css('border-color', '#ced4da');
+	}
+	function CargartablaHotelhabitacion(objeto){
 		$('#TablaHotelhabitacion tr').not($('#TablaHotelhabitacion tr:first')).remove();
 		$.each(objeto, function(i, value) {
-		var fila = '<tr>'+
-			'<td hidden>'+value.idhotelhabitacion+'</td>'+
-			'<td>'+value.nombre+'</td>'+
-			'<td>'+value.banco+'</td>'+
-			'<td>'+value.cathotel+'</td>'+
-			'<td hidden>'+value.idhotel+'</td>'+
-			'<td>'+value.nombre+'</td>'+
-			'<td hidden>'+value.idcathabitacion+'</td>'+
-			'<td >'+value.precio+'</td>'+
-			'<td >'+value.fecha+'</td>'+
-			'<td class = "hidden -xs">' + ((value.estado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
-			'<td class = "hidden -xs">' + ((value.confirmado == '1') ? 'CONFIRMADO' : 'PENDIENTE') + '</td>'+
-
-			'<td>'+
-				'<div class="row">'+
-					'<div style="margin: auto;">'+
-						'<button type="button" onclick="btnEditarHotelhabitacion(\''+value.idhotelhabitacion+'\', \''+value.idcathabitacion+'\', \''+value.idhotel+'\')" class="btn btn-info btn-xs">'+
-							'<span class="fa fa-search fa-sm"></span>'+
-						'</button>'+
-					'</div>'+
-						'<div style="margin: auto;">'+
-							'<a class="btn btn-success btn-xs" href="<?php echo base_url();?>/reserva/add"><i class="fa fa-pencil"></i></a>'+
-					'</div>'+
-				'</div>'+
-			'</td>'+
-		'</tr>';
-		$('#TablaHotelhabitacion tbody').append(fila);
+				var fila = `<tr>
+				<td hidden>${value.idhotelhabitacion}</td>
+				<td>${value.precio}</td>
+				<td>${value.fecha}</td>
+				<td class = 'hidden-xs'>${value.estado == '1' ? 'ACTIVO' : 'DESACTIVO'}</td>
+				<td class = 'hidden-xs'>${value.confirmado == '1' ? 'CONFIRMADO' : 'PENDIENTE'}</td>
+				<td hidden>${value.idcathabitacion}</td>
+				<td>${value.nombre}</td>
+				<td>${value.idhotel}</td>
+				<td>${value.nombre}</td>
+				<td hidden>${value.idbanco}</td>
+				<td>${value.nombre}</td>
+				<td hidden>${value.idcathotel}</td>
+				<td>${value.nombre}</td>
+				<td>${value.concatenado}</td>
+				<td>${value.concatenadodetalle}</td>
+				<td>
+				<div class='row'>
+					<div style='margin: auto;'>
+						<button type='button' onclick="btnEditarHotelhabitacion('${value.idhotelhabitacion}', '${value.idhotel}', '${value.idcathabitacion}')" class='btn btn-info btn-xs'>
+							<span class='fa fa-search fa-xs'></span>
+						</button>
+					</div>
+						<div style='margin: auto;'>
+							<a class='btn btn-success btn-xs' href='<?php echo base_url();?>/reserva/add/$hotelhabitacion['idhotelhabitacion'].'\',\''.$hotelhabitacion['idhotel'].'\',\''.$hotelhabitacion['idcathabitacion']'><i class='fa fa-pencil'></i></a>
+					</div>
+				</div>
+				</td>
+				</tr>`
+			$('#TablaHotelhabitacion tbody').append(fila);
 		});
-	}
-
-
-	function addEstado(i){
-		$('#estado_'+i).append($('<option>').val('1').text('ACTIVO'));
-		$('#estado_'+i).append($('<option>').val('0').text('DESACTIVO'));
-	}
-
-
-	function addCatHabitacion(i) {
-		var sel = document.getElementById('habitacion');
-		var Length = sel.length;
-		for (var j = 0; j < Length; j++) {
-		var opt = sel[j];
-		$('#catHabitacion_'+i).append($('<option>').val(opt.value).text(opt.label));            
-		}
 	}
 </script>

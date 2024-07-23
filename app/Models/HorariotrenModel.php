@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 use CodeIgniter\Model; 
@@ -7,11 +7,10 @@ class HorariotrenModel extends Model
 {
 	protected $table      = 'thorariotren';
 	protected $primaryKey = 'nidhorariotren';
-
 	protected $returnType     = 'array';
 	protected $useSoftDeletes = false;
 
-	protected $allowedFields = ['nidtren','nidhorario','dprecio','bestado'];
+	protected $allowedFields = ['nidhorariotren', 'nidtren', 'nidhorario', 'dprecio', 'bestado'];
 	protected $useTimestamps = false;
 	protected $createdField  = 'tfecha_alt';
 	protected $updatedField  = 'tfecha_edi';
@@ -21,105 +20,130 @@ class HorariotrenModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = false;
 
+//   SECCION ====== CONEXION ======
 	protected function conexion(string $table = null){
 		$this->db = \Config\Database::connect();
 		$this->builder = $this->db->table($table);
 		return $this->builder;
 	}
 
-	public function existe($id){
-		return $this->where(['nidhorariotren' => $id])->countAllResults();
+//   SECCION ====== EXISTE ======
+	public function existe($nidhorariotren, $nidtren, $nidhorario){
+		return $this->where(['nidhorariotren' => $nidhorariotren, 'nidtren' => $nidtren, 'nidhorario' => $nidhorario])->countAllResults();
 	}
 
-	public function getHorariotrens($todos = 1, $text = '', $total, $pag = 1){
+//   SECCION ====== TODOS ======
+	public function getHorariotrens($total, $pag = 1, $todos = 1, $text = ''){
 		$CantidadMostrar = $total;
 		$TotalReg = $this->getCount($todos, $text);
 		$TotalRegistro = ceil($TotalReg/$CantidadMostrar);
 		$desde = ($pag - 1) * $CantidadMostrar;
+
 		$builder = $this->conexion('thorariotren t0');
-		$builder->select("t0.nidhorariotren idhorariotren, t0.nidtren idtren, t0.nidhorario idhorario, t0.dprecio precio, t0.bestado estado,  t1.nidhorario idhorario, t1.snombre nombre, t2.nidtren idtren, t2.snombre nombre, CONCAT(t2.sempresa, ' - ', t2.snombre, ' - ', t1.snombre, ' - ', '[' ,t0.dprecio, ']' ) as concatenado, CONCAT(t2.sempresa, ' - ', t2.snombre, ' - ', t1.snombre) as concatenadodetalle");
-		$builder->join('thoratren t1', ' t1.nidhorario = t0.nidhorario');
-		$builder->join('ttren t2', ' t2.nidtren = t0.nidtren');
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidhorariotren idhorariotren, t0.dprecio precio, t0.bestado estado, t1.nidhorario idhorario, t1.snombre nombre, t2.nidtren idtren, t2.snombre nombre, CONCAT('[',t0.dprecio,']',' - ',t1.snombre,' - ',t2.snombre) concatenado, CONCAT(t1.snombre,' - ',t2.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidhorariotren', $text);
-		$builder->orLike('t2.sempresa', $text);
-		$builder->orLike('t2.snombre', $text);
-		$builder->orLike('t1.snombre', $text);
-		$builder->orLike('t0.dprecio', $text);
+		$builder->join('thoratren t1', 't1.nidhorario = t0.nidhorario');
+		$builder->join('ttren t2', 't2.nidtren = t0.nidtren');
+
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidhorariotren', $text)
+				->orLike('t0.dprecio', $text)
+				->orLike('t1.snombre', $text)
+				->orLike('t2.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidhorariotren', 'DESC');
 		$builder->limit($CantidadMostrar, $desde);
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getAutocompletehorariotrens($todos = 1, $text = ''){
+//   SECCION ====== AUTOCOMPLETE ======
+	public function getAutocompleteHorariotrens($todos = 1, $text = ''){
 		$builder = $this->conexion('thorariotren t0');
-		$builder->select("t0.nidhorariotren idhorariotren, t0.nidtren idtren, t0.nidhorario idhorario, t0.dprecio precio, t0.bestado estado,  t1.nidhorario idhorario, t1.snombre nombre, t2.nidtren idtren, t2.snombre nombre, CONCAT(t2.sempresa, ' - ', t2.snombre, ' - ', t1.snombre, ' - ', '[' ,t0.dprecio, ']' ) as concatenado, CONCAT(t2.sempresa, ' - ', t2.snombre, ' - ', t1.snombre) as concatenadodetalle");
-		$builder->join('thoratren t1', ' t1.nidhorario = t0.nidhorario');
-		$builder->join('ttren t2', ' t2.nidtren = t0.nidtren');
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidhorariotren idhorariotren, t0.dprecio precio, t0.bestado estado, t1.nidhorario idhorario, t1.snombre nombre, t2.nidtren idtren, t2.snombre nombre, CONCAT('[',t0.dprecio,']',' - ',t1.snombre,' - ',t2.snombre) concatenado, CONCAT(t1.snombre,' - ',t2.snombre) concatenadodetalle");
+		$builder->join('thoratren t1', 't1.nidhorario = t0.nidhorario');
+		$builder->join('ttren t2', 't2.nidtren = t0.nidtren');
 
-		$builder->like('t0.nidhorariotren', $text);
-		$builder->orLike('t2.sempresa', $text);
-		$builder->orLike('t2.snombre', $text);
-		$builder->orLike('t1.snombre', $text);
-		$builder->orLike('t0.dprecio', $text);
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidhorariotren', $text)
+				->orLike('t0.dprecio', $text)
+				->orLike('t1.snombre', $text)
+				->orLike('t2.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidhorariotren', 'DESC');
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getHorariotren($nidhorariotren,$nidhorario,$nidtren){
+//   SECCION ====== GET ======
+	public function gethorariotren($nidhorariotren, $nidtren, $nidhorario){
 		$builder = $this->conexion('thorariotren t0');
 		$builder->select("t0.nidhorariotren idhorariotren, t0.nidtren idtren, t0.nidhorario idhorario, t0.dprecio precio, t0.bestado estado");
-		$builder->where(['nidhorariotren' => $nidhorariotren,'nidhorario' => $nidhorario,'nidtren' => $nidtren]);
+		$builder->where(['nidhorariotren' => $nidhorariotren, 'nidtren' => $nidtren, 'nidhorario' => $nidhorario]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
 
+//   SECCION ====== GET 2 ======
 	public function getHorariotren2($id){
 		$builder = $this->conexion('thorariotren t0');
-		$builder->select(" t0.nidhorariotren idhorariotren0, t0.dprecio precio0, t0.bestado estado0, t1.nidtren idtren1, t1.snombre nombre1, t1.sempresa empresa1, t1.bestado estado1, t2.nidhorario idhorario2, t2.snombre nombre2, t2.sdescripcion descripcion2, t2.bida ida2, t2.bestado estado2,");
-		$builder->join('ttren t1', ' t0.nidtren = t1.nidtren');
-		$builder->join('thoratren t2', ' t0.nidhorario = t2.nidhorario');
-
-		$builder->where('t0.nidreserva', $id);
+		$builder->select("t0.nidhorariotren idhorariotren, t0.nidtren idtren, t0.nidhorario idhorario, t0.dprecio precio, t0.bestado estado");
+		$builder->join('thoratren t1', 't1.nidhorario = t0.nidhorario');
+		$builder->join('ttren t2', 't2.nidtren = t0.nidtren');
+		$builder->where('t0.nidhorariotren', $id);
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
-
+//   SECCION ====== COUNT ======
 	public function getCount($todos = 1, $text = ''){
 		$builder = $this->conexion('thorariotren t0');
 		$builder->select('nidhorariotren');
-		$builder->join('thoratren t1', ' t1.nidhorario = t0.nidhorario');
-		$builder->join('ttren t2', ' t2.nidtren = t0.nidtren');
+		$builder->join('thoratren t1', 't1.nidhorario = t0.nidhorario');
+		$builder->join('ttren t2', 't2.nidtren = t0.nidtren');
 
-		if ($todos !== '')
-		$builder->where('t0.bestado', intval($todos));
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
 
-		$builder->like('t0.nidhorariotren', $text);
-		$builder->orLike('t2.sempresa', $text);
-		$builder->orLike('t2.snombre', $text);
-		$builder->orLike('t1.snombre', $text);
-		$builder->orLike('t0.dprecio', $text);
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidhorariotren', $text)
+				->orLike('t0.dprecio', $text)
+				->orLike('t1.snombre', $text)
+				->orLike('t2.snombre', $text)
+				->groupEnd();
+		}
 
 		return $builder->countAllResults();
 	}
 
-	public function UpdateHorariotren($nidhorariotren,$nidhorario,$nidtren, $datos){
+//   SECCION ====== UPDATE ======
+	public function UpdateHorariotren($nidhorariotren, $nidtren, $nidhorario,  $datos){
 		$builder = $this->conexion('thorariotren');
-		$builder->where(['nidhorariotren' => $nidhorariotren,'nidhorario' => $nidhorario,'nidtren' => $nidtren]);
+		$builder->where(['nidhorariotren' => $nidhorariotren, 'nidtren' => $nidtren, 'nidhorario' => $nidhorario]);
 		$builder->set($datos);
 		$builder->update();
 	}
 
+//   SECCION ====== MAXIMO ID ======
 	public function getMaxid(){
 		$builder = $this->conexion('thorariotren');
 		$builder->selectMax('nidhorariotren');

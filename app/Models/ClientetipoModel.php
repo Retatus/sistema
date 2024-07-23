@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 use CodeIgniter\Model; 
@@ -7,11 +7,10 @@ class ClientetipoModel extends Model
 {
 	protected $table      = 'tclientetipo';
 	protected $primaryKey = 'nidclientetipo';
-
 	protected $returnType     = 'array';
 	protected $useSoftDeletes = false;
 
-	protected $allowedFields = ['snombre','bestado'];
+	protected $allowedFields = ['nidclientetipo', 'snombre', 'bestado'];
 	protected $useTimestamps = false;
 	protected $createdField  = 'tfecha_alt';
 	protected $updatedField  = 'tfecha_edi';
@@ -21,52 +20,73 @@ class ClientetipoModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = false;
 
+//   SECCION ====== CONEXION ======
 	protected function conexion(string $table = null){
 		$this->db = \Config\Database::connect();
 		$this->builder = $this->db->table($table);
 		return $this->builder;
 	}
 
-	public function existe($id){
-		return $this->where(['nidclientetipo' => $id])->countAllResults();
+//   SECCION ====== EXISTE ======
+	public function existe($nidclientetipo){
+		return $this->where(['nidclientetipo' => $nidclientetipo])->countAllResults();
 	}
 
-	public function getClientetipos($todos = 1, $text = '', $total, $pag = 1){
+//   SECCION ====== TODOS ======
+	public function getClientetipos($total, $pag = 1, $todos = 1, $text = ''){
 		$CantidadMostrar = $total;
 		$TotalReg = $this->getCount($todos, $text);
 		$TotalRegistro = ceil($TotalReg/$CantidadMostrar);
 		$desde = ($pag - 1) * $CantidadMostrar;
+
 		$builder = $this->conexion('tclientetipo t0');
-		$builder->select("t0.nidclientetipo idclientetipo, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidclientetipo idclientetipo, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidclientetipo', $text);
-		$builder->orLike('t0.snombre', $text);
+
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidclientetipo', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidclientetipo', 'DESC');
 		$builder->limit($CantidadMostrar, $desde);
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getAutocompleteclientetipos($todos = 1, $text = ''){
+//   SECCION ====== AUTOCOMPLETE ======
+	public function getAutocompleteClientetipos($todos = 1, $text = ''){
 		$builder = $this->conexion('tclientetipo t0');
-		$builder->select("t0.nidclientetipo idclientetipo, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidclientetipo idclientetipo, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidclientetipo', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidclientetipo', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidclientetipo', 'DESC');
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getClientetipo($nidclientetipo){
+//   SECCION ====== GET ======
+	public function getclientetipo($nidclientetipo){
 		$builder = $this->conexion('tclientetipo t0');
 		$builder->select("t0.nidclientetipo idclientetipo, t0.snombre nombre, t0.bestado estado");
 		$builder->where(['nidclientetipo' => $nidclientetipo]);
@@ -74,35 +94,42 @@ class ClientetipoModel extends Model
 		return $query->getRowArray();
 	}
 
+//   SECCION ====== GET 2 ======
 	public function getClientetipo2($id){
 		$builder = $this->conexion('tclientetipo t0');
-		$builder->select(" t0.nidclientetipo idclientetipo0, t0.snombre nombre0, t0.bestado estado0,");
-
-		$builder->where('t0.nidreserva', $id);
+		$builder->select("t0.nidclientetipo idclientetipo, t0.snombre nombre, t0.bestado estado");
+		$builder->where('t0.nidclientetipo', $id);
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
-
+//   SECCION ====== COUNT ======
 	public function getCount($todos = 1, $text = ''){
 		$builder = $this->conexion('tclientetipo t0');
 		$builder->select('nidclientetipo');
 
-		if ($todos !== '')
-		$builder->where('t0.bestado', intval($todos));
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
 
-		$builder->like('t0.nidclientetipo', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidclientetipo', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		return $builder->countAllResults();
 	}
 
-	public function UpdateClientetipo($nidclientetipo, $datos){
+//   SECCION ====== UPDATE ======
+	public function UpdateClientetipo($nidclientetipo,  $datos){
 		$builder = $this->conexion('tclientetipo');
 		$builder->where(['nidclientetipo' => $nidclientetipo]);
 		$builder->set($datos);
 		$builder->update();
 	}
 
+//   SECCION ====== MAXIMO ID ======
 	public function getMaxid(){
 		$builder = $this->conexion('tclientetipo');
 		$builder->selectMax('nidclientetipo');

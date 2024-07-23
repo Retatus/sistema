@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 use CodeIgniter\Model; 
@@ -6,12 +6,11 @@ use CodeIgniter\Model;
 class ReservadetallehotelhabitacionModel extends Model
 {
 	protected $table      = 'treservadetallehotelhabitacion';
-	protected $primaryKey = 'nidreserva';
-
+	protected $primaryKey = 'nidreservadetallehotelhabitacion';
 	protected $returnType     = 'array';
 	protected $useSoftDeletes = false;
 
-	protected $allowedFields = ['nidreserva','nidhotelhabitacion','sdescripcion','tfechaingreso','tfechasalida','nadultos','nninios','ncantidad','dprecio','dtotal','bconfirmado','bestado'];
+	protected $allowedFields = ['nidreserva', 'nidreservadetallehotelhabitacion', 'nidhotelhabitacion', 'sdescripcion', 'tfechaingreso', 'tfechasalida', 'nadultos', 'nninios', 'ncantidad', 'dprecio', 'dtotal', 'bconfirmado', 'bestado'];
 	protected $useTimestamps = false;
 	protected $createdField  = 'tfecha_alt';
 	protected $updatedField  = 'tfecha_edi';
@@ -21,111 +20,163 @@ class ReservadetallehotelhabitacionModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = false;
 
+//   SECCION ====== CONEXION ======
 	protected function conexion(string $table = null){
 		$this->db = \Config\Database::connect();
 		$this->builder = $this->db->table($table);
 		return $this->builder;
 	}
 
-	public function existe($id){
-		return $this->where(['nidreserva' => $id])->countAllResults();
+//   SECCION ====== EXISTE ======
+	public function existe($nidreserva, $nidreservadetallehotelhabitacion, $nidhotelhabitacion){
+		return $this->where(['nidreserva' => $nidreserva, 'nidreservadetallehotelhabitacion' => $nidreservadetallehotelhabitacion, 'nidhotelhabitacion' => $nidhotelhabitacion])->countAllResults();
 	}
 
-	public function getReservadetallehotelhabitacions($todos = 1, $text = '', $total, $pag = 1){
+//   SECCION ====== TODOS ======
+	public function getReservadetallehotelhabitacions($total, $pag = 1, $todos = 1, $text = ''){
 		$CantidadMostrar = $total;
 		$TotalReg = $this->getCount($todos, $text);
 		$TotalRegistro = ceil($TotalReg/$CantidadMostrar);
 		$desde = ($pag - 1) * $CantidadMostrar;
+
 		$builder = $this->conexion('treservadetallehotelhabitacion t0');
-		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.nidhotelhabitacion idhotelhabitacion, t0.sdescripcion descripcion, DATE_FORMAT(CAST(t0.tfechaingreso As Date), '%d-%m-%Y') fechaingreso, DATE_FORMAT(CAST(t0.tfechasalida As Date), '%d-%m-%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado,  t1.nidhotelhabitacion idhotelhabitacion, t2.nidreserva idreserva, t2.sreservanombre reservanombre, t3.snombre cathabitacion, t4.snombre hotel, CONCAT('[' ,t0.dprecio, ']' ) as concatenado");
-		$builder->join('thotelhabitacion t1', ' t1.nidhotelhabitacion = t0.nidhotelhabitacion');
-		$builder->join('treserva t2', ' t2.nidreserva = t0.nidreserva');
-		$builder->join('tcathabitacion t3', ' t3.nidcathabitacion = t1.nidcathabitacion');
-		$builder->join('thotel t4', ' t4.sidhotel = t1.sidhotel');
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.sdescripcion descripcion, DATE_FORMAT(t0.tfechaingreso,'%d/%m/%Y') fechaingreso, DATE_FORMAT(t0.tfechasalida,'%d/%m/%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado, t1.nidhotelhabitacion idhotelhabitacion, t2.nidcathabitacion idcathabitacion, t2.snombre nombre, t3.sidhotel idhotel, t3.snombre nombre, t4.nidbanco idbanco, t4.snombre nombre, t5.nidcathotel idcathotel, t5.snombre nombre, t6.nidreserva idreserva, t6.sreservanombre reservanombre, CONCAT('[',t0.dprecio,']',' - ','[',t1.dprecio,']',' - ',t2.snombre,' - ',t3.snombre,' - ',t4.snombre,' - ',t5.snombre,' - ',t6.sreservanombre) concatenado, CONCAT(t2.snombre,' - ',t3.snombre,' - ',t4.snombre,' - ',t5.snombre,' - ',t6.sreservanombre) concatenadodetalle");
 
-		$builder->like('t0.nidreservadetallehotelhabitacion', $text);
-		$builder->orLike('t0.dprecio', $text);
+		$builder->join('thotelhabitacion t1', 't1.nidhotelhabitacion = t0.nidhotelhabitacion');
+		$builder->join('tcathabitacion t2', 't2.nidcathabitacion = t1.nidcathabitacion');
+		$builder->join('thotel t3', 't3.sidhotel = t1.sidhotel');
+		$builder->join('tbanco t4', 't4.nidbanco = t3.nidbanco');
+		$builder->join('tcathotel t5', 't5.nidcathotel = t3.nidcathotel');
+		$builder->join('treserva t6', 't6.nidreserva = t0.nidreserva');
 
-		$builder->orderBy('t0.nidreserva', 'DESC');
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidreservadetallehotelhabitacion', $text)
+				->orLike('t0.dprecio', $text)
+				->orLike('t1.dprecio', $text)
+				->orLike('t2.snombre', $text)
+				->orLike('t3.snombre', $text)
+				->orLike('t4.snombre', $text)
+				->orLike('t5.snombre', $text)
+				->orLike('t6.sreservanombre', $text)
+				->groupEnd();
+		}
+
+		$builder->orderBy('t0.nidreservadetallehotelhabitacion', 'DESC');
 		$builder->limit($CantidadMostrar, $desde);
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getAutocompletereservadetallehotelhabitacions($todos = 1, $text = ''){
+//   SECCION ====== AUTOCOMPLETE ======
+	public function getAutocompleteReservadetallehotelhabitacions($todos = 1, $text = ''){
 		$builder = $this->conexion('treservadetallehotelhabitacion t0');
-		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.nidhotelhabitacion idhotelhabitacion, t0.sdescripcion descripcion, DATE_FORMAT(CAST(t0.tfechaingreso As Date), '%d-%m-%Y') fechaingreso, DATE_FORMAT(CAST(t0.tfechasalida As Date), '%d-%m-%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado,  t1.nidhotelhabitacion idhotelhabitacion, t2.nidreserva idreserva, t2.sreservanombre reservanombre, t3.snombre cathabitacion, t4.snombre hotel, CONCAT('[' ,t0.dprecio, ']' ) as concatenado");
-		$builder->join('thotelhabitacion t1', ' t1.nidhotelhabitacion = t0.nidhotelhabitacion');
-		$builder->join('treserva t2', ' t2.nidreserva = t0.nidreserva');
-		$builder->join('tcathabitacion t3', ' t3.nidcathabitacion = t1.nidcathabitacion');
-		$builder->join('thotel t4', ' t4.sidhotel = t1.sidhotel');
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.sdescripcion descripcion, DATE_FORMAT(t0.tfechaingreso,'%d/%m/%Y') fechaingreso, DATE_FORMAT(t0.tfechasalida,'%d/%m/%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado, t1.nidhotelhabitacion idhotelhabitacion, t2.nidcathabitacion idcathabitacion, t2.snombre nombre, t3.sidhotel idhotel, t3.snombre nombre, t4.nidbanco idbanco, t4.snombre nombre, t5.nidcathotel idcathotel, t5.snombre nombre, t6.nidreserva idreserva, t6.sreservanombre reservanombre, CONCAT('[',t0.dprecio,']',' - ','[',t1.dprecio,']',' - ',t2.snombre,' - ',t3.snombre,' - ',t4.snombre,' - ',t5.snombre,' - ',t6.sreservanombre) concatenado, CONCAT(t2.snombre,' - ',t3.snombre,' - ',t4.snombre,' - ',t5.snombre,' - ',t6.sreservanombre) concatenadodetalle");
+		$builder->join('thotelhabitacion t1', 't1.nidhotelhabitacion = t0.nidhotelhabitacion');
+		$builder->join('tcathabitacion t2', 't2.nidcathabitacion = t1.nidcathabitacion');
+		$builder->join('thotel t3', 't3.sidhotel = t1.sidhotel');
+		$builder->join('tbanco t4', 't4.nidbanco = t3.nidbanco');
+		$builder->join('tcathotel t5', 't5.nidcathotel = t3.nidcathotel');
+		$builder->join('treserva t6', 't6.nidreserva = t0.nidreserva');
 
-		$builder->like('t0.nidreservadetallehotelhabitacion', $text);
-		$builder->orLike('t0.dprecio', $text);
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
 
-		$builder->orderBy('t0.nidreserva', 'DESC');
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidreservadetallehotelhabitacion', $text)
+				->orLike('t0.dprecio', $text)
+				->orLike('t1.dprecio', $text)
+				->orLike('t2.snombre', $text)
+				->orLike('t3.snombre', $text)
+				->orLike('t4.snombre', $text)
+				->orLike('t5.snombre', $text)
+				->orLike('t6.sreservanombre', $text)
+				->groupEnd();
+		}
+
+		$builder->orderBy('t0.nidreservadetallehotelhabitacion', 'DESC');
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getReservadetallehotelhabitacion($nidreservadetallehotelhabitacion,$nidhotelhabitacion,$nidreserva){
+//   SECCION ====== GET ======
+	public function getreservadetallehotelhabitacion($nidreserva, $nidreservadetallehotelhabitacion, $nidhotelhabitacion){
 		$builder = $this->conexion('treservadetallehotelhabitacion t0');
-		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.nidhotelhabitacion idhotelhabitacion, t0.sdescripcion descripcion,DATE_FORMAT(CAST(t0.tfechaingreso As Date), '%d/%m/%Y') fechaingreso,DATE_FORMAT(CAST(t0.tfechasalida As Date), '%d/%m/%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
-		$builder->where(['nidreservadetallehotelhabitacion' => $nidreservadetallehotelhabitacion,'nidhotelhabitacion' => $nidhotelhabitacion,'nidreserva' => $nidreserva]);
+		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.nidhotelhabitacion idhotelhabitacion, t0.sdescripcion descripcion, DATE_FORMAT(t0.tfechaingreso,'%d/%m/%Y') fechaingreso, DATE_FORMAT(t0.tfechasalida,'%d/%m/%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
+		$builder->where(['nidreserva' => $nidreserva, 'nidreservadetallehotelhabitacion' => $nidreservadetallehotelhabitacion, 'nidhotelhabitacion' => $nidhotelhabitacion]);
 		$query = $builder->get();
 		return $query->getRowArray();
 	}
 
+//   SECCION ====== GET 2 ======
 	public function getReservadetallehotelhabitacion2($id){
 		$builder = $this->conexion('treservadetallehotelhabitacion t0');
-		$builder->select(" t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion0, t0.sdescripcion descripcion0, t0.tfechaingreso fechaingreso0, t0.tfechasalida fechasalida0, t0.nadultos adultos0, t0.nninios ninios0, t0.ncantidad cantidad0, t0.dprecio precio0, t0.dtotal total0, t0.bconfirmado confirmado0, t0.bestado estado0, t1.nidreserva idreserva1, t1.sreservanombre reservanombre1, t1.tfechainicio fechainicio1, t1.tfechafin fechafin1, t1.ntipodoc tipodoc1, t1.sidpersona idpersona1, t1.sreservatelefono reservatelefono1, t1.sreservacorreo reservacorreo1, t1.dmontototal montototal1, t1.bpagado pagado1, t1.bestado estado1, t2.nidhotelhabitacion idhotelhabitacion2, t2.dprecio precio2, t2.tfecha fecha2, t2.bestado estado2, t2.bconfirmado confirmado2, t3.sidhotel idhotel3, t3.snombre nombre3, t3.sdireccion direccion3, t3.stelefono telefono3, t3.scorreo correo3, t3.sruc ruc3, t3.srazonsocial razonsocial3, t3.snrocuenta nrocuenta3, t3.subigeo ubigeo3, t3.dlatitud latitud3, t3.dlongitud longitud3, t3.bestado estado3, t4.nidcathotel idcathotel4, t4.snombre nombre4, t4.bestado estado4, t5.nidbanco idbanco5, t5.snombre nombre5, t5.bestado estado5, t4.nidcathabitacion idcathabitacion4, t4.snombre nombre4, t4.bestado estado4,");
-		$builder->join('treserva t1', ' t0.nidreserva = t1.nidreserva');
-		$builder->join('thotelhabitacion t2', ' t0.nidhotelhabitacion = t2.nidhotelhabitacion');
-		$builder->join('thotel t3', ' t2.sidhotel = t3.sidhotel');
-		$builder->join('tcathotel t4', ' t3.nidcathotel = t4.nidcathotel');
-		$builder->join('tbanco t5', ' t3.nidbanco = t5.nidbanco');
-		$builder->join('tcathabitacion t4', ' t2.nidcathabitacion = t4.nidcathabitacion');
-
-		$builder->where('t0.nidreserva', $id);
+		$builder->select("t0.nidreserva idreserva, t0.nidreservadetallehotelhabitacion idreservadetallehotelhabitacion, t0.nidhotelhabitacion idhotelhabitacion, t0.sdescripcion descripcion, DATE_FORMAT(t0.tfechaingreso,'%d/%m/%Y') fechaingreso, DATE_FORMAT(t0.tfechasalida,'%d/%m/%Y') fechasalida, t0.nadultos adultos, t0.nninios ninios, t0.ncantidad cantidad, t0.dprecio precio, t0.dtotal total, t0.bconfirmado confirmado, t0.bestado estado");
+		$builder->join('thotelhabitacion t1', 't1.nidhotelhabitacion = t0.nidhotelhabitacion');
+		$builder->join('tcathabitacion t2', 't2.nidcathabitacion = t1.nidcathabitacion');
+		$builder->join('thotel t3', 't3.sidhotel = t1.sidhotel');
+		$builder->join('tbanco t4', 't4.nidbanco = t3.nidbanco');
+		$builder->join('tcathotel t5', 't5.nidcathotel = t3.nidcathotel');
+		$builder->join('treserva t6', 't6.nidreserva = t0.nidreserva');
+		$builder->where('t0.nidreservadetallehotelhabitacion', $id);
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
-
+//   SECCION ====== COUNT ======
 	public function getCount($todos = 1, $text = ''){
 		$builder = $this->conexion('treservadetallehotelhabitacion t0');
-		$builder->select('nidreserva');
-		$builder->join('thotelhabitacion t1', ' t1.nidhotelhabitacion = t0.nidhotelhabitacion');
-		$builder->join('treserva t2', ' t2.nidreserva = t0.nidreserva');
-		$builder->join('tcathabitacion t3', ' t3.nidcathabitacion = t1.nidcathabitacion');
-		$builder->join('thotel t4', ' t4.sidhotel = t1.sidhotel');
+		$builder->select('nidreservadetallehotelhabitacion');
+		$builder->join('thotelhabitacion t1', 't1.nidhotelhabitacion = t0.nidhotelhabitacion');
+		$builder->join('tcathabitacion t2', 't2.nidcathabitacion = t1.nidcathabitacion');
+		$builder->join('thotel t3', 't3.sidhotel = t1.sidhotel');
+		$builder->join('tbanco t4', 't4.nidbanco = t3.nidbanco');
+		$builder->join('tcathotel t5', 't5.nidcathotel = t3.nidcathotel');
+		$builder->join('treserva t6', 't6.nidreserva = t0.nidreserva');
 
-		if ($todos !== '')
-		$builder->where('t0.bestado', intval($todos));
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
 
-		$builder->like('t0.nidreservadetallehotelhabitacion', $text);
-		$builder->orLike('t0.dprecio', $text);
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidreservadetallehotelhabitacion', $text)
+				->orLike('t0.dprecio', $text)
+				->orLike('t1.dprecio', $text)
+				->orLike('t2.snombre', $text)
+				->orLike('t3.snombre', $text)
+				->orLike('t4.snombre', $text)
+				->orLike('t5.snombre', $text)
+				->orLike('t6.sreservanombre', $text)
+				->groupEnd();
+		}
 
 		return $builder->countAllResults();
 	}
 
-	public function UpdateReservadetallehotelhabitacion($nidreservadetallehotelhabitacion,$nidhotelhabitacion,$nidreserva, $datos){
+//   SECCION ====== UPDATE ======
+	public function UpdateReservadetallehotelhabitacion($nidreserva, $nidreservadetallehotelhabitacion, $nidhotelhabitacion,  $datos){
 		$builder = $this->conexion('treservadetallehotelhabitacion');
-		$builder->where(['nidreservadetallehotelhabitacion' => $nidreservadetallehotelhabitacion,'nidhotelhabitacion' => $nidhotelhabitacion,'nidreserva' => $nidreserva]);
+		$builder->where(['nidreserva' => $nidreserva, 'nidreservadetallehotelhabitacion' => $nidreservadetallehotelhabitacion, 'nidhotelhabitacion' => $nidhotelhabitacion]);
 		$builder->set($datos);
 		$builder->update();
 	}
 
+//   SECCION ====== MAXIMO ID ======
 	public function getMaxid(){
 		$builder = $this->conexion('treservadetallehotelhabitacion');
-		$builder->selectMax('nidreserva');
+		$builder->selectMax('nidreservadetallehotelhabitacion');
 		$query = $builder->get();
-		return  $query->getResult()[0]->nidreserva;
+		return  $query->getResult()[0]->nidreservadetallehotelhabitacion;
 	}
 }
 ?>

@@ -28,12 +28,15 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
-      <?php if (session()->has('error')): ?>
-        <p><?= session('error') ?></p>
+      <?php if (isset($error)): ?>
+          <p style="color: red;"><?= $error; ?></p>
       <?php endif; ?>
+      
+      <?= \Config\Services::validation()->listErrors(); ?>
       <form action="<?php echo base_url();?>login/login" method="post">
+      <?= csrf_field(); ?>
         <div class="input-group mb-3">
-          <input type="username" class="form-control" name="username" value = "usuario@example.com" placeholder="username">
+          <input type="username" class="form-control" name="username" value = "43253441" placeholder="username">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fa fa-user"></span>
@@ -41,7 +44,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password" value = "contraseña" placeholder="password">
+          <input type="password" class="form-control" name="password" value = "HOLA1234@" placeholder="password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -64,7 +67,7 @@
           <!-- /.col -->
         </div>
       </form>
-
+      <p><a href="/auth/logout">Cerrar sesión</a></p>
       <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
         <a href="#" class="btn btn-block btn-primary">

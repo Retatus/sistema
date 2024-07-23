@@ -46,33 +46,33 @@
 							<table id='TablaReservadetalleservicio' class='table table-sm table-bordered table-striped'>
 								<thead>
 									<tr>
-										<th >Idreserva</th>
-										<th >Id</th>
-										<th >Descripcion</th>
-										<th >Fecha</th>
-										<th >Cantidad</th>
-										<th >Precio</th>
-										<th >Total</th>
-										<th >Confirmado</th>
-										<th >Estado</th>
+										<th>Idreserva</th>
+										<th hidden>Idreservadetalleservicio</th>
+										<th>Descripcion</th>
+										<th>Fecha</th>
+										<th>Cantidad</th>
+										<th>Precio</th>
+										<th>Total</th>
+										<th>Confirmado</th>
+										<th>Estado</th>
+										<th>Concatenado</th>
 										<th>Acciones</th>
-
 									</tr>
 								</thead>
 								<tbody>
 									<?php if(!empty($datos)):?>
 										<?php foreach($datos as $reservadetalleservicio):?>
 											<tr>
-												<td ><?php echo $reservadetalleservicio['idreserva'];?></td>
-												<td ><?php echo $reservadetalleservicio['idreservadetalleservicio'];?></td>
-												<td ><?php echo $reservadetalleservicio['descripcion'];?></td>
-												<td ><?php echo $reservadetalleservicio['fecha'];?></td>
-												<td ><?php echo $reservadetalleservicio['cantidad'];?></td>
-												<td ><?php echo $reservadetalleservicio['precio'];?></td>
-												<td ><?php echo $reservadetalleservicio['total'];?></td>
-												<td class = 'hidden-xs'><?php echo $est = ($reservadetalleservicio['confirmado']== 1) ? 'CONFIRMADO' : 'PENDIENTE';?></td>
-												<td class = 'hidden-xs'><?php echo $est = ($reservadetalleservicio['estado']== 1) ? 'ACTIVO' : 'DESACTIVO';?></td>
-
+												<td><?php echo $reservadetalleservicio['idreserva'];?></td>
+												<td hidden><?php echo $reservadetalleservicio['idreservadetalleservicio'];?></td>
+												<td><?php echo $reservadetalleservicio['descripcion'];?></td>
+												<td><?php echo $reservadetalleservicio['fecha'];?></td>
+												<td><?php echo $reservadetalleservicio['cantidad'];?></td>
+												<td><?php echo $reservadetalleservicio['precio'];?></td>
+												<td><?php echo $reservadetalleservicio['total'];?></td>
+												<td><?php echo $reservadetalleservicio['confirmado'];?></td>
+												<td><?php echo $reservadetalleservicio['estado'];?></td>
+												<td><?php echo $reservadetalleservicio['concatenado'];?></td>
 												<td>
 													<div class='row'>
 														<div style='margin: auto;'>
@@ -81,7 +81,7 @@
 															</button>
 														</div>
 														<div style='margin: auto;'>
-															<a class='btn btn-success btn-xs' href='<?php echo base_url();?>reserva/add/<?php echo $reservadetalleservicio['idreservadetalleservicio'];?>'><i class='fa fa-pencil'></i></a>
+															<a class='btn btn-success btn-xs' href="<?php echo base_url();?>reserva/add/<?php echo $reservadetalleservicio['idreservadetalleservicio'];?>"><i class='fa fa-pencil'></i></a>
 														</div>
 													</div>
 												</td>
@@ -91,6 +91,8 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div class='card-footer'>
 						<div id='PaginadoReservadetalleservicio'>
 							<?php echo $pag;?>
 						</div>
@@ -100,6 +102,7 @@
 		</div>
 	</section>
 </div>
+<!--  SECCION ====== MODAL ====== -->
 <div class='modal fade' id='modalAgregarReservadetalleservicio' tabindex='-1'>
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
@@ -112,25 +115,19 @@
 		<div class='modal-body'>
 			<div class='form-group row'>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>idreserva:</label>
+					<label class='col-sm-4' for='id'>Idreserva:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idreserva' name='idreserva' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='idreserva' name='idreserva' placeholder='0.00' autocomplete = 'off'>
+					</div>
+				</div>
+				<div class='col-6 form-group row' hidden>
+					<label class='col-sm-4'>Idreservadetalleservicio:</label>
+					<div class = 'col-sm-8'>
+						<input type='text' class='form-control form-control-sm text-uppercase' id='idreservadetalleservicio' name='idreservadetalleservicio' placeholder='T001' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>id:</label>
-					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='idreservadetalleservicio' name='idreservadetalleservicio' placeholder='T001' autocomplete = 'off'>
-					</div>
-				</div>
-				<div class='col-12 form-group row'>
-					<label class='col-sm-2' for='id'>descripcion:</label>
-					<div class = 'col-sm-10'>
-						<textarea type='text' class='form-control form-control-sm text-uppercase    123' id='descripcion' name='descripcion' placeholder='T001' autocomplete = 'off'></textarea>
-					</div>
-				</div>
-				<div class='col-6 form-group row'>
-					<label class='col-sm-4'>fecha:</label>
+					<label class='col-sm-4'>Fecha:</label>
 					<div class='col-sm-8'>
 						<div class='input-group'>
 							<div class='input-group-prepend'>
@@ -143,25 +140,25 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>cantidad:</label>
+					<label class='col-sm-4' for='id'>Cantidad:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='cantidad' name='cantidad' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='cantidad' name='cantidad' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>precio:</label>
+					<label class='col-sm-4' for='id'>Precio:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='precio' name='precio' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='precio' name='precio' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='id'>total:</label>
+					<label class='col-sm-4' for='id'>Total:</label>
 					<div class = 'col-sm-8'>
-						<input type='text' class='form-control form-control-sm text-uppercase    123' id='total' name='total' placeholder='T001' autocomplete = 'off'>
+						<input type='number' class='form-control form-control-sm' id='total' name='total' placeholder='0.00' autocomplete = 'off'>
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>confirmado:</label>
+					<label class='col-sm-4' for='rol'>Confirmado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='confirmado' name='confirmado'>
 							<option value = '1' selected >CONFIRMADO</option>
@@ -170,7 +167,7 @@
 					</div>
 				</div>
 				<div class='col-6 form-group row'>
-					<label class='col-sm-4' for='rol'>estado:</label>
+					<label class='col-sm-4' for='rol'>Estado:</label>
 					<div class='col-sm-8'>
 						<select class='form-control form-control-sm' id='estado' name='estado'>
 							<option value = '1' selected >ACTIVO</option>
@@ -178,7 +175,12 @@
 						</select>
 					</div>
 				</div>
-
+				<div class='col-12 form-group row'>
+					<label class='col-sm-4' for='id'>Descripcion:</label>
+					<div class = 'col-sm-12'>
+						<textarea type='text' class='form-control form-control-sm text-uppercase' id='descripcion' name='descripcion' placeholder='T001' autocomplete = 'off'></textarea>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class='modal-footer'>
@@ -190,24 +192,14 @@
 		</div>
 	</div>
 </div>
-
+<!--  SECCION ====== SCRIPT ====== -->
 <script>
 	var NuevoReservadetalleservicio;
 	var base_url= '<?php echo base_url();?>';
-
-
-	function NumeroFilasTabla(){
-		TamanioTabla = $('#tabla_Habitaciones tr').length - 1;
-		$('#minmax').val(TamanioTabla)
-	}
-
-
 	function load(pag){
 		RecolectarDatosReservadetalleservicio();
 		EnviarInformacionReservadetalleservicio('leer', NuevoReservadetalleservicio, false, pag);
 	}
-
-
 	$('#fecha').datepicker({
 		language: 'es',
 		todayBtn: 'linked',
@@ -216,10 +208,7 @@
 		multidate: false,
 		todayHighlight: true
 	});
-
-
-
-
+	
 	$('#btnAgregarReservadetalleservicio').click(function(){
 		LimpiarModalDatosReservadetalleservicio();
 		$('#categoria').val(1);
@@ -230,15 +219,14 @@
 		$('#btnModalEliminarReservadetalleservicio').toggle(false);
 		$('#modalAgregarReservadetalleservicio').modal();
 	});
-
-
+//   SECCION ====== btn Editar ======
 	function btnEditarReservadetalleservicio(Val0){
 		$.ajax({
 			type: 'POST',
 			url: base_url + '/reservadetalleservicio/edit',
-			data: { idreservadetalleservicio: Val0},
+			data: {idreservadetalleservicio: Val0},
 			success: function(msg){
-		debugger
+				debugger
 				var temp = JSON.parse(msg);
 				console.log(temp);
 				LimpiarModalDatosReservadetalleservicio();
@@ -251,51 +239,6 @@
 				$('#total').val(temp.total);
 				$('#confirmado').val(temp.confirmado);
 				$('#estado').val(temp.estado);
-
-
-
-				$('#tabla_Habitaciones tr').not($('#tabla_Habitaciones tr:first')).remove();
-				var nrohabitaciones = 0;
-				console.log(temp.habitacion);
-				$.each(temp.habitacion, function(i, value) { 
-					nrohabitaciones++;
-					var rows = "<tr>" +
-					"<td hidden>" + (i + 1) + "</td>" +
-					"<td class='numero'>"+
-						"<a href='#' style='color: #ef5350;' class='delete'><i class='fa fa-times' style='padding-top: 10px;'></i></a>" +
-					"</td>" + 
-					"<td hidden><input type='text' class='form-control text-uppercase' id='codhabitacion_" +(i + 1)+ "' value="+value.idhabitacion+"></td>" +
-					"<td>" +
-						"<select class='form-control select2' id='catHabitacion_"+(i + 1)+"' style='width: 100%;'>" +
-							"<option value='0'>-- SELECCIONAR --</option>" +
-						"</select>" +
-					"</td>" +
-					"<td><input type='text' class='form-control solo_numero' id='precio_" +(i + 1)+"' value="+value.precio+"></td>" +
-					"<td>" +
-						"<select class='form-control' id='estado_" +(i + 1)+ "' style='padding: 6px 2px;'>" +
-						"</select>" +
-					"</td>" +
-					"</tr>";
-					$('#tabla_Habitaciones').append(rows);
-
-
-					$('.delete').off().click(function (e) {
-						var i = $('#tabla_Habitaciones tr').length - 1; 
-						if (i > 1) {
-							$(this).parent('td').parent('tr').remove();
-							NumeroFilasTabla();
-						} 
-					});
-
-
-					addCatHabitacion((i + 1));
-					$('#catHabitacion_'+(i + 1)).select2().val(value.idcathabitacion).select2('destroy').select2();
-					addEstado((i + 1)); 
-					$('#estado_'+(i + 1)).val(value.estado);            
-				});
-				$('#minmax').val(nrohabitaciones);
-
-
 				$('#btnModalAgregarReservadetalleservicio').toggle(false);
 				$('#btnModalEditarReservadetalleservicio').toggle(true);
 				$('#btnModalEliminarReservadetalleservicio').toggle(true);
@@ -306,11 +249,8 @@
 			}
 		});
 	}
-
-
 	$('#btnModalAgregarReservadetalleservicio').click(function(){
-debugger
-
+		debugger
 		if (ValidarCamposVaciosReservadetalleservicio() != 0) {
 			alert('Completar campos obligatorios');
 		}else{
@@ -319,8 +259,6 @@ debugger
 			EnviarInformacionReservadetalleservicio('agregar', NuevoReservadetalleservicio, true);
 		}
 	});
-
-
 	$('#btnModalEditarReservadetalleservicio').click(function(){
 		if (ValidarCamposVaciosReservadetalleservicio() != 0) {
 			alert('Completar campos obligatorios');
@@ -329,8 +267,6 @@ debugger
 			EnviarInformacionReservadetalleservicio('modificar', NuevoReservadetalleservicio, true);
 		}
 	});
-
-
 	$('#btnModalEliminarReservadetalleservicio').click(function(){
 		var bool=confirm('ESTA SEGURO DE ELIMINAR EL DATO?');
 		if(bool){
@@ -338,26 +274,18 @@ debugger
 			EnviarInformacionReservadetalleservicio('eliminar', NuevoReservadetalleservicio, true);
 		}
 	});
-
-
 	$('#btnModalCerrarHotel').click(function(){
 		$('#IdModalGrupoCodigoHotel').prop('hidden', false); 
 		LimpiarModalDatosReservadetalleservicio();
 	});
-
-
 	$('#btnFiltroReservadetalleservicio').click(function(){
 		RecolectarDatosReservadetalleservicio();
 		EnviarInformacionReservadetalleservicio('leer', NuevoReservadetalleservicio, false);
 	});
-
-
 	function Paginado(pag) {
 		RecolectarDatosReservadetalleservicio();
 		EnviarInformacionReservadetalleservicio('leer', NuevoReservadetalleservicio, false, pag);
 	}
-
-
 	function RecolectarDatosReservadetalleservicio(){
 		NuevoReservadetalleservicio = {
 			idreserva: $('#idreserva').val().toUpperCase(),
@@ -369,13 +297,10 @@ debugger
 			total: $('#total').val().toUpperCase(),
 			confirmado: $('#confirmado').val().toUpperCase(),
 			estado: $('#estado').val().toUpperCase(),
-
 			todos: $('#idFTodos').val(),
 			texto: $('#idFTexto').val()
 		};
 	}
-
-
 	function EnviarInformacionReservadetalleservicio(accion, objEvento, modal, pag=1) { 
 		$.ajax({
 			type: 'POST',
@@ -417,113 +342,116 @@ debugger
 			}
 		});
 	}
-
-
 	function LimpiarModalDatosReservadetalleservicio(){
-		$('#idreserva').val('');
+		$('#idreserva').val('0');
 		$('#idreservadetalleservicio').val('0');
 		$('#descripcion').val('');
 		$('#fecha').val('');
-		$('#cantidad').val('');
+		$('#cantidad').val('0');
 		$('#precio').val('');
 		$('#total').val('');
-
+		$('#confirmado').val('0');
+		$('#estado').val('0');
 	}
-
-
 	function ValidarCamposVaciosReservadetalleservicio(){
 		var error = 0;
-		if ($('#idreserva').val() == ''){
+		var value = $('#idreserva').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idreserva');
 			error++;
+		}else{
+			NoResaltado('idreserva');
 		}
-		if ($('#idreservadetalleservicio').val() == ''){
+		var value = $('#idreservadetalleservicio').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('idreservadetalleservicio');
 			error++;
+		}else{
+			NoResaltado('idreservadetalleservicio');
 		}
 		if ($('#descripcion').val() == ''){
 			Resaltado('descripcion');
 			error++;
+		}else{
+			NoResaltado('descripcion');
 		}
 		if ($('#fecha').val() == ''){
 			Resaltado('fecha');
 			error++;
+		}else{
+			NoResaltado('fecha');
 		}
-		if ($('#cantidad').val() == ''){
+		var value = $('#cantidad').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('cantidad');
 			error++;
+		}else{
+			NoResaltado('cantidad');
 		}
 		if ($('#precio').val() == ''){
 			Resaltado('precio');
 			error++;
+		}else{
+			NoResaltado('precio');
 		}
 		if ($('#total').val() == ''){
 			Resaltado('total');
 			error++;
+		}else{
+			NoResaltado('total');
 		}
-		if ($('#confirmado').val() == ''){
+		var value = $('#confirmado').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('confirmado');
 			error++;
+		}else{
+			NoResaltado('confirmado');
 		}
-		if ($('#estado').val() == ''){
+		var value = $('#estado').val();
+		if (!/^\d*$/.test(value)){
 			Resaltado('estado');
 			error++;
+		}else{
+			NoResaltado('estado');
 		}
-
 		return error;
 	}
-
-
 	function Resaltado(id){
 		$('#'+id).css('border-color', '#ef5350');
 		$('#'+id).focus();
 	}
 
-
-	function CargartablaReservadetalleservicio(objeto){   
+	function NoResaltado(id){
+		$('#'+id).css('border-color', '#ced4da');
+	}
+	function CargartablaReservadetalleservicio(objeto){
 		$('#TablaReservadetalleservicio tr').not($('#TablaReservadetalleservicio tr:first')).remove();
 		$.each(objeto, function(i, value) {
-		var fila = '<tr>'+
-			'<td >'+value.idreserva+'</td>'+
-			'<td >'+value.idreservadetalleservicio+'</td>'+
-			'<td >'+value.descripcion+'</td>'+
-			'<td >'+value.fecha+'</td>'+
-			'<td >'+value.cantidad+'</td>'+
-			'<td >'+value.precio+'</td>'+
-			'<td >'+value.total+'</td>'+
-			'<td class = "hidden -xs">' + ((value.confirmado == '1') ? 'CONFIRMADO' : 'PENDIENTE') + '</td>'+
-			'<td class = "hidden -xs">' + ((value.estado == '1') ? 'ACTIVO' : 'DESACTIVO') + '</td>'+
-
-			'<td>'+
-				'<div class="row">'+
-					'<div style="margin: auto;">'+
-						'<button type="button" onclick="btnEditarReservadetalleservicio(\''+value.idreservadetalleservicio+'\')" class="btn btn-info btn-xs">'+
-							'<span class="fa fa-search fa-sm"></span>'+
-						'</button>'+
-					'</div>'+
-						'<div style="margin: auto;">'+
-							'<a class="btn btn-success btn-xs" href="<?php echo base_url();?>/reserva/add"><i class="fa fa-pencil"></i></a>'+
-					'</div>'+
-				'</div>'+
-			'</td>'+
-		'</tr>';
-		$('#TablaReservadetalleservicio tbody').append(fila);
+				var fila = `<tr>
+				<td>${value.idreserva}</td>
+				<td hidden>${value.idreservadetalleservicio}</td>
+				<td>${value.descripcion}</td>
+				<td>${value.fecha}</td>
+				<td>${value.cantidad}</td>
+				<td>${value.precio}</td>
+				<td>${value.total}</td>
+				<td>${value.confirmado}</td>
+				<td>${value.estado}</td>
+				<td>${value.concatenado}</td>
+				<td>
+				<div class='row'>
+					<div style='margin: auto;'>
+						<button type='button' onclick="btnEditarReservadetalleservicio('${value.idreservadetalleservicio}')" class='btn btn-info btn-xs'>
+							<span class='fa fa-search fa-xs'></span>
+						</button>
+					</div>
+						<div style='margin: auto;'>
+							<a class='btn btn-success btn-xs' href='<?php echo base_url();?>/reserva/add/$reservadetalleservicio['idreservadetalleservicio']'><i class='fa fa-pencil'></i></a>
+					</div>
+				</div>
+				</td>
+				</tr>`
+			$('#TablaReservadetalleservicio tbody').append(fila);
 		});
-	}
-
-
-	function addEstado(i){
-		$('#estado_'+i).append($('<option>').val('1').text('ACTIVO'));
-		$('#estado_'+i).append($('<option>').val('0').text('DESACTIVO'));
-	}
-
-
-	function addCatHabitacion(i) {
-		var sel = document.getElementById('habitacion');
-		var Length = sel.length;
-		for (var j = 0; j < Length; j++) {
-		var opt = sel[j];
-		$('#catHabitacion_'+i).append($('<option>').val(opt.value).text(opt.label));            
-		}
 	}
 </script>

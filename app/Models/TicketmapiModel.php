@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 use CodeIgniter\Model; 
@@ -7,11 +7,10 @@ class TicketmapiModel extends Model
 {
 	protected $table      = 'tticketmapi';
 	protected $primaryKey = 'nidticketmapi';
-
 	protected $returnType     = 'array';
 	protected $useSoftDeletes = false;
 
-	protected $allowedFields = ['snombre','bestado'];
+	protected $allowedFields = ['nidticketmapi', 'snombre', 'bestado'];
 	protected $useTimestamps = false;
 	protected $createdField  = 'tfecha_alt';
 	protected $updatedField  = 'tfecha_edi';
@@ -21,52 +20,73 @@ class TicketmapiModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = false;
 
+//   SECCION ====== CONEXION ======
 	protected function conexion(string $table = null){
 		$this->db = \Config\Database::connect();
 		$this->builder = $this->db->table($table);
 		return $this->builder;
 	}
 
-	public function existe($id){
-		return $this->where(['nidticketmapi' => $id])->countAllResults();
+//   SECCION ====== EXISTE ======
+	public function existe($nidticketmapi){
+		return $this->where(['nidticketmapi' => $nidticketmapi])->countAllResults();
 	}
 
-	public function getTicketmapis($todos = 1, $text = '', $total, $pag = 1){
+//   SECCION ====== TODOS ======
+	public function getTicketmapis($total, $pag = 1, $todos = 1, $text = ''){
 		$CantidadMostrar = $total;
 		$TotalReg = $this->getCount($todos, $text);
 		$TotalRegistro = ceil($TotalReg/$CantidadMostrar);
 		$desde = ($pag - 1) * $CantidadMostrar;
+
 		$builder = $this->conexion('tticketmapi t0');
-		$builder->select("t0.nidticketmapi idticketmapi, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidticketmapi idticketmapi, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidticketmapi', $text);
-		$builder->orLike('t0.snombre', $text);
+
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidticketmapi', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidticketmapi', 'DESC');
 		$builder->limit($CantidadMostrar, $desde);
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getAutocompleteticketmapis($todos = 1, $text = ''){
+//   SECCION ====== AUTOCOMPLETE ======
+	public function getAutocompleteTicketmapis($todos = 1, $text = ''){
 		$builder = $this->conexion('tticketmapi t0');
-		$builder->select("t0.nidticketmapi idticketmapi, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidticketmapi idticketmapi, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidticketmapi', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidticketmapi', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidticketmapi', 'DESC');
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getTicketmapi($nidticketmapi){
+//   SECCION ====== GET ======
+	public function getticketmapi($nidticketmapi){
 		$builder = $this->conexion('tticketmapi t0');
 		$builder->select("t0.nidticketmapi idticketmapi, t0.snombre nombre, t0.bestado estado");
 		$builder->where(['nidticketmapi' => $nidticketmapi]);
@@ -74,35 +94,42 @@ class TicketmapiModel extends Model
 		return $query->getRowArray();
 	}
 
+//   SECCION ====== GET 2 ======
 	public function getTicketmapi2($id){
 		$builder = $this->conexion('tticketmapi t0');
-		$builder->select(" t0.nidticketmapi idticketmapi0, t0.snombre nombre0, t0.bestado estado0,");
-
-		$builder->where('t0.nidreserva', $id);
+		$builder->select("t0.nidticketmapi idticketmapi, t0.snombre nombre, t0.bestado estado");
+		$builder->where('t0.nidticketmapi', $id);
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
-
+//   SECCION ====== COUNT ======
 	public function getCount($todos = 1, $text = ''){
 		$builder = $this->conexion('tticketmapi t0');
 		$builder->select('nidticketmapi');
 
-		if ($todos !== '')
-		$builder->where('t0.bestado', intval($todos));
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
 
-		$builder->like('t0.nidticketmapi', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidticketmapi', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		return $builder->countAllResults();
 	}
 
-	public function UpdateTicketmapi($nidticketmapi, $datos){
+//   SECCION ====== UPDATE ======
+	public function UpdateTicketmapi($nidticketmapi,  $datos){
 		$builder = $this->conexion('tticketmapi');
 		$builder->where(['nidticketmapi' => $nidticketmapi]);
 		$builder->set($datos);
 		$builder->update();
 	}
 
+//   SECCION ====== MAXIMO ID ======
 	public function getMaxid(){
 		$builder = $this->conexion('tticketmapi');
 		$builder->selectMax('nidticketmapi');

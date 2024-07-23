@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 use CodeIgniter\Model; 
@@ -7,11 +7,10 @@ class BancoModel extends Model
 {
 	protected $table      = 'tbanco';
 	protected $primaryKey = 'nidbanco';
-
 	protected $returnType     = 'array';
 	protected $useSoftDeletes = false;
 
-	protected $allowedFields = ['snombre','bestado'];
+	protected $allowedFields = ['nidbanco', 'snombre', 'bestado'];
 	protected $useTimestamps = false;
 	protected $createdField  = 'tfecha_alt';
 	protected $updatedField  = 'tfecha_edi';
@@ -21,52 +20,73 @@ class BancoModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = false;
 
+//   SECCION ====== CONEXION ======
 	protected function conexion(string $table = null){
 		$this->db = \Config\Database::connect();
 		$this->builder = $this->db->table($table);
 		return $this->builder;
 	}
 
-	public function existe($id){
-		return $this->where(['nidbanco' => $id])->countAllResults();
+//   SECCION ====== EXISTE ======
+	public function existe($nidbanco){
+		return $this->where(['nidbanco' => $nidbanco])->countAllResults();
 	}
 
-	public function getBancos($todos = 1, $text = '', $total, $pag = 1){
+//   SECCION ====== TODOS ======
+	public function getBancos($total, $pag = 1, $todos = 1, $text = ''){
 		$CantidadMostrar = $total;
 		$TotalReg = $this->getCount($todos, $text);
 		$TotalRegistro = ceil($TotalReg/$CantidadMostrar);
 		$desde = ($pag - 1) * $CantidadMostrar;
+
 		$builder = $this->conexion('tbanco t0');
-		$builder->select("t0.nidbanco idbanco, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidbanco idbanco, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidbanco', $text);
-		$builder->orLike('t0.snombre', $text);
+
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidbanco', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidbanco', 'DESC');
 		$builder->limit($CantidadMostrar, $desde);
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getAutocompletebancos($todos = 1, $text = ''){
+//   SECCION ====== AUTOCOMPLETE ======
+	public function getAutocompleteBancos($todos = 1, $text = ''){
 		$builder = $this->conexion('tbanco t0');
-		$builder->select("t0.nidbanco idbanco, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidbanco idbanco, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidbanco', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidbanco', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidbanco', 'DESC');
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getBanco($nidbanco){
+//   SECCION ====== GET ======
+	public function getbanco($nidbanco){
 		$builder = $this->conexion('tbanco t0');
 		$builder->select("t0.nidbanco idbanco, t0.snombre nombre, t0.bestado estado");
 		$builder->where(['nidbanco' => $nidbanco]);
@@ -74,35 +94,42 @@ class BancoModel extends Model
 		return $query->getRowArray();
 	}
 
+//   SECCION ====== GET 2 ======
 	public function getBanco2($id){
 		$builder = $this->conexion('tbanco t0');
-		$builder->select(" t0.nidbanco idbanco0, t0.snombre nombre0, t0.bestado estado0,");
-
-		$builder->where('t0.nidreserva', $id);
+		$builder->select("t0.nidbanco idbanco, t0.snombre nombre, t0.bestado estado");
+		$builder->where('t0.nidbanco', $id);
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
-
+//   SECCION ====== COUNT ======
 	public function getCount($todos = 1, $text = ''){
 		$builder = $this->conexion('tbanco t0');
 		$builder->select('nidbanco');
 
-		if ($todos !== '')
-		$builder->where('t0.bestado', intval($todos));
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
 
-		$builder->like('t0.nidbanco', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidbanco', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		return $builder->countAllResults();
 	}
 
-	public function UpdateBanco($nidbanco, $datos){
+//   SECCION ====== UPDATE ======
+	public function UpdateBanco($nidbanco,  $datos){
 		$builder = $this->conexion('tbanco');
 		$builder->where(['nidbanco' => $nidbanco]);
 		$builder->set($datos);
 		$builder->update();
 	}
 
+//   SECCION ====== MAXIMO ID ======
 	public function getMaxid(){
 		$builder = $this->conexion('tbanco');
 		$builder->selectMax('nidbanco');

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 use CodeIgniter\Model; 
@@ -7,11 +7,10 @@ class CathabitacionModel extends Model
 {
 	protected $table      = 'tcathabitacion';
 	protected $primaryKey = 'nidcathabitacion';
-
 	protected $returnType     = 'array';
 	protected $useSoftDeletes = false;
 
-	protected $allowedFields = ['snombre','bestado'];
+	protected $allowedFields = ['nidcathabitacion', 'snombre', 'bestado'];
 	protected $useTimestamps = false;
 	protected $createdField  = 'tfecha_alt';
 	protected $updatedField  = 'tfecha_edi';
@@ -21,52 +20,73 @@ class CathabitacionModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = false;
 
+//   SECCION ====== CONEXION ======
 	protected function conexion(string $table = null){
 		$this->db = \Config\Database::connect();
 		$this->builder = $this->db->table($table);
 		return $this->builder;
 	}
 
-	public function existe($id){
-		return $this->where(['nidcathabitacion' => $id])->countAllResults();
+//   SECCION ====== EXISTE ======
+	public function existe($nidcathabitacion){
+		return $this->where(['nidcathabitacion' => $nidcathabitacion])->countAllResults();
 	}
 
-	public function getCathabitacions($todos = 1, $text = '', $total, $pag = 1){
+//   SECCION ====== TODOS ======
+	public function getCathabitacions($total, $pag = 1, $todos = 1, $text = ''){
 		$CantidadMostrar = $total;
 		$TotalReg = $this->getCount($todos, $text);
 		$TotalRegistro = ceil($TotalReg/$CantidadMostrar);
 		$desde = ($pag - 1) * $CantidadMostrar;
+
 		$builder = $this->conexion('tcathabitacion t0');
-		$builder->select("t0.nidcathabitacion idcathabitacion, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidcathabitacion idcathabitacion, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidcathabitacion', $text);
-		$builder->orLike('t0.snombre', $text);
+
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidcathabitacion', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidcathabitacion', 'DESC');
 		$builder->limit($CantidadMostrar, $desde);
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getAutocompletecathabitacions($todos = 1, $text = ''){
+//   SECCION ====== AUTOCOMPLETE ======
+	public function getAutocompleteCathabitacions($todos = 1, $text = ''){
 		$builder = $this->conexion('tcathabitacion t0');
-		$builder->select("t0.nidcathabitacion idcathabitacion, t0.snombre nombre, t0.bestado estado,  CONCAT(t0.snombre) as concatenado, CONCAT(t0.snombre) as concatenadodetalle");
 
-		if ($todos !== '') 
-		$builder->where('t0.bestado', intval($todos));
+		$builder->select("t0.nidcathabitacion idcathabitacion, t0.snombre nombre, t0.bestado estado, CONCAT(t0.snombre) concatenado, CONCAT(t0.snombre) concatenadodetalle");
 
-		$builder->like('t0.nidcathabitacion', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
+
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidcathabitacion', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		$builder->orderBy('t0.nidcathabitacion', 'DESC');
 		$query = $builder->get();
+
 		return $query->getResultArray();
 	}
 
-	public function getCathabitacion($nidcathabitacion){
+//   SECCION ====== GET ======
+	public function getcathabitacion($nidcathabitacion){
 		$builder = $this->conexion('tcathabitacion t0');
 		$builder->select("t0.nidcathabitacion idcathabitacion, t0.snombre nombre, t0.bestado estado");
 		$builder->where(['nidcathabitacion' => $nidcathabitacion]);
@@ -74,35 +94,42 @@ class CathabitacionModel extends Model
 		return $query->getRowArray();
 	}
 
+//   SECCION ====== GET 2 ======
 	public function getCathabitacion2($id){
 		$builder = $this->conexion('tcathabitacion t0');
-		$builder->select(" t0.nidcathabitacion idcathabitacion0, t0.snombre nombre0, t0.bestado estado0,");
-
-		$builder->where('t0.nidreserva', $id);
+		$builder->select("t0.nidcathabitacion idcathabitacion, t0.snombre nombre, t0.bestado estado");
+		$builder->where('t0.nidcathabitacion', $id);
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
-
+//   SECCION ====== COUNT ======
 	public function getCount($todos = 1, $text = ''){
 		$builder = $this->conexion('tcathabitacion t0');
 		$builder->select('nidcathabitacion');
 
-		if ($todos !== '')
-		$builder->where('t0.bestado', intval($todos));
+		if ($todos !== '') {
+			$builder->where('t0.bestado', intval($todos));
+		}
 
-		$builder->like('t0.nidcathabitacion', $text);
-		$builder->orLike('t0.snombre', $text);
+		if ($text !== '') {
+			$builder->groupStart()
+				->like('t0.nidcathabitacion', $text)
+				->orLike('t0.snombre', $text)
+				->groupEnd();
+		}
 
 		return $builder->countAllResults();
 	}
 
-	public function UpdateCathabitacion($nidcathabitacion, $datos){
+//   SECCION ====== UPDATE ======
+	public function UpdateCathabitacion($nidcathabitacion,  $datos){
 		$builder = $this->conexion('tcathabitacion');
 		$builder->where(['nidcathabitacion' => $nidcathabitacion]);
 		$builder->set($datos);
 		$builder->update();
 	}
 
+//   SECCION ====== MAXIMO ID ======
 	public function getMaxid(){
 		$builder = $this->conexion('tcathabitacion');
 		$builder->selectMax('nidcathabitacion');

@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>plugins/datatables-bs4/css/dataTables.bootstrap4.css">
     <!-- Autocomplete -->
     <link rel="stylesheet" href="<?php echo base_url();?>asset/css/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.min.css" rel="stylesheet">
 
     <!-- jQuery -->
 <script src="<?php echo base_url();?>plugins/jquery/jquery.min.js"></script>
@@ -84,6 +85,12 @@
 <!-- <script src="<?php echo base_url();?>plugins/bootstrap4-toggle/js/bootstrap4-toggle.js"></script>
 <script src="<?php echo base_url();?>plugins/bootstrap4-toggle/css/bootstrap4-toggle.css"></script> -->
 <style type="text/css">
+
+/* .card-body{
+    width: 100%;
+    height: 75vh;
+    background-color: lightblue;
+} */
 
 .numeroDerecha{
   text-align: right;
@@ -176,7 +183,7 @@
 
   div.scroll { 
       width: 100%; 
-      overflow: auto; 
+      /* overflow: auto;  */
   } 
 </style>
 </head>
@@ -413,7 +420,7 @@
     </div>
 </div>
 
-<div class='modal fade' id='modalAgregarCliente' tabindex='-1'>
+<!-- <div class='modal fade' id='modalAgregarCliente' tabindex='-1'>
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
 		<div class='modal-header'>
@@ -548,5 +555,5 @@
 		</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
