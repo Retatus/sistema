@@ -48,7 +48,10 @@ class Reserva extends BaseController
                 'id' => $event['nidreserva'],
                 'title' => $event['sreservanombre'],
                 'start' => $event['tfechainicio'], // Asegúrate de que el formato sea 'YYYY-MM-DD' o 'YYYY-MM-DD HH:MM:SS'
-                'end' => $event['tfechafin'] // Opcional
+                'end' => $event['tfechafin'], // Opcional,
+				'backgroundColor' => '#00c0ef', //Info (aqua)
+          		'borderColor' => '#00c0ef', //Info (aqua)
+				'textColor' => '#fff' 
             ];
         }, $events);
 

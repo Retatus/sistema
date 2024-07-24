@@ -8,6 +8,17 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
+          <!-- /.col -->
+          <div class="col-md-9">
+            <div class="card card-primary">
+              <div class="card-body p-0">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
           <div class="col-md-3">
             <div class="sticky-top mb-3">
               <div class="card">
@@ -61,18 +72,7 @@
                 </div>
               </div>
             </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-md-9">
-            <div class="card card-primary">
-              <div class="card-body p-0">
-                <!-- THE CALENDAR -->
-                <div id="calendar"></div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
+          </div>          
           <!-- /.col -->
         </div>
         <!-- /.row -->
@@ -189,6 +189,21 @@
 					}
 				});
 			},
+      eventClick: function(info) {
+          // Acceder a los atributos del evento
+          var title = info.event.title;
+          var start = info.event.start.toISOString();
+          var end = info.event.end ? info.event.end.toISOString() : 'N/A';
+
+          // Mostrar los atributos en un alert
+          alert('Nombre: ' + title + '\nInicio: ' + start + '\nFin: ' + end);
+
+          // O actualizar algún elemento en la página con los datos del evento
+          // document.getElementById('eventDetails').innerHTML = 
+          //   `<p>Nombre: ${title}</p>
+          //    <p>Inicio: ${start}</p>
+          //    <p>Fin: ${end}</p>`;
+        },
       editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
       drop      : function(info) {
